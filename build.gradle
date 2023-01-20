@@ -8,12 +8,22 @@ group = 'com.hansung'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.projectlombok:lombok:1.18.22'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
@@ -32,19 +42,19 @@ sourceSets {
 
 processResources { dependsOn "copyReactBuildFiles" }
 
-task installReact(type: Exec) {
+tasks.register('installReact') {
 	workingDir "$frontendDir"
 	inputs.dir "$frontendDir"
 	group = BasePlugin.BUILD_GROUP
 	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
 		commandLine "npm.cmd", "audit", "fix"
-		commandLine 'npm.cmd', 'install' }
-	else {
+		commandLine 'npm.cmd', 'install'
+	} else {
 		commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
 	}
 }
 
-task buildReact(type: Exec) {
+tasks.register('buildReact') {
 	dependsOn "installReact"
 	workingDir "$frontendDir"
 	inputs.dir "$frontendDir"
@@ -56,7 +66,7 @@ task buildReact(type: Exec) {
 	}
 }
 
-task copyReactBuildFiles(type: Copy) {
+tasks.register('copyReactBuildFiles') {
 	dependsOn "buildReact"
 	from "$frontendDir/build"
 	into "$projectDir/src/main/resources/static"
