@@ -15,11 +15,12 @@ import java.util.Set;
 
 @Getter
 @ToString(callSuper = true)
+/*
 @Table(indexes ={
     @Index(name="title",columnList = "title"),
     @Index(name="tag",columnList = "tag"),
     @Index(name="createdAt",columnList = "createdAt")
-})
+})*/
 @Entity
 public class QnaArticle extends AuditingFields{
     @Id
