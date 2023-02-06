@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -31,10 +32,18 @@ public class QnaArticle extends AuditingFields{
     @ManyToOne(optional = false, fetch = FetchType.LAZY )
     private User user;
 
-    @Setter @Column(nullable = false) private String title;
-    @Setter @Column(nullable = false) private String content;  //TODO: length 설정하기
-    @Setter @Column(nullable = false) private int point;
-    @Setter @Column private String tag;
+    @NotNull
+    @Setter
+    private String title;
+    @NotNull
+    @Setter
+    private String content;  //TODO: length 설정하기
+    @NotNull
+    @Setter
+    private int point;
+    @Column
+    @Setter
+    private String tag;
 
 
     @Column private int hits;

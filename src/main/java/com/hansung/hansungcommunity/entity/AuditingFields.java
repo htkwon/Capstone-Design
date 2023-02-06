@@ -1,9 +1,11 @@
 package com.hansung.hansungcommunity.entity;
 
 
+import com.hansung.hansungcommunity.config.JpaAuditingConfig;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,8 +20,6 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-@Configuration
-@EnableJpaAuditing
 @MappedSuperclass
 public abstract class AuditingFields {
 

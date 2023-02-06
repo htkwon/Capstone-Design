@@ -22,15 +22,21 @@ public class QFreeArticle extends EntityPathBase<FreeArticle> {
 
     public static final QFreeArticle freeArticle = new QFreeArticle("freeArticle");
 
+    public final QAuditingFields _super = new QAuditingFields(this);
+
     public final NumberPath<Integer> bookmarkHits = createNumber("bookmarkHits", Integer.class);
 
     public final StringPath content = createString("content");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final NumberPath<Integer> hits = createNumber("hits", Integer.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final DateTimePath<java.time.LocalDateTime> postDate = createDateTime("postDate", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
     public final NumberPath<Integer> report = createNumber("report", Integer.class);
 

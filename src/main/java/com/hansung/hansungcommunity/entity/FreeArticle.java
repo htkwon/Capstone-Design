@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 
@@ -12,20 +13,24 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-public class FreeArticle {
+public class FreeArticle extends AuditingFields {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "free_article_id")
     private Long id;
+    @NotNull
     private String title; // 제목
+    @NotNull
     private String content; // 내용
-    private LocalDateTime postDate; // 작성 시간
+    @Column
     private int hits; // 조회수
+    @Column
     private int bookmarkHits; // 북마크 횟수
+    @Column
     private int report; // 신고 횟수
 
     @ManyToOne(fetch = FetchType.LAZY) // JPA 활용 시, XToOne 인 경우 fetch 타입을 LAZY 로 설정 !!!
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "stu_id")
     private User user;
 
     // private Image image; // 게시글 내부 이미지, 추후 개발
@@ -41,8 +46,6 @@ public class FreeArticle {
         article.setHits(0);
         article.setBookmarkHits(0);
         article.setReport(0);
-
-        article.setPostDate(LocalDateTime.now()); // 작성 일자, @CreationTimestamp 활용할지 ?
 
         return article;
     }
