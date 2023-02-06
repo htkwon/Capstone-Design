@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@Controller
+@RestController
 public class QnaArticleApiController {
 
     private final QnaArticleService qnaArticleService;
