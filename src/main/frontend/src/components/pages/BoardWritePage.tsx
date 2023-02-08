@@ -54,9 +54,6 @@ const BoardWrite = () => {
             ></TextField>
           </Grid>
           <Grid item>
-            <Condition></Condition>
-          </Grid>
-          <Grid item>
             <Button
               className="board button"
               variant="outlined"

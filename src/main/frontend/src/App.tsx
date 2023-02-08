@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Home from "./components/pages/Home";
-import BoardWrite from "./components/pages/BoardWritePage"; //추후 커밋 할 때 삭제할 것
+import BoardWrite from "./components/pages/BoardWritePage";
 
 function App() {
   const [test, setTest] = useState(""); // 연동 테스트용 state
@@ -25,7 +25,7 @@ function App() {
   return (
     <>
     <div>프론트엔드 백엔드 연동 테스트 : {test}</div>
-    {/*<Home/>*/}
+    {/*<Home/> //라우터 아직 적용안해놨습니다.(은서)*/}
     <BoardWrite/>
     </>
   )
