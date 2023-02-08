@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.dto.FreeArticleDto;
+import com.hansung.hansungcommunity.dto.FreeArticleResponseDto;
 import com.hansung.hansungcommunity.service.FreeArticleService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +10,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor // 생성자 주입 (final 키워드)
 @RequestMapping("/api")
 public class FreeArticleApiController {
 
     private final FreeArticleService freeArticleService;
+
+    /**
+     * 모든 게시글 조회
+     */
+    @GetMapping("/articles")
+    public ResponseEntity<Result<List<FreeArticleResponseDto>>> list() {
+        List<FreeArticleResponseDto> dtoList = freeArticleService.findAll();
+
+        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
+    }
 
     /**
      * 게시글 저장

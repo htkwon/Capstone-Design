@@ -1,13 +1,18 @@
 package com.hansung.hansungcommunity.service;
 
 import com.hansung.hansungcommunity.dto.FreeArticleDto;
+import com.hansung.hansungcommunity.dto.FreeArticleResponseDto;
 import com.hansung.hansungcommunity.entity.FreeArticle;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.FreeArticleRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor // 생성자 주입 (final 키워드)
@@ -57,6 +62,19 @@ public class FreeArticleService {
         freeArticleRepository.delete(target);
 
         return new FreeArticleDto(target);
+    }
+
+    /**
+     * 게시글 리스트 조회
+     * 정렬 후, 4개의 게시글만 반환
+     */
+    public List<FreeArticleResponseDto> findAll() {
+        List<FreeArticle> list = freeArticleRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))
+                .stream().limit(4).collect(Collectors.toList());
+
+        return list.stream()
+                .map(FreeArticleResponseDto::new)
+                .collect(Collectors.toList());
     }
 }
 
