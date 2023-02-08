@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.dto.FreeArticleDto;
+import com.hansung.hansungcommunity.dto.FreeArticleResponseDto;
 import com.hansung.hansungcommunity.service.FreeArticleService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +23,8 @@ public class FreeArticleApiController {
      * 모든 게시글 조회
      */
     @GetMapping("/articles")
-    public ResponseEntity<Result<List<FreeArticleDto>>> list() {
-        List<FreeArticleDto> dtoList = freeArticleService.findAll();
+    public ResponseEntity<Result<List<FreeArticleResponseDto>>> list() {
+        List<FreeArticleResponseDto> dtoList = freeArticleService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
     }
