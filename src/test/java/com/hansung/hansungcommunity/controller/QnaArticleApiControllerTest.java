@@ -90,13 +90,10 @@ class QnaArticleApiControllerTest {
     private QnaArticleDto createQnaArticleDto(String title,String content,String tag,int point){
         return QnaArticleDto.of(
                 1L,
-                createUser(),
                 title,
                 content,
                 point,
-                tag,
-                LocalDateTime.now(),
-                LocalDateTime.now()
+                tag
         );
     }
 
