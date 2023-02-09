@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.dto.FreeArticleDto;
+import com.hansung.hansungcommunity.dto.FreeArticleResponseDto;
 import com.hansung.hansungcommunity.service.FreeArticleService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,16 +10,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor // 생성자 주입 (final 키워드)
+@RequestMapping("/api")
 public class FreeArticleApiController {
 
     private final FreeArticleService freeArticleService;
 
     /**
+     * 모든 게시글 조회
+     */
+    @GetMapping("/articles")
+    public ResponseEntity<Result<List<FreeArticleResponseDto>>> list() {
+        List<FreeArticleResponseDto> dtoList = freeArticleService.findAll();
+
+        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
+    }
+
+    /**
      * 게시글 저장
      */
-    @PostMapping("/api/articles")
+    @PostMapping("/articles")
     public ResponseEntity<Result<FreeArticleDto>> create(
             @RequestParam(name = "uid") Long userId, // 유저 id도 필요한가 ?
             @RequestBody FreeArticleDto dto
@@ -33,7 +47,7 @@ public class FreeArticleApiController {
     /**
      * 게시글 수정
      */
-    @PutMapping("/api/articles/{article-id}")
+    @PutMapping("/articles/{article-id}")
     public ResponseEntity<Result<FreeArticleDto>> update(
             @PathVariable("article-id") Long articleId,
             @RequestBody FreeArticleDto dto
@@ -48,7 +62,7 @@ public class FreeArticleApiController {
     /**
      * 게시글 삭제
      */
-    @DeleteMapping("/api/articles/{article-id}")
+    @DeleteMapping("/articles/{article-id}")
     public ResponseEntity<Result<FreeArticleDto>> delete(@PathVariable("article-id") Long articleId) {
         FreeArticleDto articleDto = freeArticleService.delete(articleId);
 

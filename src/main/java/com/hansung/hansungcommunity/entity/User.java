@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.entity;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,13 +8,14 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 @Getter
 @Setter
+@Entity
 @Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stu_id")
     private Long id;
     private String name; // 이름
@@ -26,7 +28,29 @@ public class User {
     // private Image profileImage // 프로필 사진, 추후 개발
     // private String skillStack; // 기술 스택, 추후 개발
 
+
     // 일대다, 필요한가?
     @OneToMany(mappedBy = "user")
     private List<FreeArticle> postFreeArticles = new ArrayList<>();
+
+    @OrderBy("createdAt DESC")
+    @OneToMany(mappedBy = "user")
+    private List<QnaArticle> postQnaArticles = new ArrayList<>();
+
+
+    public User(){}
+
+    public User(String name, int point, String nickname, String career, String introduce, List<FreeArticle> postFreeArticles, List<QnaArticle> postQnaArticles) {
+        this.name = name;
+        this.point = point;
+        this.nickname = nickname;
+        this.career = career;
+        this.introduce = introduce;
+        this.postFreeArticles = postFreeArticles;
+        this.postQnaArticles = postQnaArticles;
+    }
+
+    public static User of(String name, int point, String nickname, String career, String introduce, List<FreeArticle> postFreeArticles, List<QnaArticle> postQnaArticles){
+        return new User(name,point,nickname,career,introduce,postFreeArticles,postQnaArticles);
+    }
 }

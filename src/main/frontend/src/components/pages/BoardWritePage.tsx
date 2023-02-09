@@ -11,14 +11,60 @@ import {
   InputLabel,
 } from "@mui/material";
 import { Container } from "@mui/system";
+import axios from "axios";
 /*
  * 기본 게시글 작성 UI폼
  */
 const BoardWrite = () => {
   const [boardType, setBoardType] = React.useState("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     setBoardType(event.target.value as string);
   };
+
+  const handleInputClick = async () => {
+    const request_data = {
+      title: title,
+      content: content
+    };
+
+    if (boardType === "free") { // 자유 게시판인 경우
+      try {
+        let response = await axios({
+          method: "post",
+          url: "/api/articles?uid=100", // 테스트를 위해 id 고정
+          headers: {"Content-Type": "application/json"},
+          data: JSON.stringify(request_data)
+        });
+        console.log("writeBoard/response: ", response);
+        console.log("writeBoard/response.status: ", response.status);
+        window.location.href = "/";
+      } catch (err) {
+        console.log("CreateBoard/handleInput/err: ", err);
+      }
+    }  else if (boardType === "question") { // 자유 게시판인 경우
+      try {
+        let response = await axios({
+          method: "post",
+          url: "/api/qnaArticles/100", // 테스트를 위해 id 고정
+          headers: {"Content-Type": "application/json"},
+          data: JSON.stringify(request_data)
+        });
+        console.log("writeBoard/response: ", response);
+        console.log("writeBoard/response.status: ", response.status);
+        window.location.href = "/";
+      } catch (err) {
+        console.log("CreateBoard/handleInput/err: ", err);
+      }
+    }
+
+
+  };
+
+
+
   return (
     <>
       <Container>
@@ -39,6 +85,9 @@ const BoardWrite = () => {
           <Grid item>
             <TextField
               className="board title"
+              id="board_title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               maxRows={1}
               placeholder={"제목"}
               fullWidth
@@ -47,6 +96,9 @@ const BoardWrite = () => {
           <Grid item>
             <TextField
               className="board context"
+              id="board_content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               multiline
               rows={20}
               placeholder={"내용을 작성해주세요."}
@@ -54,14 +106,12 @@ const BoardWrite = () => {
             ></TextField>
           </Grid>
           <Grid item>
-            <Condition></Condition>
-          </Grid>
-          <Grid item>
             <Button
               className="board button"
               variant="outlined"
               size="small"
               disableElevation
+              onClick={handleInputClick}
             >
               게시
             </Button>
