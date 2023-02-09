@@ -44,8 +44,26 @@ const BoardWrite = () => {
       } catch (err) {
         console.log("CreateBoard/handleInput/err: ", err);
       }
+    }  else if (boardType === "question") { // 자유 게시판인 경우
+      try {
+        let response = await axios({
+          method: "post",
+          url: "/api/qnaArticles/100", // 테스트를 위해 id 고정
+          headers: {"Content-Type": "application/json"},
+          data: JSON.stringify(request_data)
+        });
+        console.log("writeBoard/response: ", response);
+        console.log("writeBoard/response.status: ", response.status);
+        window.location.href = "/";
+      } catch (err) {
+        console.log("CreateBoard/handleInput/err: ", err);
+      }
     }
+
+
   };
+
+
 
   return (
     <>
