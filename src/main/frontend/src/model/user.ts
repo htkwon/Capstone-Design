@@ -7,7 +7,7 @@ export enum Track {
     bigData,
     digitalContent
 
-}
+}zz
 export interface User {
     studentId: String;
     password: String;
