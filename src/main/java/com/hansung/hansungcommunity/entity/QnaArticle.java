@@ -1,9 +1,11 @@
 package com.hansung.hansungcommunity.entity;
 
 
+import com.hansung.hansungcommunity.dto.QnaArticleDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
@@ -26,29 +28,26 @@ import java.util.Set;
 public class QnaArticle extends AuditingFields{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "qna_article_id")
     private Long id;
 
     @ToString.Exclude
-    @ManyToOne(optional = false, fetch = FetchType.LAZY )
+    @JoinColumn(name = "stu_id")
+    @ManyToOne(fetch = FetchType.LAZY )
     private User user;
 
     @NotNull
-    @Setter
     private String title;
     @NotNull
-    @Setter
     private String content;  //TODO: length 설정하기
-    @NotNull
-    @Setter
+    //@NotNull
     private int point;
     @Column
-    @Setter
     private String tag;
 
-
-    @Column private int hits;
-    @Column private int bookmarkHits;
-    @Column private int report;
+    @ColumnDefault(value = "0") private int hits;
+    @ColumnDefault(value = "0") private int bookmarkHits;
+    @ColumnDefault(value = "0") private int report;
 
     /*
     TODO: 이미지 저장 필드 추후 개발
@@ -65,9 +64,29 @@ public class QnaArticle extends AuditingFields{
 
     }
 
+    public QnaArticle(String title, String content) {
+        this.title = title;
+        this.content = content;
+
+    }
+
     //추후 다른 곳에서(EX.. Test)에서 편하게 만들기위해 Factory method 사용
     public static QnaArticle of(User user,String title, String content, String tag, int point){
         return new QnaArticle(user,title,content,tag,point);
+    }
+
+    public static QnaArticle of(String title, String content) {
+        return new QnaArticle(title,content);
+    }
+
+    public void updateArticle(QnaArticleDto dto){
+        if(dto.getTitle()!=null) this.title = dto.getTitle();
+        if(dto.getContent()!=null) this.content = dto.getContent();
+        this.tag = dto.getTag();
+        this.point = dto.getPoint();
+    }
+    public void setUser(User user){
+        this.user = user;
     }
 
 
