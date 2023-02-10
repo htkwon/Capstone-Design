@@ -1,54 +1,48 @@
 package com.hansung.hansungcommunity.controller;
 
-import com.hansung.hansungcommunity.dto.QnaArticleDto;
+import com.hansung.hansungcommunity.dto.QnaBoardDto;
 import com.hansung.hansungcommunity.dto.UserDto;
-import com.hansung.hansungcommunity.entity.QnaArticle;
+import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.User;
-import com.hansung.hansungcommunity.repository.QnaArticleRepository;
-import com.hansung.hansungcommunity.service.QnaArticleService;
+import com.hansung.hansungcommunity.repository.QnaBoardRepository;
+import com.hansung.hansungcommunity.service.QnaBoardService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.LocalDateTime;
-
-@DisplayName("QnaArticle Controller - 게시글")
-@WebMvcTest(QnaArticleApiController.class)
-class QnaArticleApiControllerTest {
+@DisplayName("QnaBoard Controller - 게시글")
+@WebMvcTest(QnaBoardApiController.class)
+class QnaBoardApiControllerTest {
 
     private final MockMvc mvc;
 
-    @MockBean private QnaArticleService qnaArticleService;
+    @MockBean private QnaBoardService qnaBoardService;
     @Autowired
-    private QnaArticleRepository qnaArticleRepository;
+    private QnaBoardRepository qnaBoardRepository;
 
-    QnaArticleApiControllerTest(@Autowired MockMvc mvc) {
+    QnaBoardApiControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
 
     @DisplayName("상세 게시글 호출 api")
     @Test
-    void givenApiUrlWithArticleId_whenNothing_thenReturnsArticleJson() throws Exception {
+    void givenApiUrlWithBoardId_whenNothing_thenReturnsBoardJson() throws Exception {
         //Given
-        Long articleId = 1L;
-        BDDMockito.given(qnaArticleService.getArticle(articleId)).willReturn(createQnaArticleDto());
+        Long boardId = 1L;
+        BDDMockito.given(qnaBoardService.getBoard(boardId)).willReturn(createQnaBoardDto());
         //When
 
         //Then
-        mvc.perform(MockMvcRequestBuilders.get("/api/qnaArticles/"+articleId))
+        mvc.perform(MockMvcRequestBuilders.get("/api/qnaBoards/"+boardId))
                         .andExpect(MockMvcResultMatchers.status().isOk());
         //TODO: response되는 json형태의 data (ex..-> title,content 등등) test code 해야함
-        BDDMockito.then(qnaArticleService).should().getArticle(articleId);
+        BDDMockito.then(qnaBoardService).should().getBoard(boardId);
     }
     //TODO -> view 받고 개발 예정
     //TODO: QnA게시글 등록 Test code
@@ -64,8 +58,8 @@ class QnaArticleApiControllerTest {
 
 
 
-    private QnaArticle createQnaArticle(){
-        return QnaArticle.of(
+    private QnaBoard createQnaBoard(){
+        return QnaBoard.of(
                 createUser(),
                 "title",
                 "content",
@@ -76,8 +70,8 @@ class QnaArticleApiControllerTest {
 
     }
 
-    private QnaArticleDto createQnaArticleDto(){
-        return createQnaArticleDto(
+    private QnaBoardDto createQnaBoardDto(){
+        return createQnaBoardDto(
                 "title",
                 "content",
                 "tag",
@@ -86,9 +80,9 @@ class QnaArticleApiControllerTest {
     }
 
 
-    //Test용 QnaArticle entity 생성
-    private QnaArticleDto createQnaArticleDto(String title,String content,String tag,int point){
-        return QnaArticleDto.of(
+    //Test용 QnaBoard entity 생성
+    private QnaBoardDto createQnaBoardDto(String title, String content, String tag, int point){
+        return QnaBoardDto.of(
                 1L,
                 title,
                 content,
