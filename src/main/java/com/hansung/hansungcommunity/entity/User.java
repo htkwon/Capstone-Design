@@ -31,7 +31,7 @@ public class User {
 
     // 일대다, 필요한가?
     @OneToMany(mappedBy = "user")
-    private List<FreeArticle> postFreeArticles = new ArrayList<>();
+    private List<FreeBoard> postFreeBoards = new ArrayList<>();
 
     @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "user")
@@ -40,17 +40,17 @@ public class User {
 
     public User(){}
 
-    public User(String name, int point, String nickname, String career, String introduce, List<FreeArticle> postFreeArticles, List<QnaArticle> postQnaArticles) {
+    public User(String name, int point, String nickname, String career, String introduce, List<FreeBoard> postFreeBoards, List<QnaArticle> postQnaArticles) {
         this.name = name;
         this.point = point;
         this.nickname = nickname;
         this.career = career;
         this.introduce = introduce;
-        this.postFreeArticles = postFreeArticles;
+        this.postFreeBoards = postFreeBoards;
         this.postQnaArticles = postQnaArticles;
     }
 
-    public static User of(String name, int point, String nickname, String career, String introduce, List<FreeArticle> postFreeArticles, List<QnaArticle> postQnaArticles){
-        return new User(name,point,nickname,career,introduce,postFreeArticles,postQnaArticles);
+    public static User of(String name, int point, String nickname, String career, String introduce, List<FreeBoard> postFreeBoards, List<QnaArticle> postQnaArticles){
+        return new User(name,point,nickname,career,introduce, postFreeBoards,postQnaArticles);
     }
 }
