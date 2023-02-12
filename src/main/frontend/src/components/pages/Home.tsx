@@ -8,6 +8,22 @@ import Board from "../layout/Board";
 import Board2 from "../layout/Board2";
 import { Fab, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from 'react-router-dom';
+
+const WritingButton = () => {
+  const navigate = useNavigate();
+
+  const goToWriting = () => {
+    navigate('/post')
+}
+  return (
+  <Box sx={{ '& > :not(style)': { ml: 115 } }}>
+    <Fab color="primary" aria-label="edit">
+    <AddIcon onClick={goToWriting}/>
+    </Fab>
+  </Box>
+  )
+}
 
 const Home: React.FC = () => {
     return (
@@ -29,11 +45,7 @@ const Home: React.FC = () => {
               <Board/>
               </Grid>
             </Grid>
-            <Box sx={{ '& > :not(style)': { ml: 115 } }}>
-            <Fab color="primary" aria-label="edit">
-            <AddIcon/>
-            </Fab>
-            </Box>
+            <WritingButton/>
           </Grid>
           <Grid xs>
           <RightSidebar/>
