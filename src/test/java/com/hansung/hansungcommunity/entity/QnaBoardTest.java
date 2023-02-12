@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.entity;
 
-import com.hansung.hansungcommunity.repository.QnaArticleRepository;
+import com.hansung.hansungcommunity.repository.QnaBoardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,29 +9,30 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DisplayName("<QnaArticle> Entity 와 DB 테스트")
+@DisplayName("<QnaBoard> Entity 와 DB 테스트")
 @Transactional
 @SpringBootTest
-class QnaArticleTest {
+class QnaBoardTest {
     /*
-    단순 QnaArticle entity가 db와 연동 잘 되는지 확인 위한 TEST
+    단순 QnaBoard entity가 db와 연동 잘 되는지 확인 위한 TEST
     */
 
     @Autowired
-    private QnaArticleRepository qnaArticleRepository;
+    private QnaBoardRepository qnaBoardRepository;
 
-    @DisplayName("QnaArticle - db 테스트")
+    @DisplayName("QnaBoard - db 테스트")
     @Test
-    void givenArticle_whenInserting_thenResultFine(){
+    void givenBoard_whenInserting_thenResultFine(){
         //Given
-        QnaArticle article = QnaArticle.of(createUser(),"title","content","#test",10);
+        QnaBoard board = QnaBoard.of(createUser(),"title","content","#test",10);
 
         //When
-        QnaArticle result = qnaArticleRepository.save(article);
+        QnaBoard result = qnaBoardRepository.save(board);
+
 
         //Then
         assertThat(result).isNotNull();
-        assertThat(result.getTitle()).isEqualTo(article.getTitle());
+        assertThat(result.getTitle()).isEqualTo(board.getTitle());
     }
 
 
