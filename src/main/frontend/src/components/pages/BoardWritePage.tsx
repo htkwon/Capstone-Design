@@ -34,7 +34,7 @@ const BoardWrite = () => {
       try {
         let response = await axios({
           method: "post",
-          url: "/api/articles?uid=100", // 테스트를 위해 id 고정
+          url: "/api/freeBoards?uid=100", // 테스트를 위해 id 고정
           headers: {"Content-Type": "application/json"},
           data: JSON.stringify(request_data)
         });
