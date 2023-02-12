@@ -2,7 +2,6 @@ package com.hansung.hansungcommunity.service;
 
 import com.hansung.hansungcommunity.dto.FreeBoardDto;
 import com.hansung.hansungcommunity.dto.FreeBoardResponseDto;
-import com.hansung.hansungcommunity.dto.QnaArticleResponseDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.FreeBoardRepository;

@@ -40,15 +40,16 @@ public class User {
 
     public User(){}
 
-    public User(String name, int point, String nickname, String career, String introduce, List<FreeArticle> postFreeArticles, List<QnaBoard> postQnaBoards) {
+    public User(String name, int point, String nickname, String career, String introduce, List<FreeBoard> postFreeBoards, List<QnaBoard> postQnaBoards) {
         this.name = name;
         this.point = point;
         this.nickname = nickname;
         this.career = career;
         this.introduce = introduce;
-        this.postFreeArticles = postFreeArticles;
+        this.postFreeBoards = postFreeBoards;
     }
 
-    public static User of(String name, int point, String nickname, String career, String introduce, List<FreeArticle> postFreeArticles, List<QnaBoard> postQnaBoards){
+    public static User of(String name, int point, String nickname, String career, String introduce, List<FreeBoard> postFreeBoards, List<QnaBoard> postQnaBoards){
+        return new User(name,point,nickname,career,introduce,postFreeBoards,postQnaBoards);
     }
 }

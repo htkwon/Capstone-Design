@@ -14,16 +14,8 @@ VALUES (100, 'Test title 1', 'Test content 1', 100, '2023-02-08 18:41:40.000000'
        (108, 'Test title 9', 'Test content 9', 101, '2023-02-08 18:46:40.000000'),
        (109, 'Test title 10', 'Test content 10', 100, '2023-02-08 18:47:40.000000');
 
-<<<<<<< HEAD
-INSERT INTO qna_article (stu_id, title, content, tag, point, created_at)
-VALUES (100, 'hi1', 'content', '#spring', 10, '2023-02-07 18:47:40.000000'),
-       (100, 'hi2','content','#spring',15,'2023-02-08 12:48:40.000000'),
-       (100, 'hi3','content','#spring',15,'2023-02-08 18:49:40.000000'),
-       (100, 'hi4','content','#spring',15,'2023-02-08 22:59:40.000000');
-=======
 INSERT INTO qna_board (stu_id, title, content, tag, point, created_at) values
     (100, 'hi1', 'content', '#spring', 10, '2023-02-07 18:47:40.000000'),
     (100, 'hi2','content','#spring',15,'2023-02-08 12:48:40.000000'),
     (100, 'hi3','content','#spring',15,'2023-02-08 18:49:40.000000'),
     (100, 'hi4','content','#spring',15,'2023-02-08 22:59:40.000000');
->>>>>>> #7-QnaBoard
