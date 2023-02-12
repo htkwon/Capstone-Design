@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import Header from "../layout/Header";
-import { SelectChangeEvent } from "@mui/material";
 import {
+  SelectChangeEvent,
   Select,
+  Container,
   TextField,
   Button,
   Grid,
   FormControl,
   MenuItem,
-  InputLabel,
 } from "@mui/material";
-import { Container } from "@mui/system";
 import axios from "axios";
+import Point from "../layout/Point";
+
 /*
  * 기본 게시글 작성 UI폼
  */
 const BoardWrite = () => {
-  const [boardType, setBoardType] = React.useState("");
+  const [boardType, setBoardType] = React.useState("free");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -59,11 +60,7 @@ const BoardWrite = () => {
         console.log("CreateBoard/handleInput/err: ", err);
       }
     }
-
-
   };
-
-
 
   return (
     <>
@@ -82,6 +79,7 @@ const BoardWrite = () => {
               </Select>
             </FormControl>
           </Grid>
+          <Point/>
           <Grid item>
             <TextField
               className="board title"
@@ -100,7 +98,7 @@ const BoardWrite = () => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               multiline
-              rows={20}
+              rows={15}
               placeholder={"내용을 작성해주세요."}
               fullWidth
             ></TextField>
@@ -109,7 +107,6 @@ const BoardWrite = () => {
             <Button
               className="board button"
               variant="outlined"
-              size="small"
               disableElevation
               onClick={handleInputClick}
             >

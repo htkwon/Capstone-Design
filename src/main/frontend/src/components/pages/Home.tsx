@@ -6,6 +6,8 @@ import LeftSidebar from '../layout/LeftSidebar';
 import RightSidebar from '../layout/RightSidebar';
 import Board from "../layout/Board";
 import Board2 from "../layout/Board2";
+import { Fab, Box } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 const Home: React.FC = () => {
     return (
@@ -27,6 +29,11 @@ const Home: React.FC = () => {
               <Board/>
               </Grid>
             </Grid>
+            <Box sx={{ '& > :not(style)': { ml: 115 } }}>
+            <Fab color="primary" aria-label="edit">
+            <AddIcon/>
+            </Fab>
+            </Box>
           </Grid>
           <Grid xs>
           <RightSidebar/>

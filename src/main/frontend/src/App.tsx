@@ -5,8 +5,7 @@ import BoardWrite from "./components/pages/BoardWritePage";
 function App() {
   return (
     <>
-    <Home/> {/*//라우터 아직 적용안해놨습니다.(은서)*/}
-    <BoardWrite/>
+    <Home/>
     </>
   )
 }
