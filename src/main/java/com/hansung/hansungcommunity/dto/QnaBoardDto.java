@@ -8,11 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-<<<<<<< HEAD:src/main/java/com/hansung/hansungcommunity/dto/QnaArticleDto.java
-public class QnaArticleDto {
-=======
+
 public class QnaBoardDto {
->>>>>>> #7-QnaBoard:src/main/java/com/hansung/hansungcommunity/dto/QnaBoardDto.java
+
 
     private Long id;
     private String title;
