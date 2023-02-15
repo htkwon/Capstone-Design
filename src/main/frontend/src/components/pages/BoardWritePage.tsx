@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Point from "../layout/Point";
-
+import Language from "../layout/Language";
 /*
  * 기본 게시글 작성 UI폼
  */
@@ -62,6 +62,14 @@ const BoardWrite = () => {
     }
   };
 
+  const SelectLanguage = (boardType==="question") ? (
+    <Language/>
+  ) : (null);
+
+  const SelectPoint = (boardType==="question") ? (
+    <Point/>
+  ) : (null);
+
   return (
     <>
       <Container>
@@ -79,7 +87,7 @@ const BoardWrite = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Point/>
+          {SelectLanguage}
           <Grid item>
             <TextField
               className="board title"
@@ -103,6 +111,7 @@ const BoardWrite = () => {
               fullWidth
             ></TextField>
           </Grid>
+          {SelectPoint}
           <Grid item>
             <Button
               className="board button"
