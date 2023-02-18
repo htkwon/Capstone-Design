@@ -6,8 +6,8 @@ import {
   Box
 } from "@mui/material";
 import { styled } from '@mui/material/styles';
-import SavingsTwoToneIcon  from "@mui/icons-material/Savings";
-import SavingsIcon from "@mui/icons-material/Savings";
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import axios from "axios";
 
 /*포인트 아이콘 커스텀*/
@@ -51,8 +51,8 @@ const StyledRating = styled(Rating)({
             defaultValue={2}
             getLabelText={(value: number) => `${value} Point${value !== 1 ? 's' : ''}`}
             precision={0.5}
-            icon={<SavingsIcon sx={{fontSize: 35}}/>}
-            emptyIcon={<SavingsTwoToneIcon sx={{fontSize: 35}}/>}
+            icon={<MonetizationOnIcon sx={{fontSize: 35}}/>}
+            emptyIcon={<MonetizationOnOutlinedIcon sx={{fontSize: 35}}/>}
             onChange={(event, point) => {
               setPointValue(point);
             }}
