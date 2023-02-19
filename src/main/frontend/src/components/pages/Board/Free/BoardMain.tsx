@@ -20,8 +20,11 @@ import FilterPosting  from "../../../layout/FilterPosting";
 
 const BoardTitle = () => <TextField>자유게시판</TextField>;
 
-const BoardMain = (data: Array<Board>) => {
-  const displayPosting = data.map((posting, idx) => {
+interface BoardMainProps {
+  boardData:Array<Board>;
+}
+const BoardMain = (props: BoardMainProps) => {
+  const displayPosting = props.boardData.map((posting, idx) => {
     <PreviewPosting posting={posting} />;
   });
 

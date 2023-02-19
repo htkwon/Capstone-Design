@@ -25,7 +25,7 @@ export interface Board {
   */
   writer: User; //게시글에 작성자 정보만 들어가면 되는거라 User로 바꿈.
   createdDate: String;
-  modifiedDate: String;
+  modifiedDate?: String;
   bookmarks: number;
   replies: Array<Reply>;
   reports: number;
