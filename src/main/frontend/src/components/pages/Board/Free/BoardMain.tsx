@@ -1,3 +1,6 @@
+/**
+ * 기본(자유)게시판 메인 페이지 입니다.
+ */
 import React, { useState } from "react";
 import {
   Card,
@@ -14,40 +17,39 @@ import {
 } from "@mui/material";
 import "../../../../model/board";
 import "../../../../model/user";
-/**
- * 기본(자유)게시판 메인 페이지 입니다.
- */
 
 const BoardMain = () => {
+
   const postDisplay = () => {
     return <PostPreview />;
   };
+
   return (
     <>
       <BoardTitle />
       <PostFilter />
 
       <>{postDisplay()}</>
-      <WritingButton></WritingButton>
       <Pagination></Pagination>
     </>
   );
 };
 
+/*
+*게시판 제목 나타내는 엘리멘트
+*/
 const BoardTitle = () => <TextField>자유게시판</TextField>;
 
+/*
+*게시글 정렬 이미지버튼
+*/
 const PostFilter = () => {
   return <>{/*추후 게시글 정렬 기능 추가요함. */}</>;
 };
 
-const WritingButton = () => {
-  return (
-    <IconButton
-      sx={{ position: "absolute", bottom: 16, right: 16 }}
-    ></IconButton>
-  );
-};
-
+/*
+*게시판 접속 시 보이는 게시글 목록 하나
+*/
 const PostPreview = () => {
   return (
     <Card sx={{ minWidth: 275 }}>
