@@ -15,7 +15,6 @@ import Point from "../layout/Point";
 import Language from "../layout/Language";
 import ReactQuill from "react-quill";
 import EditorToolbar, { modules, formats } from "../layout/EditorToolbar";
-import { BoardType } from "../../model/board";
 /*
  * 기본 게시글 작성 UI폼
  */

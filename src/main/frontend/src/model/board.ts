@@ -18,14 +18,11 @@ export interface Board {
   article: String;
   code?: String; //Q&A 게시판에서 사용
   imgUrl?: Array<String>;
-  /*
-  nickname: String; //게시글 작성자의 nickname
-  profileImg?: String; //게시글 작성자의 프로필사진
-  studentId: String; //게시글 작성자의 학번
-  */
-  writer: User; //게시글에 작성자 정보만 들어가면 되는거라 User로 바꿈.
+  nickname: String;
+  profileImg?: String;
+  studentId: String;
   createdDate: String;
-  modifiedDate?: String;
+  modifiedDate: String;
   bookmarks: number;
   replies: Array<Reply>;
   reports: number;
