@@ -1,12 +1,17 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/pages/Home";
 import BoardWrite from "./components/pages/BoardWritePage";
 
 function App() {
   return (
     <>
-    <Home/> {/*//라우터 아직 적용안해놨습니다.(은서)*/}
-    <BoardWrite/>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="post" element={<BoardWrite/>}/>
+      </Routes>
+    </Router>
     </>
   )
 }
