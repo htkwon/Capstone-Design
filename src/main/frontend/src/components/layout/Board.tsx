@@ -11,7 +11,7 @@ const Board: React.FC = () => {
 
     useEffect(() => {
         axios
-            .get("/api/articles")
+            .get("/api/freeBoards")
             .then((response) => setBoardItems(response.data.data))
             .catch((error) => console.log(error));
     }, []);

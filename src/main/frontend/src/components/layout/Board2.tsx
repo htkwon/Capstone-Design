@@ -15,7 +15,7 @@ const Board2: React.FC = () => {
 
     useEffect(()=>{
         axios
-            .get("/api/qnaArticles")
+            .get("/api/qnaBoards")
             .then((res) => setBoard2Items(res.data))
             .catch((err)=>console.log(err));
     },[])
@@ -58,14 +58,14 @@ const Board2: React.FC = () => {
                     opacity: [1.0, 0.8, 0.7],
                     },}} className="box">
                     <p><RxAvatar size={30} className="icon"/></p> 
-                    <p className="name">{posting.nickname} · {timeForToday(posting.time)}
+                    <p className="name">{posting.nickname} · {timeForToday(posting.createdDate)}
                     <img className="language" src={posting.language} /> </p>
                     <p className="title">{posting.title}</p>
                     <p className="comment">
                         <TfiCommentAlt size={20}/> {posting.comment}
                     </p>
                     <p className="bookmark">
-                        <BsBookmarkStar size={20}/>{posting.bookmark}</p>
+                        <BsBookmarkStar size={20}/>{posting.bookmarks}</p>
                         
                     </Box>
                     </>

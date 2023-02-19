@@ -1,20 +1,16 @@
 package com.hansung.hansungcommunity.dto;
 
-import com.hansung.hansungcommunity.entity.QnaArticle;
-import com.hansung.hansungcommunity.entity.User;
+import com.hansung.hansungcommunity.entity.QnaBoard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QnaArticleDto {
+
+public class QnaBoardDto {
+
 
     private Long id;
     private String title;
@@ -25,12 +21,12 @@ public class QnaArticleDto {
 
 
     //Testcode 및 생성의 편의를 위한 Factory method
-    public static QnaArticleDto of(Long id,String title, String content, int point, String tag){
-        return new QnaArticleDto(id,title,content,point,tag);
+    public static QnaBoardDto of(Long id, String title, String content, int point, String tag){
+        return new QnaBoardDto(id,title,content,point,tag);
     }
 
-    public static QnaArticleDto from(QnaArticle entity){
-        return new QnaArticleDto(
+    public static QnaBoardDto from(QnaBoard entity){
+        return new QnaBoardDto(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getContent(),
@@ -39,8 +35,8 @@ public class QnaArticleDto {
         );
     }
 
-    public QnaArticle toEntity(){
-        return QnaArticle.of(
+    public QnaBoard toEntity(){
+        return QnaBoard.of(
                 title,
                 content
         );
