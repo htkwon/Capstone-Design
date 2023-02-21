@@ -6,7 +6,7 @@ export enum Track {
   web,
   bigData,
   digitalContent,
-  none //1학년은 트랙 선택 아직 안되었기에 none
+  none
 }
 export interface User {
   studentId: String;
