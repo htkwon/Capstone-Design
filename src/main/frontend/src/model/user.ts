@@ -1,27 +1,28 @@
-import {Board, Reply} from "./board";
-//-------------INTERFACE-------------
+import { Board } from "./board";
+import { Reply } from "./reply";
 
 export enum Track {
-    mobile,
-    web,
-    bigData,
-    digitalContent
-
-}zz
+  mobile,
+  web,
+  bigData,
+  digitalContent,
+  none //1학년은 트랙 선택 아직 안되었기에 none
+}
 export interface User {
-    studentId: String;
-    password: String;
-    name: String;
-    nickname: String;
-    profileImg?: String;
-    point: number;
-    track: Array<Track>; //todo(은서):여기 track1, track2로 나눌지 그냥 배열로 할지 고민
-    gitHubAccount: String;
+  studentId: String;
+  password: String;
+  name: String;
+  nickname: String;
+  profileImg: String;
+  point: number;
+  track1: Track;
+  track2: Track;
+  showOff?: Array<String>;
 
-    comment: Array<Reply>;
-    board: Array<Board>;
-    bookmark: Array<Board>;
+  reply: Array<Reply>;
+  board: Array<Board>;
+  bookmark: Array<Board>;
 
-    dailySummary: Array<Board>;
-    selfIntroduction: String;
+  dailySummary: Array<Board>;
+  selfIntroduction: String;
 }

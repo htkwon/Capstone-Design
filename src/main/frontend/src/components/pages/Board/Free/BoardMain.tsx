@@ -62,9 +62,9 @@ const PreviewPosting = (props: PreviewPostingProps) => (
       <Typography variant="body2">{props.posting.article}</Typography>
       {/*최대 n자까지만 나타나도록 수정요함. */}
     </CardContent>
-
-      <CardMedia component="img" heigth="300" src={props.posting.imgUrl as string}/>
-
+    {
+      props.posting.imgUrl?.map(img => <CardMedia component="img" width="140" height="140" image={img as string}/>)
+    }
     <CardActions>
       <Button size="small">
         신고(추후 이미지버튼으로 변경할것 또는 layout폴더에 신고 컴포넌트 만들
