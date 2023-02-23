@@ -23,15 +23,46 @@ const BoardWrite = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+
+  const fileList : File[] = [];
+
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     setBoardType(event.target.value as string);
   };
 
+
+  const onSaveFiles = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    const files: FileList | null = e.target.files;
+    const fileArray = Array.prototype.slice.call(files);
+
+    fileArray.forEach((file)=>{
+      fileList.push(file);
+    });
+  };
+
+
+
   const handleInputClick = async () => {
+
+
     const request_data = {
       title: title,
       content: content
     };
+
+    const request_qna = {
+      title: title,
+      content: content,
+      // point: //포인트 설정
+      // language
+    };
+
+    const qna_formData = new FormData();
+    fileList.forEach((file)=>{
+      qna_formData.append('multipartFiles',file);
+    });
+
+    qna_formData.append('stringQna',JSON.stringify(request_qna));
 
     if (boardType === "free") { // 자유 게시판인 경우
       try {
@@ -48,17 +79,30 @@ const BoardWrite = () => {
         console.log("CreateBoard/handleInput/err: ", err);
       }
     }  else if (boardType === "question") { // 자유 게시판인 경우
+
       try {
-        let response = await axios({
-          method: "post",
-          url: "/api/qnaBoards/100", // 테스트를 위해 id 고정
-          headers: {"Content-Type": "application/json"},
-          data: JSON.stringify(request_data)
-        });
-        console.log("writeBoard/response: ", response);
-        console.log("writeBoard/response.status: ", response.status);
+        if(fileList.length>0){
+          let response = await axios({
+            method: "post",
+            url: "/api/qnaBoards/100", // 테스트를 위해 id 고정
+            headers: {"Content-Type": "multipart/form-data"},
+            data: qna_formData,
+          });
+          console.log("writeBoard/response: ", response);
+          console.log("writeBoard/response.status: ", response.status);
+        }else{
+          let response = await axios({
+            method: "post",
+            url: "/api/qnaBoardsNoImage/100", // 테스트를 위해 id 고정
+            headers: {"Content-Type": "application/json"},
+            data: JSON.stringify(request_qna)
+          });
+          console.log("writeBoard/response: ", response);
+          console.log("writeBoard/response.status: ", response.status);
+        }
         window.location.href = "/";
-      } catch (err) {
+
+      }catch (err) {
         console.log("CreateBoard/handleInput/err: ", err);
       }
     }
@@ -113,6 +157,21 @@ const BoardWrite = () => {
             <EditorToolbar/>
             <ReactQuill value={content} modules={modules} formats={formats} onChange={content => setContent(content)} />
             {/* value: {content} */}
+            <div>
+              <input type="file" multiple onChange={onSaveFiles}/>
+            </div>
+          </Grid>
+          <Grid item>
+            <TextField
+              className="board context"
+              id="board_content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              multiline
+              rows={20}
+              placeholder={"내용을 작성해주세요."}
+              fullWidth
+            ></TextField>
           </Grid>
           {SelectPoint}
           <Grid item>
