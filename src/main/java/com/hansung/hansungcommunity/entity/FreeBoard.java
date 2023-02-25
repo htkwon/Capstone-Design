@@ -61,4 +61,8 @@ public class FreeBoard extends AuditingFields {
         if (dto.getContent() != null)
             this.content = dto.getContent();
     }
+
+    public void increaseHits() {
+        this.hits++;
+    }
 }
