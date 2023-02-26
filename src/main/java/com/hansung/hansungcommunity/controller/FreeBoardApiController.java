@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -27,6 +30,22 @@ public class FreeBoardApiController {
         List<FreeBoardResponseDto> dtoList = freeBoardService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
+    }
+
+    /**
+     * 특정 게시글 조회
+     * 조회수 증가 로직 구현을 위해 임의로 구현, 추후 수정
+     */
+    @GetMapping("/freeBoards/{boardId}")
+    public ResponseEntity<Result<FreeBoardResponseDto>> detail(
+            @PathVariable("boardId") Long boardId,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        increaseHits(boardId, request, response);
+        FreeBoardResponseDto boardDto = freeBoardService.findOne(boardId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
     }
 
     /**
@@ -67,6 +86,38 @@ public class FreeBoardApiController {
         FreeBoardDto boardDto = freeBoardService.delete(boardId);
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
+    }
+
+    /**
+     * 조회수 증가 로직
+     */
+    private void increaseHits(Long boardId, HttpServletRequest request, HttpServletResponse response) {
+        Cookie oldCookie = null;
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("boardHits")) {
+                    oldCookie = cookie;
+                }
+            }
+        }
+
+        if (oldCookie != null) {
+            if (!oldCookie.getValue().contains("[" + boardId.toString() + "]")) {
+                freeBoardService.increaseHits(boardId);
+                oldCookie.setValue(oldCookie.getValue() + "_[" + boardId + "]");
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(60 * 60 * 24);
+                response.addCookie(oldCookie);
+            }
+        } else {
+            freeBoardService.increaseHits(boardId);
+            Cookie newCookie = new Cookie("boardHits","[" + boardId + "]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60 * 60 * 24);
+            response.addCookie(newCookie);
+        }
     }
 
     // 확장성을 위한 Wrapper 클래스

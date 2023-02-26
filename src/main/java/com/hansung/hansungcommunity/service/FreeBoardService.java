@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,6 +77,28 @@ public class FreeBoardService {
                 .stream()
                 .map(FreeBoardResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 특정 게시글 조회
+     */
+    public FreeBoardResponseDto findOne(Long boardId) {
+        FreeBoard board = freeBoardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패, 해당하는 게시글이 없음"));
+
+        return new FreeBoardResponseDto(board);
+    }
+
+    /**
+     * 조회수 증가 로직
+     * Auditing 수정 시간 업데이트, 논의 후 해결 요망
+     */
+    @Transactional
+    public void increaseHits(Long boardId) {
+        FreeBoard board = freeBoardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("조회수 증가 실패, 해당하는 게시글이 없음"));
+
+        board.increaseHits();
     }
 }
 
