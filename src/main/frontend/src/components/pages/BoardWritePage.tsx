@@ -22,6 +22,7 @@ const BoardWrite = () => {
   const [boardType, setBoardType] = React.useState("free");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [point, setPoint] = useState<number>(0);
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     setBoardType(event.target.value as string);
@@ -68,15 +69,20 @@ const BoardWrite = () => {
     <Language/>
   ) : (null);
 
+
+  const getPoint = (point:number): void => {
+    setPoint(point*10);
+  };
+
   const SelectPoint = (boardType==="question") ? (
-    <Point/>
+    <Point getPoint={getPoint}/>
   ) : (null);
   
   const Editor = (boardType==="question") ? (
     <Grid item>
-            <EditorToolbar/>
-            <ReactQuill value={content} modules={modules} formats={formats} onChange={content => setContent(content)} />
-            value: {content}
+      <EditorToolbar/>
+      <ReactQuill value={content} modules={modules} formats={formats} onChange={content => setContent(content)} />
+      value: {content}
     </Grid>
   ) : (null);
 
