@@ -15,6 +15,7 @@ public class FreeBoardResponseDto {
 //  private int comment; // 댓글 기능 구현 후 추가
 
     public FreeBoardResponseDto(FreeBoard board) {
+        this.id = board.getId();
         this.nickname = board.getUser().getNickname();
         this.time = board.getCreatedAt();
         this.title = board.getTitle();
