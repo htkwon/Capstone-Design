@@ -20,19 +20,19 @@ import {
 import { Board } from "../../../../model/board";
 import { Posting } from "../../../../model/posting";
 import FilterPosting from "../../../layout/FilterPosting";
+import { freeBoard } from "../../../data/BoardData";
+// interface BoardMainProps {
+//   boardData: Board;
+// }
 
-interface BoardMainProps {
-  boardData: Board;
-}
-
-const BoardMain = (props: BoardMainProps) => {
-  const displayPosting = props.boardData.contents.map((content, idx) => (
+const BoardMain = (freeBoard : Board) => {
+  const displayPosting = freeBoard.contents.map((content, idx) => (
     <PreviewPosting posting={content} key={idx} />
   ));
 
   return (
     <>
-      <Typography>{props.boardData.name}</Typography>
+      <Typography>{freeBoard.name}</Typography>
       <FilterPosting />
 
       {displayPosting}
