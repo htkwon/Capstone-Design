@@ -17,8 +17,8 @@ const WritingButton = () => {
     navigate('/post')
 }
   return (
-  <Box sx={{ '& > :not(style)': { ml: 115 } }}>
-    <Fab color="primary" aria-label="edit">
+  <Box sx={{ '& > :not(style)': { ml: 120 } }}>
+    <Fab size="medium" color="primary" aria-label="edit">
     <AddIcon onClick={goToWriting}/>
     </Fab>
   </Box>

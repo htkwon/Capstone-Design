@@ -8,6 +8,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -28,6 +30,15 @@ public class QnaBoard extends AuditingFields{
     @ColumnDefault(value = "0") private int hits;
     @ColumnDefault(value = "0") private int bookmarks;
     @ColumnDefault(value = "0") private int reports;
+
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Image> image = new ArrayList<>();
+
+
+
+
+
 
     @ToString.Exclude
     @JoinColumn(name = "stu_id")
@@ -73,6 +84,7 @@ public class QnaBoard extends AuditingFields{
     public void setUser(User user){
         this.user = user;
     }
+
 
 
     @Override

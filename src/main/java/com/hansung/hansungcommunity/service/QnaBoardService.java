@@ -1,8 +1,10 @@
 package com.hansung.hansungcommunity.service;
 
 
+import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.dto.QnaBoardDto;
 import com.hansung.hansungcommunity.dto.QnaBoardResponseDto;
+import com.hansung.hansungcommunity.entity.Image;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.QnaBoardRepository;
@@ -27,6 +29,7 @@ public class QnaBoardService {
     private final UserRepository userRepository;
 
     private final QnaBoardRepository qnaBoardRepository;
+    private final ImageService imageService;
 
     /**
      * 하나의 게시글만 반환
@@ -65,6 +68,17 @@ public class QnaBoardService {
         QnaBoard savedBoard = qnaBoardRepository.save(board);
         return QnaBoardDto.from(savedBoard);
 
+    }
+
+    /**
+     * user 컬럼만 비어있는 qnaBoard 엔티티에 유저 매핑
+     */
+    @Transactional
+    public QnaBoard mappingUser(Long userId, QnaBoard entity){
+        User user = userRepository.getReferenceById(userId);
+
+        entity.setUser(user);
+        return entity;
     }
 
 

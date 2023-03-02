@@ -5,7 +5,7 @@ export const menuItems = [
     },
     {
         title: '게시판',
-        url: '/',
+        url: '/free',
     },
     {
         title: '학부정보',
@@ -13,6 +13,6 @@ export const menuItems = [
     },
     {
         title: '공지사항',
-        url: '/',
+        url: '/notice',
     }
 ];
