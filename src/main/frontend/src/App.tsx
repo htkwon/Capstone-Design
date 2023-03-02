@@ -8,6 +8,7 @@ import QnABoard from "./components/pages/Board/QnABoard";
 import RecruitBoard from "./components/pages/Board/RecruitBoard";
 import MyPage from "./components/pages/MyPage";
 import Notice from "./components/pages/Notice";
+import ViewPosting from "./components/pages/Board/Free/ViewPosting";
 
 function App() {
   return (
@@ -16,8 +17,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="post" element={<BoardWrite/>}/>
-        <Route path="/free/*" element={<BoardMain boardData={freeBoard} />}> 
-              <Route path="" element={<BoardMain boardData={freeBoard} />} />
+        <Route path="/free" element={<BoardMain />}> 
+              <Route path="/uuid" element={<ViewPosting posting={}/>} />
         </Route>
         <Route path="/questions/*" element={<QnABoard/>}/>
         <Route path="/recruit/*" element={<RecruitBoard/>}/>

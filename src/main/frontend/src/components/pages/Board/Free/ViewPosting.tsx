@@ -22,7 +22,7 @@ interface ViewPostingProps {
   posting: Posting;
 }
 const ViewPosting = (props: ViewPostingProps) => {
-  const viewReplies = props.posting.replies.map( (reply, idx)=>(<ViewReply reply={reply} key={idx}/>));
+  const viewReplies = props.posting.replies.filter(reply => props.posting.uuid === reply.reactedPosting.uuid).map( (reply, idx)=>(<ViewReply reply={reply} key={idx}/>));
 
   return (
     <>
