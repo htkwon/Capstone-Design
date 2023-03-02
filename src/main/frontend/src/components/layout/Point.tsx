@@ -33,11 +33,15 @@ const StyledRating = styled(Rating)({
     4.5: '45',
     5: '50',
   };
+
+  type Props = {
+    getPoint: any;
+  }
   
   /*Q&A 게시판 작성 시 추가될 컴포넌트 */
-  const Point :React.FC= () => {
+  const Point :React.FC<Props>= ({getPoint}) => {
     const [PointValue, setPointValue] = React.useState<number | null>(2);
-  
+
     return (
       <>
         <Grid item>
@@ -55,6 +59,7 @@ const StyledRating = styled(Rating)({
             emptyIcon={<MonetizationOnOutlinedIcon sx={{fontSize: 35}}/>}
             onChange={(event, point) => {
               setPointValue(point);
+              getPoint(point);
             }}
           />
         </Grid>
