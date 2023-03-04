@@ -18,8 +18,8 @@ const WritingButton = () => {
 }
   return (
   <Box sx={{ '& > :not(style)': { ml: 120 } }}>
-    <Fab size="medium" color="primary" aria-label="edit">
-    <AddIcon onClick={goToWriting}/>
+    <Fab size="medium" color="primary" aria-label="edit" onClick={goToWriting}>
+    <AddIcon/>
     </Fab>
   </Box>
   )
