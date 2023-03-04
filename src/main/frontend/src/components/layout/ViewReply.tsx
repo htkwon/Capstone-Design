@@ -13,6 +13,7 @@ const ViewReply = (props: ViewReplyProps) => {
     <Avatar src={props.reply.writer.profileImg as string} />
       <Typography>{props.reply.writer.name}</Typography>
       <Typography>{props.reply.article}</Typography>
+      <Typography>{props.reply.createdDate}</Typography>
     </>
   );
 };
