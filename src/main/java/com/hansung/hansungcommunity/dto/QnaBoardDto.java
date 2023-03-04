@@ -38,7 +38,8 @@ public class QnaBoardDto {
     public QnaBoard toEntity(){
         return QnaBoard.of(
                 title,
-                content
+                content,
+                point
         );
     }
 
