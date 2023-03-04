@@ -22,7 +22,7 @@ public class QnaBoard extends AuditingFields{
     private Long id;
 
     @NotNull private String title;
-    @NotNull private String content;  //TODO: length 설정하기
+    @NotNull @Lob private String content;  //TODO: length 설정하기
     //@NotNull
     private int point;
     @Column private String tag;
@@ -60,10 +60,10 @@ public class QnaBoard extends AuditingFields{
 
     }
 
-    public QnaBoard(String title, String content) {
+    public QnaBoard(String title, String content,int point) {
         this.title = title;
         this.content = content;
-
+        this.point = point;
     }
 
     //추후 다른 곳에서(EX.. Test)에서 편하게 만들기위해 Factory method 사용
@@ -71,8 +71,8 @@ public class QnaBoard extends AuditingFields{
         return new QnaBoard(user,title,content,tag,point);
     }
 
-    public static QnaBoard of(String title, String content) {
-        return new QnaBoard(title,content);
+    public static QnaBoard of(String title, String content,int point) {
+        return new QnaBoard(title,content,point);
     }
 
     public void updateBoard(QnaBoardDto dto){

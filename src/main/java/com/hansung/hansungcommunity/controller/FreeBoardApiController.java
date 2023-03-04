@@ -1,11 +1,13 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.dto.FreeBoardDto;
+import com.hansung.hansungcommunity.dto.FreeBoardListDto;
 import com.hansung.hansungcommunity.dto.FreeBoardResponseDto;
 import com.hansung.hansungcommunity.service.FreeBoardService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +49,16 @@ public class FreeBoardApiController {
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
     }
+     /**
+     * 자유 게시판 목록 페이지 (해당 페이지에 개수에 맞게 데이터 반환)
+     * 페이지 정보는 프론트에서 전송
+     */
+    @GetMapping("/freeBoardsPage")
+    public ResponseEntity<List<FreeBoardListDto>> listOfPage(Pageable pageable){
+        List<FreeBoardListDto> dtoList = freeBoardService.findByPage(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+
+    }
 
     /**
      * 게시글 저장
@@ -87,6 +99,7 @@ public class FreeBoardApiController {
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
     }
+
 
     /**
      * 조회수 증가 로직
