@@ -1,7 +1,7 @@
 /**
  * 기본(자유)게시판 메인 페이지 입니다.
  */
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   Avatar,
   Card,
@@ -21,12 +21,23 @@ import { Board } from "../../../../model/board";
 import { Posting } from "../../../../model/posting";
 import FilterPosting from "../../../layout/FilterPosting";
 import { freeBoard } from "../../../data/BoardData";
+import axios from "axios";
 // interface BoardMainProps {
 //   boardData: Board;
 // }
 
-const BoardMain = (freeBoard : Board) => {
-  const displayPosting = freeBoard.contents.map((content, idx) => (
+const BoardMain = () => {
+
+  const [freeData, setFreeData] = useState([]);
+  useEffect(() => {
+    axios
+        .get("/api/freeBoardsPage?page=0&size=3")
+        .then((response) => setFreeData(response.data))
+        .catch((error) => console.log(error));
+  }, []);
+
+
+  const displayPosting = freeData.map((content, idx) => (
     <PreviewPosting posting={content} key={idx} />
   ));
 
@@ -43,14 +54,17 @@ const BoardMain = (freeBoard : Board) => {
 
 interface PreviewPostingProps {
   posting: Posting;
+
+
 }
 
-const PreviewPosting = (props: PreviewPostingProps) => (
+const PreviewPosting = (props: any) => (
   <Card sx={{ minWidth: 275 }}>
     <CardContent>
-    <Avatar srcSet={props.posting.writer.profileImg as string}/>
+    {/*<Avatar srcSet={props.posting.writer.profileImg as string}/>*/}
       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-        {props.posting.writer.nickname}
+        {props.posting.id}
+        {console.log("###"+props.posting.stuId)}
       </Typography>
       <Typography variant="h5" component="div">
         {props.posting.title}
@@ -59,11 +73,11 @@ const PreviewPosting = (props: PreviewPostingProps) => (
         {props.posting.createdDate}
         {/*수정된 게시글이라면 modifiedDate가 나타나도록 추가해야함. */}
       </Typography>
-      <Typography variant="body2">{props.posting.article}</Typography>
+      <Typography variant="body2">{props.posting.content}</Typography>
       {/*최대 n자까지만 나타나도록 수정요함. */}
     </CardContent>
     {
-      props.posting.imgUrl?.map(img => <CardMedia component="img" width="140" height="140" image={img as string}/>)
+      // props.posting.imgUrl?.map(img => <CardMedia component="img" width="140" height="140" image={img as string}/>)
     }
     <CardActions>
       <Button size="small">
