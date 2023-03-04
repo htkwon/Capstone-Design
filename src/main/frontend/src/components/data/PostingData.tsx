@@ -1,9 +1,13 @@
+
 import { Posting } from "../../model/posting";
 import { BoardType } from "../../model/board";
 import { user1,user2,user3,user4 } from "./UserData";
 import { freePosting_1_re1, freePosting_1_re2, freePosting_1_re3, freePosting_2_re1, freePosting_3_re1, freePosting_3_re2 } from "./ReplyData";
 
-const freePosting_1:Posting ={
+
+
+const freePosting_1:Posting={
+
     type: BoardType.free,
     uuid: "ab34ds89",
     title: "거기 너",
@@ -12,7 +16,7 @@ const freePosting_1:Posting ={
     writer: user1,
     createdDate: "2023-02-19",
     bookmarks: 0,
-    replies: [freePosting_1_re1, freePosting_1_re2, freePosting_1_re3],
+    replies: [],
     reports: 0
 }
 
@@ -25,7 +29,7 @@ const freePosting_2:Posting ={
     createdDate: "2023-02-14 ",
     modifiedDate: "2023-02-15",
     bookmarks: 1,
-    replies: [freePosting_2_re1],
+    replies: [],
     reports: 0
 }
 
@@ -37,8 +41,11 @@ const freePosting_3:Posting ={
     writer: user1,
     createdDate: "2023-01-19",
     bookmarks: 0,
-    replies: [freePosting_3_re1, freePosting_3_re2],
+    replies: [],
     reports: 0
 }
 
-export {freePosting_1,freePosting_2,freePosting_3,};
+
+
+
+export {freePosting_1,freePosting_2,freePosting_3};

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/pages/Home";
 import BoardWrite from "./components/pages/BoardWritePage";
 import BoardMain from "./components/pages/Board/Free/BoardMain";
+import EditToolbar from "./components/layout/EditorToolbar"
 import { freeBoard } from "./components/data/BoardData";
 import QnABoard from "./components/pages/Board/QnABoard";
 import RecruitBoard from "./components/pages/Board/RecruitBoard";
@@ -18,7 +19,7 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="post" element={<BoardWrite/>}/>
         <Route path="/free" element={<BoardMain />}> 
-              <Route path="/uuid" element={<ViewPosting posting={}/>} />
+              {/*<Route path="/uuid" element={<ViewPosting posting={}/>} />*/}
         </Route>
         <Route path="/questions/*" element={<QnABoard/>}/>
         <Route path="/recruit/*" element={<RecruitBoard/>}/>

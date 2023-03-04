@@ -2,11 +2,14 @@ import { Board } from "../../model/board";
 import { BoardType } from "../../model/board";
 import { freePosting_1,freePosting_2,freePosting_3 } from "./PostingData";
 
+
+
 export const freeBoard: Board = {
   type: BoardType.free,
   name: "자유게시판",
   contents: [freePosting_1,freePosting_2,freePosting_3],
 };
+
 export const questionBoard: Board = {
   type: BoardType.question,
   name: "Q&A게시판",
