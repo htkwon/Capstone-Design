@@ -54,8 +54,8 @@ const BoardWrite = () => {
 
     const request_qna = {
       title: title,
-      content: content
-      // point
+      content: content,
+      point : point
       // language
     };
 
