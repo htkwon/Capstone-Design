@@ -22,12 +22,21 @@ const BoardWrite = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [point, setPoint] = useState<number>(0);
+  const [language, setLanguage] = useState<string>("");
 
-  const getContent = (content: string) => {
-    setContent(content);
+  //내용, 포인트 , 언어 컴포넌트로부터 데이터 받아오기
+  const getContent = (value: string) => {
+    setContent(value);
   };
 
+  const getPoint = (point:number): void => {
+    setPoint(point*10);
+  };
 
+  const getLanguage = (value: string) => {
+    setLanguage(value);
+  }
+  
   const fileList : File[] = [];
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
@@ -111,22 +120,11 @@ const BoardWrite = () => {
   };
 
   const SelectLanguage = (boardType==="question") ? (
-      <Language/>
+      <Language getLanguage={getLanguage}/>
   ) : (null);
-
-
-  const getPoint = (point:number): void => {
-    setPoint(point*10);
-  };
 
   const SelectPoint = (boardType==="question") ? (
       <Point getPoint={getPoint}/>
-  ) : (null);
-
-  const Editor = (boardType==="question") ? (
-      <Grid item>
-        <EditorToolbar getContent={getContent}/>
-      </Grid>
   ) : (null);
 
   return (
