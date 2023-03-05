@@ -20,11 +20,11 @@ interface LanguageType {
     logo?: string;
   }
 
-type Props = {
+interface LanguageProps {
   getLanguage: any;
 }
   
-const Language: React.FC<Props>= ({getLanguage}) => {
+const Language: React.FC<LanguageProps>= ({getLanguage}) => {
 
   const languageData = [
       { key: 0, name: 'C', logo: c  },
