@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Entity
-public class FreeBoard extends AuditingFields {
+public class FreeBoard extends ModifiedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "free_board_id")
@@ -60,6 +60,8 @@ public class FreeBoard extends AuditingFields {
 
         if (dto.getContent() != null)
             this.content = dto.getContent();
+
+        modified();
     }
 
     // 조회수 증가 메소드
