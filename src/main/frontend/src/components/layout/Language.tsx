@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
-import { Theme, useTheme } from '@mui/material/styles';
 import {
     SelectChangeEvent,
     Select,
     Container,
-    TextField,
-    Button,
     Grid,
     FormControl,
     MenuItem,
-    OutlinedInput,
     Chip, 
     Box, 
     Avatar
@@ -18,76 +14,58 @@ import java from "../data/java_logo.png";
 import c from "../data/c_logo.png";
 import javascript from "../data/js_logo.svg";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-    },
-  },
-};
-
-interface ChipData {
+interface LanguageType {
     key: number;
     name: string;
     logo?: string;
   }
 
-const Language: React.FC = () => {
-  const theme = useTheme();
+interface LanguageProps {
+  getLanguage: any;
+}
+  
+const Language: React.FC<LanguageProps>= ({getLanguage}) => {
 
-  const [chipData, setChipData] = React.useState< ChipData[]>([
+  const languageData = [
       { key: 0, name: 'C', logo: c  },
       { key: 1, name: 'Java', logo: java },
       { key: 2, name: 'JavaScript', logo: javascript },
       { key: 3, name: 'TypeScript' },
       { key: 4, name: 'Flutter' },
       { key: 5, name: 'Python' },
-  ])
+  ]
 
-  const [SelectLang, setSelectLang] = React.useState<ChipData[]>([]);
+  const [SelectLang, setSelectLang] = React.useState<string>();
 
-  const onSelect = (event: SelectChangeEvent<typeof SelectLang>) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectLang(
-      SelectLang
-    );
+  const onSelectLanguage = (event: SelectChangeEvent) => {
+    setSelectLang(event.target.value)
+    getLanguage(event.target.value)
   }
-  
+
   return (
     <Grid item>
-      <FormControl sx={{ width: 600 }}>
+      <FormControl sx={{ width: 120 }}>
         <Select
           labelId="chooseLanguage"
           id="choose-Language"
-          multiple
-          value={SelectLang}
-          onChange={onSelect}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+          value={SelectLang || ""} 
+          defaultValue={SelectLang}
+          onChange={onSelectLanguage}
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip 
-                avatar={<Avatar alt="icon" src={value.logo} />}
-                key={value.key} label={value.name} />
-              ))}
+              {selected}
             </Box>
           )}
-          MenuProps={MenuProps}
           size="small"
         >
-          {chipData.map((language) => (
+          {languageData.map((value) => (
             <MenuItem
-              key={language.key}
-              value={language.name}
+              key={value.key}
+              value={value.name}
             >
-              <Avatar   sx={{ width: 20, height: 20 }}
-                     alt="icon" src={language.logo}/>
-               {language.name}
+              <Avatar sx={{ width: 25, height: 25 }}
+                     alt="icon" src={value.logo}/>
+               {value.name}
             </MenuItem>
           ))}
         </Select>

@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.service;
 
 import com.hansung.hansungcommunity.dto.FreeBoardDto;
+import com.hansung.hansungcommunity.dto.FreeBoardListDto;
 import com.hansung.hansungcommunity.dto.FreeBoardResponseDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.User;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -100,5 +102,18 @@ public class FreeBoardService {
 
         board.increaseHits();
     }
+     /**
+     * 게시글 리스트 조회
+     * 프론트에서 요청한 페이지 정보에 맞게 게시글 반환
+     */
+    public List<FreeBoardListDto> findByPage(Pageable pageable){
+        Pageable setPage = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),Sort.Direction.DESC,"createdAt");
+        return freeBoardRepository.findAll(setPage).getContent()
+                .stream()
+                .map(FreeBoardListDto::new)
+                .collect(Collectors.toList());
+    }
+
+
 }
 
