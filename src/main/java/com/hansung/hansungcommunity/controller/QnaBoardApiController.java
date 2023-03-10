@@ -1,21 +1,23 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.hansung.hansungcommunity.dto.*;
 import com.hansung.hansungcommunity.entity.QnaBoard;
-import com.hansung.hansungcommunity.service.ImageService;
+import com.hansung.hansungcommunity.service.FileService;
+
 import com.hansung.hansungcommunity.service.QnaBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
 
 
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ import java.util.Random;
 public class QnaBoardApiController {
 
     private final QnaBoardService qnaBoardService;
-    private final ImageService imageService;
+    private final FileService fileService;
 
     /**
      * 게시글 리스트 조회 - 홈View전용 (게시글 4개 반환)
@@ -63,9 +65,9 @@ public class QnaBoardApiController {
     }
 
     /**
-     * 게시글 저장
+     * 게시글 저장 (업로드 파일 없을 때)
      */
-    @PostMapping("/qnaBoardsNoImage/{userId}")
+    @PostMapping("/qnaBoardsNoFile/{userId}")
     public ResponseEntity<QnaBoardDto> create(@RequestBody QnaBoardDto dto, @PathVariable Long userId){
         System.out.println(dto.getPoint());
 
@@ -75,7 +77,7 @@ public class QnaBoardApiController {
     }
 
     /**
-     *게시글 저장 (업로드 이미지 있을 때)
+     *게시글 저장 (업로드 파일 있을 때)
      */
     @PostMapping("/qnaBoards/{userId}")
     public ResponseEntity<Object> create(MultipartFile[] multipartFiles,String stringQna,@PathVariable Long userId){
@@ -86,11 +88,11 @@ public class QnaBoardApiController {
             qnaBoardService.mappingUser(userId,qnaBoard);
 
                 for (int i = 0; i < multipartFiles.length; i++) {
-                    MultipartFile image = multipartFiles[i];
+                    MultipartFile file = multipartFiles[i];
 
                     String name = (new Date().getTime()) + "" + (new Random().ints(1000, 9999).findAny().getAsInt());
-                    String originalName = image.getOriginalFilename();
-                    String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
+                    String originalName = file.getOriginalFilename();
+                    String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
 
                     String extension = originalName.substring(originalName.lastIndexOf(".") + 1);
                     if (!new File(path).exists()) {
@@ -101,10 +103,10 @@ public class QnaBoardApiController {
                         }
                     }
                     File save = new File(path, name + "." + extension);
-                    image.transferTo(save);
+                    file.transferTo(save);
 
-                    ImageDto dto = ImageDto.of(qnaBoard, originalName, name, path);
-                    imageService.save(dto);
+                    FileDto dto = FileDto.of(qnaBoard, originalName, name, path);
+                    fileService.save(dto);
                 }
             } catch(IOException e){
                 throw new RuntimeException(e);
@@ -112,6 +114,9 @@ public class QnaBoardApiController {
         return new ResponseEntity<Object>("Success",HttpStatus.OK);
     }
 
+    /**
+     * 사진 url 전송 API
+     */
     @PostMapping("/return/imageUrl")
     public String create2(MultipartFile[] multipartFiles) throws IOException {
 
@@ -130,9 +135,9 @@ public class QnaBoardApiController {
             }
             File save = new File(path, name + "." + extension);
             image.transferTo(save);
-
             return "/images/"+name+"."+extension;
     }
+
 
 
 }

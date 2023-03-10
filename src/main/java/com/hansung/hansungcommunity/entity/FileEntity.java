@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @ToString(callSuper = true)
 @Entity
-public class Image {
+public class FileEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,16 +27,16 @@ public class Image {
     @NotNull private String name;
     @NotNull private String path;
 
-    public Image(){}
-    public Image(QnaBoard qnaBoard,String originalName, String name, String path) {
+    public FileEntity(){}
+    public FileEntity(QnaBoard qnaBoard, String originalName, String name, String path) {
         this.qnaBoard = qnaBoard;
         this.originalName = originalName;
         this.name = name;
         this.path = path;
     }
 
-    public static Image of(QnaBoard qnaBoard,String originalName, String name, String path){
-        return new Image(qnaBoard,originalName,name,path);
+    public static FileEntity of(QnaBoard qnaBoard, String originalName, String name, String path){
+        return new FileEntity(qnaBoard,originalName,name,path);
     }
 
 
