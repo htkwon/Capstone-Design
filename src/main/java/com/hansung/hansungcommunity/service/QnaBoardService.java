@@ -2,7 +2,10 @@ package com.hansung.hansungcommunity.service;
 
 
 import com.hansung.hansungcommunity.dto.*;
-import com.hansung.hansungcommunity.entity.Image;
+
+import com.hansung.hansungcommunity.dto.QnaBoardDto;
+import com.hansung.hansungcommunity.dto.QnaBoardResponseDto;
+
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.QnaBoardRepository;
@@ -27,7 +30,7 @@ public class QnaBoardService {
     private final UserRepository userRepository;
 
     private final QnaBoardRepository qnaBoardRepository;
-    private final ImageService imageService;
+    private final FileService fileService;
 
     /**
      * 하나의 게시글만 반환
