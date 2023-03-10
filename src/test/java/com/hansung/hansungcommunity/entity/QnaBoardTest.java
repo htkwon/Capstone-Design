@@ -24,7 +24,7 @@ class QnaBoardTest {
     @Test
     void givenBoard_whenInserting_thenResultFine(){
         //Given
-        QnaBoard board = QnaBoard.of(createUser(),"title","content","#test",10);
+        QnaBoard board = QnaBoard.of(createUser(),"title","content","#test",10,"c");
 
         //When
         QnaBoard result = qnaBoardRepository.save(board);
