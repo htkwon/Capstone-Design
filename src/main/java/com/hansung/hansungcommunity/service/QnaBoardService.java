@@ -1,9 +1,7 @@
 package com.hansung.hansungcommunity.service;
 
 
-import com.hansung.hansungcommunity.dto.ImageDto;
-import com.hansung.hansungcommunity.dto.QnaBoardDto;
-import com.hansung.hansungcommunity.dto.QnaBoardResponseDto;
+import com.hansung.hansungcommunity.dto.*;
 import com.hansung.hansungcommunity.entity.Image;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.User;
@@ -51,6 +49,29 @@ public class QnaBoardService {
         return qnaBoardRepository.findAll(pageable).getContent()
                 .stream()
                 .map(QnaBoardResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Q&A 게시글 목록 조회
+     */
+    public List<QnaListResponseDto> list() {
+
+        return qnaBoardRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))
+                .stream()
+                .map(QnaListResponseDto::of)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 조회수를 기준으로 4개의 게시글 조회
+     */
+    public List<MostViewedQnaBoardsDto> findMostViewedBoards() {
+        Pageable pageable = PageRequest.of(0,4, Sort.Direction.DESC,"hits");
+
+        return qnaBoardRepository.findAll(pageable).getContent()
+                .stream()
+                .map(MostViewedQnaBoardsDto::of)
                 .collect(Collectors.toList());
     }
 

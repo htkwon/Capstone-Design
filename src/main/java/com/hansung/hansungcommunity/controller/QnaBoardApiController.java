@@ -1,29 +1,21 @@
 package com.hansung.hansungcommunity.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hansung.hansungcommunity.dto.ImageDto;
-import com.hansung.hansungcommunity.dto.QnaBoardDto;
-import com.hansung.hansungcommunity.dto.QnaBoardResponseDto;
+import com.hansung.hansungcommunity.dto.*;
 import com.hansung.hansungcommunity.entity.QnaBoard;
-import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.service.ImageService;
 import com.hansung.hansungcommunity.service.QnaBoardService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 
 @RequiredArgsConstructor
@@ -41,6 +33,25 @@ public class QnaBoardApiController {
     public ResponseEntity<List<QnaBoardResponseDto>> QnaList(){
         List<QnaBoardResponseDto> dtoList = qnaBoardService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+    }
+
+    /**
+     * 게시글 리스트 조회
+     */
+    @GetMapping("/qnaBoards/list")
+    public ResponseEntity<List<QnaListResponseDto>> list() {
+        List<QnaListResponseDto> dtoList = qnaBoardService.list();
+        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+    }
+
+    /**
+     * 조회수가 높은 4개의 게시글 조회
+     */
+    @GetMapping("/qnaBoards/most")
+    public ResponseEntity<List<MostViewedQnaBoardsDto>> mostViewed() {
+        List<MostViewedQnaBoardsDto> mostViewedBoards = qnaBoardService.findMostViewedBoards();
+
+        return ResponseEntity.status(HttpStatus.OK).body(mostViewedBoards);
     }
 
     /**

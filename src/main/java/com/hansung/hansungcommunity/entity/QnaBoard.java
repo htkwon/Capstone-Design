@@ -48,6 +48,10 @@ public class QnaBoard extends ModifiedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    // 조회 편의성을 위해 댓글 Entity 와 연관관계 매핑
+    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    private List<QnaReply> replies = new ArrayList<>();
+
     /*
     TODO: 이미지 저장 필드 추후 개발
     */
