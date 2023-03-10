@@ -40,7 +40,7 @@ public class QnaBoard extends ModifiedEntity {
 
 
     @OneToMany(fetch = FetchType.LAZY)
-    private List<Image> image = new ArrayList<>();
+    private List<FileEntity> fileEntity = new ArrayList<>();
 
 
     @ToString.Exclude
@@ -48,39 +48,43 @@ public class QnaBoard extends ModifiedEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+
     // 조회 편의성을 위해 댓글 Entity 와 연관관계 매핑
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<QnaReply> replies = new ArrayList<>();
 
-    /*
-    TODO: 이미지 저장 필드 추후 개발
-    */
+
+    @NotNull
+    private String language;
+
 
     public QnaBoard() {
     }
 
-    public QnaBoard(User user, String title, String content, String tag, int point) {
+    public QnaBoard(User user, String title, String content, String tag, int point,String language) {
         this.user = user;
         this.title = title;
         this.content = content;
         this.tag = tag;
         this.point = point;
+        this.language=language;
 
     }
 
-    public QnaBoard(String title, String content, int point) {
+    public QnaBoard(String title, String content, int point,String language) {
         this.title = title;
         this.content = content;
         this.point = point;
+        this.language = language;
     }
 
     //추후 다른 곳에서(EX.. Test)에서 편하게 만들기위해 Factory method 사용
-    public static QnaBoard of(User user, String title, String content, String tag, int point) {
-        return new QnaBoard(user, title, content, tag, point);
+    public static QnaBoard of(User user, String title, String content, String tag, int point,String language) {
+        return new QnaBoard(user, title, content, tag, point,language);
     }
 
-    public static QnaBoard of(String title, String content, int point) {
-        return new QnaBoard(title, content, point);
+    public static QnaBoard of(String title, String content, int point,String language) {
+        return new QnaBoard(title, content, point,language);
     }
 
     public void updateBoard(QnaBoardDto dto) {
@@ -88,6 +92,7 @@ public class QnaBoard extends ModifiedEntity {
         if (dto.getContent() != null) this.content = dto.getContent();
         this.tag = dto.getTag();
         this.point = dto.getPoint();
+        this.language = dto.getLanguage();
         modified();
     }
 

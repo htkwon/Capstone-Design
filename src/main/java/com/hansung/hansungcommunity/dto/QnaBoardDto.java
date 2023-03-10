@@ -17,12 +17,13 @@ public class QnaBoardDto {
     private String content;
     private int point;
     private String tag;
+    private String language;
 
 
 
     //Testcode 및 생성의 편의를 위한 Factory method
-    public static QnaBoardDto of(Long id, String title, String content, int point, String tag){
-        return new QnaBoardDto(id,title,content,point,tag);
+    public static QnaBoardDto of(Long id, String title, String content, int point, String tag,String language){
+        return new QnaBoardDto(id,title,content,point,tag,language);
     }
 
     public static QnaBoardDto from(QnaBoard entity){
@@ -31,7 +32,8 @@ public class QnaBoardDto {
                 entity.getTitle(),
                 entity.getContent(),
                 entity.getPoint(),
-                entity.getTag()
+                entity.getTag(),
+                entity.getLanguage()
         );
     }
 
@@ -39,7 +41,8 @@ public class QnaBoardDto {
         return QnaBoard.of(
                 title,
                 content,
-                point
+                point,
+                language
         );
     }
 
