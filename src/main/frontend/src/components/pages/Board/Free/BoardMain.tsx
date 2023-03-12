@@ -10,10 +10,10 @@ import {
   CardMedia,
   Typography,
   Button,
-  Pagination,
   SpeedDial,
   SpeedDialAction,
   SpeedDialIcon,
+  //Pagination,
   TextField,
   IconButton,
 } from "@mui/material";
@@ -22,6 +22,10 @@ import { Posting } from "../../../../model/posting";
 import FilterPosting from "../../../layout/FilterPosting";
 import { freeBoard } from "../../../data/BoardData";
 import axios from "axios";
+
+import {PaginationControl} from 'react-bootstrap-pagination-control';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 // interface BoardMainProps {
 //   boardData: Board;
 // }
@@ -29,17 +33,22 @@ import axios from "axios";
 const BoardMain = () => {
 
   const [freeData, setFreeData] = useState([]);
+  const [page, setPage] = useState(1);
+
   useEffect(() => {
+    const curPage = page-1;
     axios
-        .get("/api/freeBoardsPage?page=0&size=3")
+        .get("/api/freeBoardsPage?page="+curPage+"&size=4")
         .then((response) => setFreeData(response.data))
         .catch((error) => console.log(error));
-  }, []);
+  }, [page]);
+
 
 
   const displayPosting = freeData.map((content, idx) => (
     <PreviewPosting posting={content} key={idx} />
   ));
+
 
   return (
     <>
@@ -47,10 +56,20 @@ const BoardMain = () => {
       <FilterPosting />
 
       {displayPosting}
-      <Pagination></Pagination>
+      <p></p>
+      <PaginationControl
+        page={page}
+        between={1}
+        total={100}
+        limit={20}
+        changePage={(page: React.SetStateAction<number>)=>setPage(page)}
+        ellipsis={1}
+       />
     </>
   );
 };
+
+
 
 interface PreviewPostingProps {
   posting: Posting;
@@ -64,7 +83,6 @@ const PreviewPosting = (props: any) => (
     {/*<Avatar srcSet={props.posting.writer.profileImg as string}/>*/}
       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
         {props.posting.id}
-        {console.log("###"+props.posting.stuId)}
       </Typography>
       <Typography variant="h5" component="div">
         {props.posting.title}
