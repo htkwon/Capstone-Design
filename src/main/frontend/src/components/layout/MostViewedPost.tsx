@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box, Typography,
 } from '@mui/material';
@@ -11,7 +12,14 @@ interface MostViewedPostProps {
 }
 
 // 조회수 높은 게시글 컴포넌트
-const MostViewedPost: React.FC<MostViewedPostProps> = (props ) => {
+const MostViewedPost: React.FC<MostViewedPostProps> = (props) => {
+    const navigate = useNavigate();
+    
+    //게시글 선택시 해당 게시물 상세보기로 페이지 이동
+    const goToPost = (postId: number) => {
+        navigate(`/questions/${postId}`)
+    }
+
     const color : string[] = [
         '#FF9C8C', '#D2E866', '#FFDF8C', '#A6DEFF',
     ]
@@ -21,8 +29,8 @@ const MostViewedPost: React.FC<MostViewedPostProps> = (props ) => {
         {props.data.map((value, index) => {
 
             const LanguageImg = value.language ? (
-                <img src={c} width="25" height="25"/> // 이미지 관련 논의 필요, 정적 파일로 임시 지정
-                ) : (null); 
+            <img src={c} width="25" height="25"/> // 이미지 관련 논의 필요, 정적 파일로 임시 지정
+            ) : (null); 
 
             return (
                 <>
@@ -37,7 +45,9 @@ const MostViewedPost: React.FC<MostViewedPostProps> = (props ) => {
                 '&:hover': {
                 opacity: [0.9, 0.8, 0.7],
                 },
-                }}>
+                }}
+                onClick={()=>goToPost(value.id)}
+                >
                     {LanguageImg}
                     <Box sx={{
                     bottom:0,
