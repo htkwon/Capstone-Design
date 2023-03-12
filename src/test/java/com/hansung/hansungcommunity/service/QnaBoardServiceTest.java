@@ -76,7 +76,7 @@ class QnaBoardServiceTest {
     void givenModifiedBoard_whenUpdatingBoard_thenUpdatesBoard(){
         //Given
         QnaBoard board = createQnaBoard();
-        QnaBoardDto dto = createQnaBoardDto("new title","new content","#newTag",10);
+        QnaBoardDto dto = createQnaBoardDto("new title","new content","#newTag",10,"c");
         BDDMockito.given(qnaBoardRepository.getReferenceById(dto.getId())).willReturn(board);
         //When
         sut.update(dto);
@@ -111,7 +111,8 @@ class QnaBoardServiceTest {
                 "title",
                 "content",
                 "#spring",
-                10
+                10,
+                "c"
         );
 
 
@@ -122,19 +123,21 @@ class QnaBoardServiceTest {
                 "title",
                 "content",
                 "tag",
-                10
+                10,
+                "c"
         );
     }
 
 
     //Test용 QnaBoard entity 생성
-    private QnaBoardDto createQnaBoardDto(String title, String content, String tag, int point){
+    private QnaBoardDto createQnaBoardDto(String title, String content, String tag, int point,String language){
         return QnaBoardDto.of(
                 1L,
                 title,
                 content,
                 point,
-                tag
+                tag,
+                language
         );
     }
 

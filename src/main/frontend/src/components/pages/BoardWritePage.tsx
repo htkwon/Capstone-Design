@@ -64,15 +64,14 @@ const BoardWrite = () => {
     const request_qna = {
       title: title,
       content: content,
-      point : point
-      // language
+      point : point,
+      language : language
     };
 
     const qna_formData = new FormData();
     fileList.forEach((file)=>{
       qna_formData.append('multipartFiles',file);
     });
-
     qna_formData.append('stringQna',JSON.stringify(request_qna));
 
     if (boardType === "free") { // 자유 게시판인 경우
@@ -104,7 +103,7 @@ const BoardWrite = () => {
         }else{
           let response = await axios({
             method: "post",
-            url: "/api/qnaBoardsNoImage/100", // 테스트를 위해 id 고정
+            url: "/api/qnaBoardsNoFile/100", // 테스트를 위해 id 고정
             headers: {"Content-Type": "application/json"},
             data: JSON.stringify(request_qna)
           });

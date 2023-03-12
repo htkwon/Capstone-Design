@@ -64,7 +64,8 @@ class QnaBoardApiControllerTest {
                 "title",
                 "content",
                 "#spring",
-                10
+                10,
+                "c"
         );
 
 
@@ -75,19 +76,21 @@ class QnaBoardApiControllerTest {
                 "title",
                 "content",
                 "tag",
-                10
+                10,
+                "c"
         );
     }
 
 
     //Test용 QnaBoard entity 생성
-    private QnaBoardDto createQnaBoardDto(String title, String content, String tag, int point){
+    private QnaBoardDto createQnaBoardDto(String title, String content, String tag, int point,String language){
         return QnaBoardDto.of(
                 1L,
                 title,
                 content,
                 point,
-                tag
+                tag,
+                language
         );
     }
 
