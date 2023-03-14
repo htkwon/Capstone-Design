@@ -42,7 +42,7 @@ const QnABaord: React.FC = () => {
     useEffect(() => {
         // 목록 조회 부분
         axios
-            .get(`/api/qnaBoards/list`)
+            .get(`/api/qnaBoardsPage?page=0`)
             .then((response) => setBoardItems(response.data))
             .catch((err) => console.log(err));
         // 조회수가 높은 게시글 조회 부분
