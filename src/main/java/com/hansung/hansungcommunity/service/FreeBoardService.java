@@ -106,7 +106,7 @@ public class FreeBoardService {
      * 프론트에서 요청한 페이지 정보에 맞게 게시글 반환
      */
     public List<FreeBoardListDto> findByPage(Pageable pageable){
-        Pageable setPage = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),Sort.Direction.ASC,"createdAt");
+        Pageable setPage = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),Sort.Direction.DESC,"createdAt");
         return freeBoardRepository.findAll(setPage).getContent()
                 .stream()
                 .map(FreeBoardListDto::new)
