@@ -53,13 +53,22 @@ const BoardMain = () => {
     <>
       <Container>
         <Header />
-        <Box sx={{ borderLeft: "1px solid black", borderRight: "1px solid black", padding:10 }}>
-          <Typography variant="h5" sx={{ marginBottom: 5, paddingLeft: 3, fontWeight:600 }}>
-          자유게시판
-        </Typography>
-        <FilterPosting />
-        {displayPosting}
-          </Box>
+        <Box
+          sx={{
+            borderLeft: "1px solid black",
+            borderRight: "1px solid black",
+            padding: 10,
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{ marginBottom: 5, paddingLeft: 3, fontWeight: 600 }}
+          >
+            자유게시판
+          </Typography>
+          <FilterPosting />
+          {displayPosting}
+        </Box>
         <p></p>
         <PaginationControl
           page={page}
@@ -107,10 +116,9 @@ const PreviewPosting: React.FunctionComponent<FreeBoardItems> = (
       </Box>
       <Box sx={{ marginBottom: 1 }}>
         <Typography variant="body1" onClick={() => goToPost(props.id)}>
-          게시글 내용: {props.content}
+          {props.content}
         </Typography>
         {/*최대 n자까지만 나타나도록 수정요함. */}
-
         {/* 이미지에 대해서는 추후 논의 후 추가)*/}
       </Box>
 
@@ -118,7 +126,7 @@ const PreviewPosting: React.FunctionComponent<FreeBoardItems> = (
         <Stack direction="row">
           <Avatar
             srcSet={props.profileImg as string}
-            sx={{ width: "20px", height: "20px", marginRight:"5px"}}
+            sx={{ width: "20px", height: "20px", marginRight: "5px" }}
           />
           <Typography variant="overline">
             {`${props.nickname} (${props.stuId.toString().slice(1, 3)}학번)`}
