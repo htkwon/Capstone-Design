@@ -18,9 +18,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="post" element={<BoardWrite/>}/>
-        <Route path="/free" element={<BoardMain />}> 
-              {/*<Route path="/uuid" element={<ViewPosting posting={}/>} />*/}
-        </Route>
+        <Route path="/free" element={<BoardMain />} /> 
+        <Route path="/free/:id" element={<ViewPosting />} />
         <Route path="/questions" element={<QnABoard/>}/>
         <Route path="/questions/:id" element={<QnADetail/>}/>
         <Route path="/recruit/*" element={<RecruitBoard/>}/>
