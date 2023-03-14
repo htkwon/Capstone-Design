@@ -9,6 +9,7 @@ import {
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 import ProfileIcon from '@mui/icons-material/AccountCircle';
 import Money from '@mui/icons-material/MonetizationOn';
+import { languageImage } from '../../data/Image';
 
 // Q&A 상세보기 데이터
 interface DetailItems {
@@ -52,7 +53,18 @@ const QnADetails: React.FC = () => {
     //axios 연동하는 경우 get 주소에 /api/qnaBoards/${id} 입력
 
 
-    const PostDetails = postItem ? (
+    //입력된 언어 맞게 이미지 출력
+    const language = (postItem?.language) ? (
+        languageImage.map((value) => {
+            if (postItem.language === value.name) {
+                return (
+                    <img src={value.url} width="30" height="30" />
+                )
+            }
+        })
+    ) : (null);
+
+    const PostDetails = postItem ? ( 
     //postItems 데이터 있는 경우 출력될 UI
     <>
     <Box sx={{
@@ -61,7 +73,7 @@ const QnADetails: React.FC = () => {
         marginBottom: 1
     }}>
         <Box sx={{fontSize:38, marginRight: 3}}>{postItem.title} </Box>
-        <Box sx={{marginTop:2}}>{postItem.language}</Box>
+        <Box sx={{marginTop:2}}>{language}</Box>
     </Box>
 
     <Box sx={{
