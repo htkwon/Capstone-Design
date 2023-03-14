@@ -25,7 +25,7 @@ public class FreeBoardApiController {
     private final FreeBoardService freeBoardService;
 
     /**
-     * 모든 게시글 조회
+     * 모든 게시글 조회 (게시글 4개반환)
      */
     @GetMapping("/freeBoards")
     public ResponseEntity<Result<List<FreeBoardResponseDto>>> list() {
@@ -49,6 +49,7 @@ public class FreeBoardApiController {
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
     }
+
      /**
      * 자유 게시판 목록 페이지 (해당 페이지에 개수에 맞게 데이터 반환)
      * 페이지 정보는 프론트에서 전송
