@@ -1,46 +1,38 @@
-/**
- * 기본(자유)게시판 메인 페이지 입니다.
- */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../../layout/Header";
 import {
   Avatar,
-  Card,
-  CardActions,
-  CardActionArea,
-  CardContent,
-  CardMedia,
+  Box,
   Container,
   Typography,
-  Button,
-  SpeedDial,
-  SpeedDialAction,
-  SpeedDialIcon,
-  //Pagination,
-  TextField,
   IconButton,
+  Stack,
 } from "@mui/material";
+import BookmarkIcon from "@mui/icons-material/BookmarkBorder";
+import ChatIcon from "@mui/icons-material/ChatBubbleOutline";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Board } from "../../../../model/board";
 import { Posting } from "../../../../model/posting";
 import FilterPosting from "../../../layout/FilterPosting";
-import { freeBoard } from "../../../data/BoardData";
 import axios from "axios";
 import { PaginationControl } from "react-bootstrap-pagination-control";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 //자유게시판 페이지 인터페이스
 interface FreeBoardItems {
-  id: number; //각 게시글이 가진 아이디
+  id: number;
   title: String;
   content: String;
-  nickname: String; 
-  time: String;
+  nickname: String;
+  profileImg: String; //사용자 프로필 사진 img 링크. 현재는 <Avartar />의 기본 이미지가 들어감
+  stuId: number; //사용자 학번
+  createdDate: String;
   report: number;
-  bookmark: number;
+  bookmarks: number;
   comment: number;
 }
-
+//은서: FreeBoardListDTO 보면서 만들긴했는데 작성자 닉네임, 프로필이미지, 달린 댓글 수가 없어서 추가부탁드려요!
 const BoardMain = () => {
   const [freeData, setFreeData] = useState<FreeBoardItems[]>([]);
   const [page, setPage] = useState(1);
@@ -53,34 +45,38 @@ const BoardMain = () => {
       .catch((error) => console.log(error));
   }, [page]);
 
-  const displayPosting = freeData.map((element,idx) => (
+  const displayPosting = freeData.map((element, idx) => (
     <PreviewPosting {...element} key={idx} />
   ));
 
   return (
     <>
-    <Container>
+      <Container>
         <Header />
-      <Typography>{freeBoard.name}</Typography>
-      <FilterPosting />
-
-      {displayPosting}
-      <p></p>
-      <PaginationControl
-        page={page}
-        between={1}
-        total={100}
-        limit={20}
-        changePage={(page: React.SetStateAction<number>) => setPage(page)}
-        ellipsis={1}
-      />
+        <Box sx={{ borderLeft: "1px solid black", borderRight: "1px solid black", padding:10 }}>
+          <Typography variant="h5" sx={{ marginBottom: 5, paddingLeft: 3, fontWeight:600 }}>
+          자유게시판
+        </Typography>
+        <FilterPosting />
+        {displayPosting}
+          </Box>
+        <p></p>
+        <PaginationControl
+          page={page}
+          between={1}
+          total={100}
+          limit={20}
+          changePage={(page: React.SetStateAction<number>) => setPage(page)}
+          ellipsis={1}
+        />
       </Container>
     </>
   );
 };
 
-const PreviewPosting:React.FunctionComponent<FreeBoardItems> = (props: FreeBoardItems) => {
-
+const PreviewPosting: React.FunctionComponent<FreeBoardItems> = (
+  props: FreeBoardItems
+) => {
   const navigate = useNavigate();
 
   const goToPost = (postId: number) => {
@@ -88,38 +84,59 @@ const PreviewPosting:React.FunctionComponent<FreeBoardItems> = (props: FreeBoard
   };
 
   return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardActionArea onClick={()=>goToPost(props.id)} >
-      <CardContent>
-          {/*<Avatar srcSet={props.posting.writer.profileImg as string}/>*/}
-          <Typography variant="h5" color="text.secondary">
-            {props.id}
+    <Box
+      sx={{
+        minWidth: 275,
+        marginBottom: "3%",
+        border: "2px solid #787878",
+        borderRadius: 10,
+        padding: 3,
+      }}
+    >
+      <Box
+        sx={{
+          marginBottom: 1,
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="h6" onClick={() => goToPost(props.id)}>
+          {props.title}
+        </Typography>
+        <Typography variant="caption">{props.createdDate}</Typography>
+      </Box>
+      <Box sx={{ marginBottom: 1 }}>
+        <Typography variant="body1" onClick={() => goToPost(props.id)}>
+          게시글 내용: {props.content}
+        </Typography>
+        {/*최대 n자까지만 나타나도록 수정요함. */}
+
+        {/* 이미지에 대해서는 추후 논의 후 추가)*/}
+      </Box>
+
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Stack direction="row">
+          <Avatar
+            srcSet={props.profileImg as string}
+            sx={{ width: "20px", height: "20px", marginRight:"5px"}}
+          />
+          <Typography variant="overline">
+            {`${props.nickname} (${props.stuId.toString().slice(1, 3)}학번)`}
           </Typography>
-          <Typography variant="h5" component="div">
-            {props.title}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {props.time}
-            {/*수정된 게시글이라면 modifiedDate가 나타나도록 추가해야함. */}
-          </Typography>
-          <Typography variant="h5">{props.content}</Typography>
-          {/*최대 n자까지만 나타나도록 수정요함. */}
-        </CardContent>
-        {
-          // props.posting.imgUrl?.map(img => <CardMedia component="img" width="140" height="140" image={img as string}/>)
-        }
-      </CardActionArea>
-      <CardActions>
-        <Button size="small">
-          신고(추후 이미지버튼으로 변경할것 또는 layout폴더에 신고 컴포넌트 만들
-          것)
-        </Button>
-        <Button size="small">
-          북마크(추후 이미지버튼으로 변경할것 또는 layout폴더에 북마크 컴포넌트
-          만들 것)
-        </Button>
-      </CardActions>
-    </Card>
+        </Stack>
+        <Stack direction="row">
+          <IconButton size="small">
+            <WarningAmberIcon /> {props.report}
+          </IconButton>
+          <IconButton size="small">
+            <BookmarkIcon /> {props.bookmarks}
+          </IconButton>
+          <IconButton size="small">
+            <ChatIcon /> {props.comment}
+          </IconButton>
+        </Stack>
+      </Box>
+    </Box>
   );
 };
 
