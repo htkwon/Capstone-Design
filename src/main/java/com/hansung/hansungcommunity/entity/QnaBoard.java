@@ -113,4 +113,11 @@ public class QnaBoard extends ModifiedEntity {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
+    // 조회수 증가 메소드
+    public void increaseHits() {
+        this.hits++;
+    }
+
 }
