@@ -22,7 +22,7 @@ interface BoardItems {
     content: string;
     language?: string;
     bookmark: number;
-    comment: number;
+    reply: number;
 }
 
 // MostViewedItems 인터페이스
@@ -119,7 +119,7 @@ const QnABaord: React.FC = () => {
                         <BookmarkIcon/>
                         <Typography>{value.bookmark}</Typography>
                         <ChatIcon sx={{marginLeft: 1, marginRight: 0.5}}/>
-                        <Typography>{value.comment}</Typography>
+                        <Typography>{value.reply}</Typography>
                     </Box>
                 </Box>
                 </Box>
