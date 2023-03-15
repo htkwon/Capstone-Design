@@ -12,6 +12,7 @@ import ProfileIcon from '@mui/icons-material/AccountCircle';
 import MostViewedPost from '../../layout/MostViewedPost';
 import axios from "axios";
 import c from "../../data/c_logo.png"
+import Time from "../../layout/Time";
 
 // BoardItems 인터페이스
 interface BoardItems {
@@ -95,7 +96,7 @@ const QnABaord: React.FC = () => {
                         {value.title}
                     </Typography>
                     <Box sx={{display: 'flex'}}>
-                        <Typography sx={{marginRight: 1}}>{value.time}</Typography>
+                        <Typography sx={{marginRight: 1}}><Time date={value.time}/></Typography>
                         {LanguageImg}
                     </Box>
                 </Box>
