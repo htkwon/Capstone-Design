@@ -11,19 +11,19 @@ import ProfileIcon from '@mui/icons-material/AccountCircle';
 import Money from '@mui/icons-material/MonetizationOn';
 import axios from "axios";
 import { languageImage } from '../../data/Image';
-
+import Time from "../../layout/Time";
 
 // Q&A 상세보기 데이터
 interface DetailItems {
     id: number;
-    title: String;
-    content: String;
-    time: String;
-    nickname: String;
-    language?: String;
+    title: string;
+    content: string;
+    time: string;
+    nickname: string;
+    language?: string;
     point?: number;
     bookmark: number;
-    comment: number;
+    reply: number;
 }
 
 
@@ -81,7 +81,7 @@ const QnADetails: React.FC = () => {
     }}>
         <Box sx={{display:'flex'}}>
         <ProfileIcon sx={{fontSize:30, marginRight:0.5}}/>
-        <Box sx={{fontSize:20}}>{postItem.nickname} ∙ {postItem.time}</Box>
+        <Box sx={{fontSize:20}}>{postItem.nickname} ∙ <Time date={postItem.time}/></Box>
         </Box>
         <Box sx={{display: 'flex'}}>
             <BookmarkIcon sx={{fontSize: 28}}/>
@@ -93,7 +93,7 @@ const QnADetails: React.FC = () => {
         fontSize: 20,
         marginBottom: 12
     }}>
-        {postItem.content}
+        <div dangerouslySetInnerHTML={{ __html : (postItem.content)  }} />
     </Box>
     
     <Box sx={{ display:'flex', marginBottom:3}}>
@@ -102,7 +102,7 @@ const QnADetails: React.FC = () => {
     </Box>
 
     <Box>
-        <Typography variant='h5'>{postItem.comment}개의 댓글이 있습니다</Typography>
+        <Typography variant='h5'>{postItem.reply}개의 댓글이 있습니다</Typography>
         <Box sx={{
             height:100,
             marginTop: 2,

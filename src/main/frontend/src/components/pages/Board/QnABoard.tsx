@@ -12,25 +12,27 @@ import ProfileIcon from '@mui/icons-material/AccountCircle';
 import MostViewedPost from '../../layout/MostViewedPost';
 import { languageImage } from '../../data/Image';
 import axios from "axios";
+import Time from "../../layout/Time";
+
 
 // BoardItems 인터페이스
 interface BoardItems {
     id: number;
-    nickname: String;
-    time: String;
-    title: String;
-    content: String;
-    language?: String;
+    nickname: string;
+    time: string;
+    title: string;
+    content: string;
+    language?: string;
     bookmark: number;
-    comment: number;
+    reply: number;
 }
 
 // MostViewedItems 인터페이스
 export interface MostViewedItems {
     id: number;
-    nickname: String;
-    title: String;
-    language?: String;
+    nickname: string;
+    title: string;
+    language?: string;
 }
 
 const QnABaord: React.FC = () => {
@@ -103,11 +105,13 @@ const QnABaord: React.FC = () => {
                         {value.title}
                     </Typography>
                     <Box sx={{display: 'flex'}}>
-                        <Typography sx={{marginRight: 1}}>{value.time}</Typography>
-                        {language}
+                        <Typography sx={{marginRight: 1}}><Time date={value.time}/></Typography>
+                        {LanguageImg}
                     </Box>
                 </Box>
-                <Box sx={{marginTop: 1, marginBottom: 1}}>{value.content}</Box>
+                <Box sx={{marginTop: 1, marginBottom: 1}}>
+                    <div dangerouslySetInnerHTML={{ __html : (value.content)  }} />
+                </Box>
                 <Box
                     sx={{
                         fontWeight: 'bold',
@@ -125,7 +129,7 @@ const QnABaord: React.FC = () => {
                         <BookmarkIcon/>
                         <Typography>{value.bookmark}</Typography>
                         <ChatIcon sx={{marginLeft: 1, marginRight: 0.5}}/>
-                        <Typography>{value.comment}</Typography>
+                        <Typography>{value.reply}</Typography>
                     </Box>
                 </Box>
                 </Box>
