@@ -83,7 +83,7 @@ const QnADetails: React.FC = () => {
         fontSize: 20,
         marginBottom: 12
     }}>
-        <div dangerouslySetInnerHTML={{ __html : (postItem.content)  }} />
+        {postItem.content}
     </Box>
     
     <Box sx={{ display:'flex', marginBottom:3}}>
@@ -92,7 +92,7 @@ const QnADetails: React.FC = () => {
     </Box>
 
     <Box>
-        <Typography variant='h5'>{postItem.reply}개의 댓글이 있습니다</Typography>
+        <Typography variant='h5'>{postItem.comment}개의 댓글이 있습니다</Typography>
         <Box sx={{
             height:100,
             marginTop: 2,

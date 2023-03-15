@@ -109,9 +109,7 @@ const QnABaord: React.FC = () => {
                         {language}
                     </Box>
                 </Box>
-                <Box sx={{marginTop: 1, marginBottom: 1}}>
-                    <div dangerouslySetInnerHTML={{ __html : (value.content)  }} />
-                </Box>
+                <Box sx={{marginTop: 1, marginBottom: 1}}>{value.content}</Box>
                 <Box
                     sx={{
                         fontWeight: 'bold',
@@ -129,7 +127,7 @@ const QnABaord: React.FC = () => {
                         <BookmarkIcon/>
                         <Typography>{value.bookmarks}</Typography>
                         <ChatIcon sx={{marginLeft: 1, marginRight: 0.5}}/>
-                        <Typography>{value.reply}</Typography>
+                        <Typography>{value.comment}</Typography>
                     </Box>
                 </Box>
                 </Box>
