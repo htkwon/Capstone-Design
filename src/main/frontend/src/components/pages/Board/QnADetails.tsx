@@ -16,11 +16,11 @@ import { languageImage } from '../../data/Image';
 // Q&A 상세보기 데이터
 interface DetailItems {
     id: number;
-    title: String;
-    content: String;
-    time: String;
-    nickname: String;
-    language?: String;
+    title: string;
+    content: string;
+    time: string;
+    nickname: string;
+    language?: string;
     point?: number;
     bookmark: number;
     comment: number;
@@ -93,7 +93,7 @@ const QnADetails: React.FC = () => {
         fontSize: 20,
         marginBottom: 12
     }}>
-        {postItem.content}
+        <div dangerouslySetInnerHTML={{ __html : (postItem.content)  }} />
     </Box>
     
     <Box sx={{ display:'flex', marginBottom:3}}>

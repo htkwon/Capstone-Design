@@ -16,11 +16,11 @@ import c from "../../data/c_logo.png"
 // BoardItems 인터페이스
 interface BoardItems {
     id: number;
-    nickname: String;
-    time: String;
-    title: String;
-    content: String;
-    language?: String;
+    nickname: string;
+    time: string;
+    title: string;
+    content: string;
+    language?: string;
     bookmark: number;
     comment: number;
 }
@@ -28,9 +28,9 @@ interface BoardItems {
 // MostViewedItems 인터페이스
 export interface MostViewedItems {
     id: number;
-    nickname: String;
-    title: String;
-    language?: String;
+    nickname: string;
+    title: string;
+    language?: string;
 }
 
 const QnABaord: React.FC = () => {
@@ -99,7 +99,9 @@ const QnABaord: React.FC = () => {
                         {LanguageImg}
                     </Box>
                 </Box>
-                <Box sx={{marginTop: 1, marginBottom: 1}}>{value.content}</Box>
+                <Box sx={{marginTop: 1, marginBottom: 1}}>
+                    <div dangerouslySetInnerHTML={{ __html : (value.content)  }} />
+                </Box>
                 <Box
                     sx={{
                         fontWeight: 'bold',
