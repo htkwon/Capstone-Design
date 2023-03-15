@@ -6,8 +6,6 @@ import { BsBookmarkStar } from "react-icons/bs";
 import { TfiCommentAlt } from "react-icons/tfi";
 import "../style/Board.css";
 import axios from "axios";
-import Time from "../layout/Time";
-
 const Board: React.FC = () => {
     const [boardItems, setBoardItems] = useState<any[]>([]);
 
@@ -17,6 +15,29 @@ const Board: React.FC = () => {
             .then((response) => setBoardItems(response.data.data))
             .catch((error) => console.log(error));
     }, []);
+
+    const timeForToday = (value: string) => {
+        const today = new Date();
+        const timeValue = new Date(value);
+
+        const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+        if (betweenTime < 1) return '방금전';
+        if (betweenTime < 60) {
+            return `${betweenTime}분전`;
+        }
+
+        const betweenTimeHour = Math.floor(betweenTime / 60);
+        if (betweenTimeHour < 24) {
+            return `${betweenTimeHour}시간전`;
+        }
+
+        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+        if (betweenTimeDay < 365) {
+            return `${betweenTimeDay}일전`;
+        }
+
+        return `${Math.floor(betweenTimeDay / 365)}년전`;
+    }
 
     return (
         <>
@@ -32,7 +53,7 @@ const Board: React.FC = () => {
                                 },
                             }} className="box">
                                 <p><RxAvatar size={30} className="icon"/></p>
-                                <p className="name">{posting.nickname} · <Time date={posting.time}/> </p>
+                                <p className="name">{posting.nickname} · {timeForToday(posting.time)} </p>
                                 <p className="title">{posting.title}</p>
                                 <p className="comment">
                                     <TfiCommentAlt size={20}/> {posting.comment}
