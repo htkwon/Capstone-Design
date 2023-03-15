@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 import Header from '../../layout/Header';
+import MostViewedPost from '../../layout/MostViewedPost';
+import Time from "../../layout/Time";
+import { languageImage } from '../../data/Image';
 import { 
   Typography,
   Container, 
@@ -9,30 +13,27 @@ import {
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 import ChatIcon from '@mui/icons-material/ChatBubbleOutline';
 import ProfileIcon from '@mui/icons-material/AccountCircle';
-import MostViewedPost from '../../layout/MostViewedPost';
-import { languageImage } from '../../data/Image';
-import axios from "axios";
-import Time from "../../layout/Time";
-
 
 // BoardItems 인터페이스
 interface BoardItems {
-    id: number;
-    nickname: string;
-    time: string;
+    uuid: number;
     title: string;
     content: string;
+    writer: string;
+    createdDate: string;
     language?: string;
-    bookmark: number;
+    bookmarks: number;
     reply: number;
+    points: number;
 }
 
 // MostViewedItems 인터페이스
 export interface MostViewedItems {
-    id: number;
-    nickname: string;
+    uuid: number;
     title: string;
+    writer: string;
     language?: string;
+    points: number;
 }
 
 const QnABaord: React.FC = () => {
@@ -82,7 +83,6 @@ const QnABaord: React.FC = () => {
                 })
             ) : (null);
 
-
             return (
                 <>
                 <Box
@@ -98,14 +98,14 @@ const QnABaord: React.FC = () => {
                             opacity: [0.9, 0.8, 0.7],
                         },
                     }}
-                    onClick={()=>goToPost(value.id)}
+                    onClick={()=>goToPost(value.uuid)}
                 >
                 <Box sx={{display: 'flex', justifyContent: "space-between"}}>
                     <Typography sx={{color: 'text.primary', fontSize: 22, fontWeight: 'medium'}}>
                         {value.title}
                     </Typography>
                     <Box sx={{display: 'flex'}}>
-                        <Typography sx={{marginRight: 1}}><Time date={value.time}/></Typography>
+                        <Typography sx={{marginRight: 1}}><Time date={value.createdDate}/></Typography>
                         {language}
                     </Box>
                 </Box>
@@ -123,11 +123,11 @@ const QnABaord: React.FC = () => {
                 >
                     <Box sx={{color: 'text.secondary', display: 'flex'}}>
                         <ProfileIcon sx={{marginRight: 0.5}}/>
-                        <Typography>{value.nickname}</Typography>
+                        <Typography>{value.writer}</Typography>
                     </Box>
                     <Box sx={{display: 'flex'}}>
                         <BookmarkIcon/>
-                        <Typography>{value.bookmark}</Typography>
+                        <Typography>{value.bookmarks}</Typography>
                         <ChatIcon sx={{marginLeft: 1, marginRight: 0.5}}/>
                         <Typography>{value.reply}</Typography>
                     </Box>

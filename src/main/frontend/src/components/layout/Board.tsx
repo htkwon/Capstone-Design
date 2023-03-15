@@ -1,15 +1,28 @@
 import React, {useEffect, useState} from "react";
-import Typography from "@mui/material/Typography";
-import Box from '@mui/material/Box';
+import axios from "axios"
+import Time from "../layout/Time";
+import { 
+    Typography,
+    Box 
+ } from "@mui/material";
 import { RxAvatar } from "react-icons/rx";
 import { BsBookmarkStar } from "react-icons/bs";
 import { TfiCommentAlt } from "react-icons/tfi";
 import "../style/Board.css";
-import axios from "axios";
-import Time from "../layout/Time";
+
+// FreeBoardItems 인터페이스
+interface FreeBoardItems {
+    uuid: number;
+    title: string;
+    content: string;
+    writer: string;
+    createdDate: string;
+    bookmarks: number;
+    reply: number;
+}
 
 const Board: React.FC = () => {
-    const [boardItems, setBoardItems] = useState<any[]>([]);
+    const [boardItems, setBoardItems] = useState<FreeBoardItems[]>([]);
 
     useEffect(() => {
         axios
@@ -25,21 +38,22 @@ const Board: React.FC = () => {
                 {boardItems.map((posting, index) => {
                     return (
                         <div key={index}>
-                            <Box sx={{
-                                width: 400, height: 130, '&:hover': {
-                                    backgroundColor: 'gainsboro',
-                                    opacity: [1.0, 0.8, 0.7],
-                                },
-                            }} className="box">
-                                <p><RxAvatar size={30} className="icon"/></p>
-                                <p className="name">{posting.nickname} · <Time date={posting.time}/> </p>
-                                <p className="title">{posting.title}</p>
-                                <p className="comment">
-                                    <TfiCommentAlt size={20}/> {posting.comment}
-                                </p>
-                                <p className="bookmark">
-                                    <BsBookmarkStar size={20}/>{posting.bookmark}</p>
-                            </Box>
+                        <Box sx={{
+                            width: 400, 
+                            height: 130, 
+                            '&:hover': {
+                                backgroundColor: 'gainsboro',
+                                opacity: [1.0, 0.8, 0.7],
+                            },
+                        }} className="box">
+                            <p><RxAvatar size={30} className="icon"/></p>
+                            <p className="name">
+                                {posting.writer} · <Time date={posting.createdDate}/> 
+                            </p>
+                            <p className="title">{posting.title}</p>
+                            <p className="comment"><TfiCommentAlt size={20}/> {posting.reply}</p>
+                            <p className="bookmark"><BsBookmarkStar size={20}/>{posting.bookmarks}</p>
+                        </Box>
                         </div>
                     );
                 })}
