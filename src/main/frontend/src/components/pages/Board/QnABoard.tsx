@@ -106,7 +106,7 @@ const QnABaord: React.FC = () => {
                     </Typography>
                     <Box sx={{display: 'flex'}}>
                         <Typography sx={{marginRight: 1}}><Time date={value.time}/></Typography>
-                        {LanguageImg}
+                        {language}
                     </Box>
                 </Box>
                 <Box sx={{marginTop: 1, marginBottom: 1}}>
