@@ -127,7 +127,7 @@ const QnABaord: React.FC = () => {
                         <BookmarkIcon/>
                         <Typography>{value.bookmarks}</Typography>
                         <ChatIcon sx={{marginLeft: 1, marginRight: 0.5}}/>
-                        <Typography>{value.comment}</Typography>
+                        <Typography>{value.reply}</Typography>
                     </Box>
                 </Box>
                 </Box>
