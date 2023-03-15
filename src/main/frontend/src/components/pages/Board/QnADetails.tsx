@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../../layout/Header';
 import { 
@@ -9,7 +9,9 @@ import {
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 import ProfileIcon from '@mui/icons-material/AccountCircle';
 import Money from '@mui/icons-material/MonetizationOn';
+import axios from "axios";
 import { languageImage } from '../../data/Image';
+
 
 // Q&A 상세보기 데이터
 interface DetailItems {
@@ -24,28 +26,24 @@ interface DetailItems {
     comment: number;
 }
 
-//axios get 이전에 UI 확인을 위한 데이터
-const TestData : DetailItems = {
-    id: 2,
-    title: "컴포넌트 사용 도와주세요!",
-    content: "자바스크립트 공부하고 있는데요. 부모 컴포넌트에서 자식 컴포넌트로 매개변수 값 보내고 싶은데 어떻게 해야하나요?",
-    time: "10분전",
-    nickname: "young",
-    language: "JavaScript",
-    point: 25,
-    bookmark: 2,
-    comment: 0,
-}
 
 //Q&A 상세보기
 const QnADetails: React.FC = () => {
     //postItem은 상세보기에 들어갈 데이터 - DetailItems에 데이터 타입 지정
     //TestData로 초기값 지정해둔 상태 (postItem 값 지정된 경우)
-    const [postItem, setPostItem] = useState<DetailItems | undefined>(TestData);
+    const [postItem, setPostItem] = useState<DetailItems | undefined>();
     /*
     초기값 없는 경우(undefiend) -> No Data 출력
     const [postItem, setPostItem] = useState<DetailItems | undefined>();
     */
+
+    useEffect(()=>{
+        axios
+            .get(`/api/qnaBoards/${id}`)
+            .then((response)=>setPostItem(response.data))
+            .catch((err)=>console.log(err))
+    },[])
+
 
     //axios get 할 때 받아올 게시글 번호
     let { id } = useParams();
