@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MostViewedItems } from "../pages/Board/QnABoard";
+import { languageImage } from '../data/Image';
 import {
   Box, Typography,
 } from '@mui/material';
-import { MostViewedItems } from "../pages/Board/QnABoard";
-import { languageImage } from '../data/Image';
 
 // props 인터페이스
 interface MostViewedPostProps {
@@ -20,6 +20,7 @@ const MostViewedPost: React.FC<MostViewedPostProps> = (props) => {
         navigate(`/questions/${postId}`)
     }
 
+    //출력될 박스 배경색
     const color : string[] = [
         '#FF9C8C', '#D2E866', '#FFDF8C', '#A6DEFF',
     ]
@@ -53,7 +54,7 @@ const MostViewedPost: React.FC<MostViewedPostProps> = (props) => {
                 opacity: [0.9, 0.8, 0.7],
                 },
                 }}
-                onClick={()=>goToPost(value.id)}
+                onClick={()=>goToPost(value.uuid)}
                 >
                     {language}
                     <Box sx={{
