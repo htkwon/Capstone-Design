@@ -22,18 +22,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //자유게시판 페이지 인터페이스
 interface FreeBoardItems {
   id: number;
-  title: String;
-  content: String;
-  nickname: String;
-  profileImg: String; //사용자 프로필 사진 img 링크. 현재는 <Avartar />의 기본 이미지가 들어감
-  stuId: number; //사용자 학번
-  createdDate: String;
+  title: string;
+  content: string;
+  writer: string;
+  profileImg: string; //사용자 프로필 사진 img 링크. 현재는 <Avartar />의 기본 이미지가 들어감
+  createdDate: string;
+  modifiedDate?: string;
   report: number;
-  bookmarks: number;
-  comment: number;
+  bookmark: number;
+  reply: number;
+  //stuId: number; //사용자 학번
+  //imgUrl?: Array<string>; //이미지
 }
 //은서: FreeBoardListDTO 보면서 만들긴했는데 작성자 닉네임, 프로필이미지, 달린 댓글 수가 없어서 추가부탁드려요!
-const BoardMain = () => {
+const FreeBoard = () => {
   const [freeData, setFreeData] = useState<FreeBoardItems[]>([]);
   const [page, setPage] = useState(1);
 
@@ -129,7 +131,7 @@ const PreviewPosting: React.FunctionComponent<FreeBoardItems> = (
             sx={{ width: "20px", height: "20px", marginRight: "5px" }}
           />
           <Typography variant="overline">
-            {`${props.nickname} (${props.stuId.toString().slice(1, 3)}학번)`}
+            {`${props.writer} (사용자 학번)`}
           </Typography>
         </Stack>
         <Stack direction="row">
@@ -137,10 +139,10 @@ const PreviewPosting: React.FunctionComponent<FreeBoardItems> = (
             <WarningAmberIcon /> {props.report}
           </IconButton>
           <IconButton size="small">
-            <BookmarkIcon /> {props.bookmarks}
+            <BookmarkIcon /> {props.bookmark}
           </IconButton>
           <IconButton size="small">
-            <ChatIcon /> {props.comment}
+            <ChatIcon /> {props.reply}
           </IconButton>
         </Stack>
       </Box>
@@ -148,4 +150,4 @@ const PreviewPosting: React.FunctionComponent<FreeBoardItems> = (
   );
 };
 
-export default BoardMain;
+export default FreeBoard;

@@ -12,15 +12,15 @@ import "../style/Board.css";
 
 // QnaBoardItems 인터페이스
 interface QnaBoardItems {
-    uuid: number;
+    id: number;
     title: string;
     content: string;
     writer: string;
     createdDate: string;
     language?: string;
-    bookmarks: number;
+    bookmark: number;
     reply: number;
-    points: number;
+    point: number;
 }
 
 const Board2: React.FC = () => {
@@ -56,7 +56,7 @@ const Board2: React.FC = () => {
                         </p>
                         <p className="title">{posting.title}</p>
                         <p className="comment"><TfiCommentAlt size={20}/> {posting.reply}</p>
-                        <p className="bookmark"><BsBookmarkStar size={20}/>{posting.bookmarks}</p>
+                        <p className="bookmark"><BsBookmarkStar size={20}/>{posting.bookmark}</p>
                     </Box>
                     </>
                 );

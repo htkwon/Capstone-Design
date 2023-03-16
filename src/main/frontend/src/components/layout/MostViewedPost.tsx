@@ -54,7 +54,7 @@ const MostViewedPost: React.FC<MostViewedPostProps> = (props) => {
                 opacity: [0.9, 0.8, 0.7],
                 },
                 }}
-                onClick={()=>goToPost(value.uuid)}
+                onClick={()=>goToPost(value.id)}
                 >
                     {language}
                     <Box sx={{

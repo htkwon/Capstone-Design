@@ -16,24 +16,25 @@ import ProfileIcon from '@mui/icons-material/AccountCircle';
 
 // BoardItems 인터페이스
 interface BoardItems {
-    uuid: number;
+    id: number;
     title: string;
     content: string;
     writer: string;
     createdDate: string;
+    modifiedDate?: string;
     language?: string;
-    bookmarks: number;
+    bookmark: number;
     reply: number;
-    points: number;
+    point: number;
 }
 
 // MostViewedItems 인터페이스
 export interface MostViewedItems {
-    uuid: number;
+    id: number;
     title: string;
     writer: string;
     language?: string;
-    points: number;
+    point: number;
 }
 
 const QnABaord: React.FC = () => {
@@ -98,7 +99,7 @@ const QnABaord: React.FC = () => {
                             opacity: [0.9, 0.8, 0.7],
                         },
                     }}
-                    onClick={()=>goToPost(value.uuid)}
+                    onClick={()=>goToPost(value.id)}
                 >
                 <Box sx={{display: 'flex', justifyContent: "space-between"}}>
                     <Typography sx={{color: 'text.primary', fontSize: 22, fontWeight: 'medium'}}>
@@ -125,7 +126,7 @@ const QnABaord: React.FC = () => {
                     </Box>
                     <Box sx={{display: 'flex'}}>
                         <BookmarkIcon/>
-                        <Typography>{value.bookmarks}</Typography>
+                        <Typography>{value.bookmark}</Typography>
                         <ChatIcon sx={{marginLeft: 1, marginRight: 0.5}}/>
                         <Typography>{value.reply}</Typography>
                     </Box>

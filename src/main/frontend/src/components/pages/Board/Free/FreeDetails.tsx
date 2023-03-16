@@ -16,39 +16,24 @@ import { Reply } from "../../../../model/reply";
 //자유 상세보기 인터페이스
 interface FreeDetailItems {
   id: number;
-  title: String;
-  content: String;
-  nickname: String;
-  profileImg: String;
-  stuId: number;
-  createdDate: String;
+  title: string;
+  content: string;
+  //imgUrl?: Array<string>;
+  writer: string;
+  profileImg: string;
+  //stuId: number; 사용자 학번
+  createdDate: string;
+  modifiedDate?: string;
   report: number;
-  bookmarks: number;
+  bookmark: number;
   reply: number;
-  replyList?: Array<Reply> | undefined; //은서: 추후 댓글창 관련해서 이야기 나눠보고 수정해도 될 것 같습니다!
+  replies?: Array<Reply> | undefined;
 }
 
-//더미데이터
-const initial = {
-  id: 456,
-  title: "더미데이터의 제목입니다.",
-  content:
-    "내용입니다. 내용 예시 입니다. Content Example. 내용입니다. 내용 예시 입니다. Content Example. ",
-  nickname: "예시닉네임상상부기",
-  profileImg:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYe-zIT7cyG-M6Vlla38oVJ6twus0auSO7tQ&usqp=CAU" as string,
-  stuId: 1971096,
-  createdDate: "2023-03-14",
-  report: 0,
-  bookmarks: 0,
-  reply: 0,
-};
-
-const ViewPosting: React.FC = (): JSX.Element => {
-  const [postItem, setPostItem] = useState<FreeDetailItems | undefined>(
-    initial
-  );
+const FreeDetails: React.FC = (): JSX.Element => {
+  const [postItem, setPostItem] = useState<FreeDetailItems | undefined>();
   const { id } = useParams();
+  
   const detailPosting = postItem ? (
     <>
       <Box sx={{ paddingLeft: 3, paddingRight: 3 }}>
@@ -71,9 +56,7 @@ const ViewPosting: React.FC = (): JSX.Element => {
               sx={{ width: "30px", height: "30px", marginRight: "5px" }}
             />
             <Typography variant="body2">
-              {`${postItem.nickname} (${postItem.stuId
-                .toString()
-                .slice(0, 2)}학번)`}
+              {`${postItem.writer} (사용자 학번)`}
             </Typography>
           </Stack>
         </Box>
@@ -88,7 +71,7 @@ const ViewPosting: React.FC = (): JSX.Element => {
               <WarningAmberIcon /> {postItem.report}
             </IconButton>
             <IconButton size="small">
-              <BookmarkIcon /> {postItem.bookmarks}
+              <BookmarkIcon /> {postItem.bookmark}
             </IconButton>
           </Stack>
         </Box>
@@ -128,4 +111,4 @@ const ViewPosting: React.FC = (): JSX.Element => {
   );
 };
 
-export default ViewPosting;
+export default FreeDetails;

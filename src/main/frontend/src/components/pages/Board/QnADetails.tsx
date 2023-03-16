@@ -15,15 +15,16 @@ import Money from '@mui/icons-material/MonetizationOn';
 
 // Q&A 상세보기 데이터
 interface DetailItems {
-    uuid: number;
+    id: number;
     title: string;
     content: string;
     writer: string;
     createdDate: string;
+    modifiendDate?: string;
     language?: string;
-    bookmarks: number;
+    bookmark: number;
     reply: number;
-    points: number;
+    point: number;
 }
 
 //Q&A 상세보기
@@ -75,7 +76,7 @@ const QnADetails: React.FC = () => {
         </Box>
         <Box sx={{display: 'flex'}}>
             <BookmarkIcon sx={{fontSize: 28}}/>
-            <Box sx={{fontSize:20}}>{postItem.bookmarks}</Box>
+            <Box sx={{fontSize:20}}>{postItem.bookmark}</Box>
         </Box>
     </Box>
 
@@ -88,7 +89,7 @@ const QnADetails: React.FC = () => {
     
     <Box sx={{ display:'flex', marginBottom:3}}>
         <Money sx={{color: '#ffcf40', fontSize:28}}/>
-        <Box sx={{fontSize: 18, marginLeft:0.5}}>댓글 채택시 {postItem.points} 포인트를 적립해드립니다!</Box>
+        <Box sx={{fontSize: 18, marginLeft:0.5}}>댓글 채택시 {postItem.point} 포인트를 적립해드립니다!</Box>
     </Box>
 
     <Box>

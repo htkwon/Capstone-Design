@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/*  import React, { useState } from "react";
 import { Avatar, Button, TextField, Typography } from "@mui/material";
 import { User } from "../../model/user";
 import { user1 } from "../data/UserData";
@@ -19,3 +19,4 @@ const WriteReply = (props: WriteReplyProps) => {
 };
 
 export default WriteReply;
+ */

@@ -12,12 +12,12 @@ import "../style/Board.css";
 
 // FreeBoardItems 인터페이스
 interface FreeBoardItems {
-    uuid: number;
+    id: number;
     title: string;
     content: string;
     writer: string;
     createdDate: string;
-    bookmarks: number;
+    bookmark: number;
     reply: number;
 }
 
@@ -52,7 +52,7 @@ const Board: React.FC = () => {
                             </p>
                             <p className="title">{posting.title}</p>
                             <p className="comment"><TfiCommentAlt size={20}/> {posting.reply}</p>
-                            <p className="bookmark"><BsBookmarkStar size={20}/>{posting.bookmarks}</p>
+                            <p className="bookmark"><BsBookmarkStar size={20}/>{posting.bookmark}</p>
                         </Box>
                         </div>
                     );
