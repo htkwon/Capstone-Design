@@ -48,13 +48,13 @@ public class QnaBoardApiController {
      * 조회수 증가 로직 구현을 위해 임의로 구현, 추후 수정
      */
     @GetMapping("/qnaBoards/{boardId}")
-    public ResponseEntity<QnaBoardResponseDto> detail(
+    public ResponseEntity<QnaBoardDetailsDto> detail(
             @PathVariable("boardId") Long boardId,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         increaseHits(boardId, request, response);
-        QnaBoardResponseDto boardDto = qnaBoardService.findOne(boardId);
+        QnaBoardDetailsDto boardDto = qnaBoardService.findOne(boardId);
 
         return ResponseEntity.status(HttpStatus.OK).body(boardDto);
     }

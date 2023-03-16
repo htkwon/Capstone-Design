@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
+import com.hansung.hansungcommunity.dto.FreeBoardDetailsDto;
 import com.hansung.hansungcommunity.dto.FreeBoardDto;
 import com.hansung.hansungcommunity.dto.FreeBoardListDto;
 import com.hansung.hansungcommunity.dto.FreeBoardResponseDto;
@@ -83,11 +84,11 @@ public class FreeBoardService {
     /**
      * 특정 게시글 조회
      */
-    public FreeBoardResponseDto findOne(Long boardId) {
+    public FreeBoardDetailsDto findOne(Long boardId) {
         FreeBoard board = freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패, 해당하는 게시글이 없음"));
 
-        return new FreeBoardResponseDto(board);
+        return new FreeBoardDetailsDto(board);
     }
 
     /**
@@ -112,8 +113,6 @@ public class FreeBoardService {
                 .map(FreeBoardListDto::new)
                 .collect(Collectors.toList());
     }
-
-
 
 }
 

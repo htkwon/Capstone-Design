@@ -12,6 +12,7 @@ import {
 import BookmarkIcon from "@mui/icons-material/BookmarkBorder";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { Reply } from "../../../../model/reply";
+import axios from "axios";
 
 //자유 상세보기 인터페이스
 interface FreeDetailItems {
@@ -33,7 +34,14 @@ interface FreeDetailItems {
 const FreeDetails: React.FC = (): JSX.Element => {
   const [postItem, setPostItem] = useState<FreeDetailItems | undefined>();
   const { id } = useParams();
-  
+
+  useEffect(() => {
+    axios
+        .get(`/api/freeBoards/${id}`)
+        .then((res) => setPostItem(res.data.data))
+        .catch((err) => console.log(err));
+  }, [])
+
   const detailPosting = postItem ? (
     <>
       <Box sx={{ paddingLeft: 3, paddingRight: 3 }}>

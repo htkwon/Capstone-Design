@@ -20,7 +20,7 @@ interface DetailItems {
     content: string;
     writer: string;
     createdDate: string;
-    modifiendDate?: string;
+    modifiedDate?: string;
     language?: string;
     bookmark: number;
     reply: number;
@@ -84,7 +84,7 @@ const QnADetails: React.FC = () => {
         fontSize: 20,
         marginBottom: 12
     }}>
-        {postItem.content}
+        <div dangerouslySetInnerHTML={{ __html : (postItem.content) }}/>
     </Box>
     
     <Box sx={{ display:'flex', marginBottom:3}}>

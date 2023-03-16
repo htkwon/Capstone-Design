@@ -110,7 +110,9 @@ const QnABaord: React.FC = () => {
                         {language}
                     </Box>
                 </Box>
-                <Box sx={{marginTop: 1, marginBottom: 1}}>{value.content}</Box>
+                <Box sx={{marginTop: 1, marginBottom: 1}}>
+                    <div dangerouslySetInnerHTML={{ __html : (value.content) }}/>
+                </Box>
                 <Box
                     sx={{
                         fontWeight: 'bold',

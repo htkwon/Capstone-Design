@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.controller;
 
+import com.hansung.hansungcommunity.dto.FreeBoardDetailsDto;
 import com.hansung.hansungcommunity.dto.FreeBoardDto;
 import com.hansung.hansungcommunity.dto.FreeBoardListDto;
 import com.hansung.hansungcommunity.dto.FreeBoardResponseDto;
@@ -39,13 +40,13 @@ public class FreeBoardApiController {
      * 조회수 증가 로직 구현을 위해 임의로 구현, 추후 수정
      */
     @GetMapping("/freeBoards/{boardId}")
-    public ResponseEntity<Result<FreeBoardResponseDto>> detail(
+    public ResponseEntity<Result<FreeBoardDetailsDto>> detail(
             @PathVariable("boardId") Long boardId,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         increaseHits(boardId, request, response);
-        FreeBoardResponseDto boardDto = freeBoardService.findOne(boardId);
+        FreeBoardDetailsDto boardDto = freeBoardService.findOne(boardId);
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
     }
