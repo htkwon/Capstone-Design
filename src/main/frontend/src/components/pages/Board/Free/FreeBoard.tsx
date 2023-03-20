@@ -12,8 +12,8 @@ import {
 import BookmarkIcon from "@mui/icons-material/BookmarkBorder";
 import ChatIcon from "@mui/icons-material/ChatBubbleOutline";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import { Board } from "../../../../model/board";
-import { Posting } from "../../../../model/posting";
+import { Board } from "../../../model/board";
+import { Posting } from "../../../model/posting";
 import FilterPosting from "../../../layout/FilterPosting";
 import axios from "axios";
 import { PaginationControl } from "react-bootstrap-pagination-control";

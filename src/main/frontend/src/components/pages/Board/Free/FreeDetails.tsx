@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import BookmarkIcon from "@mui/icons-material/BookmarkBorder";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import { Reply } from "../../../../model/reply";
+import { Reply } from "../../../model/reply";
 import axios from "axios";
 
 //자유 상세보기 인터페이스
