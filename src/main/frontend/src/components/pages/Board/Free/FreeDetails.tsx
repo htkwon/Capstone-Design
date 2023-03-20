@@ -37,10 +37,10 @@ const FreeDetails: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     axios
-        .get(`/api/freeBoards/${id}`)
-        .then((res) => setPostItem(res.data.data))
-        .catch((err) => console.log(err));
-  }, [])
+      .get(`/api/freeBoards/${id}`)
+      .then((res) => setPostItem(res.data.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   const detailPosting = postItem ? (
     <>
@@ -70,7 +70,7 @@ const FreeDetails: React.FC = (): JSX.Element => {
         </Box>
 
         <Box sx={{ marginBottom: 1 }}>
-          <Typography variant="body1">{postItem.content}</Typography>
+          <div dangerouslySetInnerHTML={{ __html: postItem.content }} />
           {/* 이미지에 대해서는 추후 논의 후 추가)*/}
         </Box>
         <Box sx={{ marginTop: 3, marginBottom: 3 }}>
