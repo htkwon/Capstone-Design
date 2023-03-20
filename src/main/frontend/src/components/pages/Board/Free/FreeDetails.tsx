@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../../../layout/Header";
+import Time from "../../../layout/Time";
 import {
   Avatar,
   Box,
@@ -10,7 +11,7 @@ import {
   IconButton,
 } from "@mui/material";
 import BookmarkIcon from "@mui/icons-material/BookmarkBorder";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
 import { Reply } from "../../../model/reply";
 import axios from "axios";
 
@@ -25,10 +26,10 @@ interface FreeDetailItems {
   //stuId: number; 사용자 학번
   createdDate: string;
   modifiedDate?: string;
-  report: number;
   bookmark: number;
   reply: number;
   replies?: Array<Reply> | undefined;
+  views: number; //조회수
 }
 
 const FreeDetails: React.FC = (): JSX.Element => {
@@ -54,7 +55,9 @@ const FreeDetails: React.FC = (): JSX.Element => {
           <Typography variant="h5" sx={{ marginBottom: 1, fontWeight: 600 }}>
             {postItem.title}
           </Typography>
-          <Typography variant="caption">{postItem.createdDate}</Typography>
+          <Typography variant="caption">
+            <Time date={postItem.createdDate} />
+          </Typography>
         </Box>
 
         <Box sx={{ marginBottom: 5 }}>
@@ -76,7 +79,7 @@ const FreeDetails: React.FC = (): JSX.Element => {
         <Box sx={{ marginTop: 3, marginBottom: 3 }}>
           <Stack direction="row" sx={{ disply: "flex", justifyContent: "end" }}>
             <IconButton size="small">
-              <WarningAmberIcon /> {postItem.report}
+              <Person2OutlinedIcon /> {postItem.views}
             </IconButton>
             <IconButton size="small">
               <BookmarkIcon /> {postItem.bookmark}
