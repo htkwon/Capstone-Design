@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import Header from '../../layout/Header';
+import axios from "axios";
+import Header from '../../../layout/Header';
+import Time from "../../../layout/Time";
+import { languageImage } from '../../../data/Image';
 import { 
   Typography,
   Container, 
@@ -9,31 +12,28 @@ import {
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 import ProfileIcon from '@mui/icons-material/AccountCircle';
 import Money from '@mui/icons-material/MonetizationOn';
-import axios from "axios";
 
 // Q&A 상세보기 데이터
 interface DetailItems {
     id: number;
-    title: String;
-    content: String;
-    time: String;
-    nickname: String;
-    language?: String;
-    point?: number;
+    title: string;
+    content: string;
+    writer: string;
+    createdDate: string;
+    modifiedDate?: string;
+    language?: string;
     bookmark: number;
-    comment: number;
+    reply: number;
+    point: number;
 }
-
 
 //Q&A 상세보기
 const QnADetails: React.FC = () => {
     //postItem은 상세보기에 들어갈 데이터 - DetailItems에 데이터 타입 지정
-    //TestData로 초기값 지정해둔 상태 (postItem 값 지정된 경우)
     const [postItem, setPostItem] = useState<DetailItems | undefined>();
-    /*
-    초기값 없는 경우(undefiend) -> No Data 출력
-    const [postItem, setPostItem] = useState<DetailItems | undefined>();
-    */
+
+    //axios get 할 때 받아올 게시글 번호
+    let { id } = useParams();
 
     useEffect(()=>{
         axios
@@ -42,14 +42,18 @@ const QnADetails: React.FC = () => {
             .catch((err)=>console.log(err))
     },[])
 
+    //입력된 언어 맞게 이미지 출력
+    const language = (postItem?.language) ? (
+        languageImage.map((value) => {
+            if (postItem.language === value.name) {
+                return (
+                    <img src={value.url} width="30" height="30" />
+                )
+            }
+        })
+    ) : (null);
 
-    //axios get 할 때 받아올 게시글 번호
-    let { id } = useParams();
-
-    //axios 연동하는 경우 get 주소에 /api/qnaBoards/${id} 입력
-
-
-    const PostDetails = postItem ? (
+    const PostDetails = postItem ? ( 
     //postItems 데이터 있는 경우 출력될 UI
     <>
     <Box sx={{
@@ -58,7 +62,7 @@ const QnADetails: React.FC = () => {
         marginBottom: 1
     }}>
         <Box sx={{fontSize:38, marginRight: 3}}>{postItem.title} </Box>
-        <Box sx={{marginTop:2}}>{postItem.language}</Box>
+        <Box sx={{marginTop:2}}>{language}</Box>
     </Box>
 
     <Box sx={{
@@ -68,7 +72,7 @@ const QnADetails: React.FC = () => {
     }}>
         <Box sx={{display:'flex'}}>
         <ProfileIcon sx={{fontSize:30, marginRight:0.5}}/>
-        <Box sx={{fontSize:20}}>{postItem.nickname} ∙ {postItem.time}</Box>
+        <Box sx={{fontSize:20}}>{postItem.writer} ∙ <Time date={postItem.createdDate}/></Box>
         </Box>
         <Box sx={{display: 'flex'}}>
             <BookmarkIcon sx={{fontSize: 28}}/>
@@ -80,7 +84,7 @@ const QnADetails: React.FC = () => {
         fontSize: 20,
         marginBottom: 12
     }}>
-        {postItem.content}
+        <div dangerouslySetInnerHTML={{ __html : (postItem.content) }}/>
     </Box>
     
     <Box sx={{ display:'flex', marginBottom:3}}>
@@ -89,7 +93,7 @@ const QnADetails: React.FC = () => {
     </Box>
 
     <Box>
-        <Typography variant='h5'>{postItem.comment}개의 댓글이 있습니다</Typography>
+        <Typography variant='h5'>{postItem.reply}개의 댓글이 있습니다</Typography>
         <Box sx={{
             height:100,
             marginTop: 2,

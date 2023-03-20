@@ -36,11 +36,11 @@ public class QnaBoardService {
     /**
      * 특정 게시글 조회
      */
-    public QnaBoardResponseDto findOne(Long boardId) {
+    public QnaBoardDetailsDto findOne(Long boardId) {
         QnaBoard board = qnaBoardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패, 해당하는 게시글이 없음"));
 
-        return new QnaBoardResponseDto(board);
+        return new QnaBoardDetailsDto(board);
     }
 
 
