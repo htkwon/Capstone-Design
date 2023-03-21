@@ -12,7 +12,7 @@ public class FreeBoardDetailsDto {
     private String content;
 //    private String writer;
 //    private String profileImg;
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private int report;
     private int bookmark;
@@ -21,7 +21,7 @@ public class FreeBoardDetailsDto {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.createDate = board.getCreatedAt();
+        this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
         this.report = board.getReports();
         this.bookmark = board.getBookmarks();
