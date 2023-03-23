@@ -7,6 +7,8 @@ import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.service.FileService;
 
 import com.hansung.hansungcommunity.service.QnaBoardService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -36,10 +38,10 @@ public class QnaBoardApiController {
     /**
      * 게시글 리스트 조회 - 홈View전용 (게시글 4개 반환)
      */
-    @GetMapping("qnaBoards")
-    public ResponseEntity<List<QnaBoardResponseDto>> QnaList(){
+    @GetMapping("/qnaBoards")
+    public ResponseEntity<Result<List<QnaBoardResponseDto>>> QnaList(){
         List<QnaBoardResponseDto> dtoList = qnaBoardService.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
     }
 
 
@@ -190,6 +192,12 @@ public class QnaBoardApiController {
         }
         return extension;
 
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T> {
+        private T data;
     }
 
 }
