@@ -112,7 +112,7 @@ public class FreeBoardApiController {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("boardHits")) {
+                if (cookie.getName().equals("freeBoardHits")) {
                     oldCookie = cookie;
                 }
             }
@@ -128,7 +128,7 @@ public class FreeBoardApiController {
             }
         } else {
             freeBoardService.increaseHits(boardId);
-            Cookie newCookie = new Cookie("boardHits","[" + boardId + "]");
+            Cookie newCookie = new Cookie("freeBoardHits","[" + boardId + "]");
             newCookie.setPath("/");
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);

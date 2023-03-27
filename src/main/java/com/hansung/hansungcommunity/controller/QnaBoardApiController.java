@@ -158,7 +158,7 @@ public class QnaBoardApiController {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("boardHits")) {
+                if (cookie.getName().equals("qnaBoardHits")) {
                     oldCookie = cookie;
                 }
             }
@@ -174,7 +174,7 @@ public class QnaBoardApiController {
             }
         } else {
             qnaBoardService.increaseHits(boardId);
-            Cookie newCookie = new Cookie("boardHits","[" + boardId + "]");
+            Cookie newCookie = new Cookie("qnaBoardHits","[" + boardId + "]");
             newCookie.setPath("/");
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
