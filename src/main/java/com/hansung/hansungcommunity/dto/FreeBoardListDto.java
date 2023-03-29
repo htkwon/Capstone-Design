@@ -1,7 +1,6 @@
 package com.hansung.hansungcommunity.dto;
 
 import com.hansung.hansungcommunity.entity.FreeBoard;
-import com.hansung.hansungcommunity.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

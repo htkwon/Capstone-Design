@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class FreeBoardResponseDto {
+
     private Long id;
     private String nickname;
     private LocalDateTime createdDate;

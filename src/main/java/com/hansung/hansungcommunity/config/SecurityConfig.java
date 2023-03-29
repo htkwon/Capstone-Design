@@ -9,6 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Value("${jwksUri}")
     private String jwksUri;
 
@@ -27,6 +28,5 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 
 }

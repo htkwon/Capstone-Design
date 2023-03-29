@@ -25,8 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-
-
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @RestController
@@ -44,7 +42,6 @@ public class QnaBoardApiController {
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
     }
 
-
     /**
      * 특정 게시글 조회
      * 조회수 증가 로직 구현을 위해 임의로 구현, 추후 수정
@@ -61,7 +58,6 @@ public class QnaBoardApiController {
         return ResponseEntity.status(HttpStatus.OK).body(boardDto);
     }
 
-
     /**
      * Qna 게시판 목록 페이지 (해당 페이지에 개수에 맞게 데이터 반환)
      * 페이지 정보는 프론트에서 전송
@@ -72,7 +68,6 @@ public class QnaBoardApiController {
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
 
     }
-
 
     /**
      * 조회수가 높은 4개의 게시글 조회
@@ -147,7 +142,6 @@ public class QnaBoardApiController {
             image.transferTo(save);
             return "/images/"+name+"."+extension;
     }
-
 
     /**
      * 조회수 증가 로직

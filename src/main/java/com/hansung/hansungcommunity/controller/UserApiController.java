@@ -1,11 +1,9 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.dto.UserRequestDto;
-import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.service.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -40,12 +38,4 @@ public class UserApiController {
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
-
-
-    // 유저 DTO
-    @Data
-    static class UserDto {
-        private String name;
-        private String nickname;
-    }
 }

@@ -6,12 +6,11 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CustomJwtAuthenticationTokenConverter implements Converter<Jwt , JwtAuthenticationToken> {
+
     @Override
     public JwtAuthenticationToken convert(Jwt jwt) {
         List<String> authorities = (List<String>) jwt.getClaims().get("authorities");
@@ -22,4 +21,5 @@ public class CustomJwtAuthenticationTokenConverter implements Converter<Jwt , Jw
 
         return new JwtAuthenticationToken(jwt, authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
     }
+
 }

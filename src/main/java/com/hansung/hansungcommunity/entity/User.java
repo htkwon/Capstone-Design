@@ -3,6 +3,7 @@ package com.hansung.hansungcommunity.entity;
 
 import com.hansung.hansungcommunity.dto.UserRequestDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -14,7 +15,9 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "user")
+@NoArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stu_id")
@@ -33,26 +36,12 @@ public class User {
     // private Image profileImage // 프로필 사진, 추후 개발
     // private String skillStack; // 기술 스택, 추후 개발
 
-
-    // 일대다, 필요한가?
     @OneToMany(mappedBy = "user")
     private List<FreeBoard> postFreeBoards = new ArrayList<>();
 
     @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "user")
     private List<QnaBoard> postQnaBoard = new ArrayList<>();
-
-
-    public User(){}
-
-//    public User(,String name, int point, String nickname, String career, String introduce, List<FreeBoard> postFreeBoards, List<QnaBoard> postQnaBoards) {
-//        this.name = name;
-//        this.point = point;
-//        this.nickname = nickname;
-//        this.career = career;
-//        this.introduce = introduce;
-//        this.postFreeBoards = postFreeBoards;
-//    }
 
     public User(String studentId, String name, String nickname, String introduce, String track1, String track2) {
         this.studentId = studentId;
@@ -63,9 +52,6 @@ public class User {
         this.track2 = track2;
     }
 
-//    public static User of(String name, int point, String nickname, String career, String introduce, List<FreeBoard> postFreeBoards, List<QnaBoard> postQnaBoards){
-//        return new User(name,point,nickname,career,introduce,postFreeBoards,postQnaBoards);
-//    }
     public static User of(UserRequestDto dto){
         return new User(
                 dto.getStudentId(),
@@ -77,6 +63,5 @@ public class User {
         );
 
     }
-
 
 }

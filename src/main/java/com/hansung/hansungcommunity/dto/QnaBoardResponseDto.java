@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class QnaBoardResponseDto {
+
     private Long id;
     private String nickname;
     private LocalDateTime createdDate;
@@ -21,6 +22,5 @@ public class QnaBoardResponseDto {
         this.title = board.getTitle();
         this.bookmarks = board.getBookmarks();
     }
-
 
 }

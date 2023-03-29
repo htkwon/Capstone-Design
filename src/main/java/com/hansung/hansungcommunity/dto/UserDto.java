@@ -4,7 +4,6 @@ import com.hansung.hansungcommunity.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class UserDto {
@@ -13,11 +12,9 @@ public class UserDto {
     private String name;
     private int point;
     private String nickname;
-
     //TODO: 현재 User entity Auditing 미적용
     //private LocalDateTime createdAt;
     //private LocalDateTime modifiedAt;
-
 
     //Testcode 및 생성의 편의를 위한 Factory method
     public static UserDto of(Long id, String name, int point, String nickname){
@@ -32,6 +29,5 @@ public class UserDto {
                 entity.getNickname()
         );
     }
-
 
 }

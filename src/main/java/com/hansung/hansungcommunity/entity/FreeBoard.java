@@ -8,12 +8,12 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-
 @Table(name = "free_board")
 @Getter
 @Setter
 @Entity
 public class FreeBoard extends ModifiedEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "free_board_id")
@@ -28,11 +28,9 @@ public class FreeBoard extends ModifiedEntity {
     private int bookmarks; // 북마크 횟수
     @ColumnDefault(value = "0")
     private int reports; // 신고 횟수
-
     @ManyToOne(fetch = FetchType.LAZY) // JPA 활용 시, XToOne 인 경우 fetch 타입을 LAZY 로 설정 !!!
     @JoinColumn(name = "stu_id")
     private User user;
-
     // private Image image; // 게시글 내부 이미지, 추후 개발
 
     // 생성 메소드
@@ -68,4 +66,5 @@ public class FreeBoard extends ModifiedEntity {
     public void increaseHits() {
         this.hits++;
     }
+
 }

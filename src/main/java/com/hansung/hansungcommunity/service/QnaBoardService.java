@@ -28,10 +28,9 @@ import java.util.stream.Collectors;
 @Transactional (readOnly = true)
 @Service
 public class QnaBoardService {
+
     private final UserRepository userRepository;
     private final QnaBoardRepository qnaBoardRepository;
-
-
 
     /**
      * 특정 게시글 조회
@@ -43,12 +42,10 @@ public class QnaBoardService {
         return new QnaBoardDetailsDto(board);
     }
 
-
     /**
      * 정렬 된 4개 Qna 게시글 반환
      *
      */
-
     public List<QnaBoardResponseDto> findAll() {
         Pageable pageable = PageRequest.of(0,4, Sort.Direction.DESC,"createdAt");
         return qnaBoardRepository.findAll(pageable).getContent()
@@ -68,7 +65,6 @@ public class QnaBoardService {
                 .map(MostViewedQnaBoardsDto::of)
                 .collect(Collectors.toList());
     }
-
 
     /**
      * 게시글 저장
@@ -95,7 +91,6 @@ public class QnaBoardService {
         entity.setUser(user);
     }
 
-
     /**
      * 게시글 수정
      */
@@ -105,6 +100,7 @@ public class QnaBoardService {
         target.updateBoard(dto);
         qnaBoardRepository.save(target);
     }
+
     /**
      * 게시글 삭제
      */
@@ -113,6 +109,7 @@ public class QnaBoardService {
         qnaBoardRepository.deleteById(boardId);
 
     }
+
     /**
      * 조회수 증가 로직
      * Auditing 수정 시간 업데이트, 논의 후 해결 요망
@@ -136,7 +133,5 @@ public class QnaBoardService {
                 .map(QnaBoardListDto::new)
                 .collect(Collectors.toList());
     }
-
-
 
 }

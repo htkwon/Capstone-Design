@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class QnaBoardDetailsDto {
+
     private Long id;
     private String title;
     private String content;
