@@ -17,17 +17,16 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QnaReplyDto {
+
     private Long id;
     @NotNull
     private String article;
-
     private Long parentId;
 
     private QnaReplyDto(Long id, String article) {
         this.id = id;
         this.article = article;
     }
-
 
     // 부모 댓글 DTO 생성
     public static QnaReplyDto createParent(QnaReply qnaReply) {

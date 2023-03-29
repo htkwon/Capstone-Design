@@ -3,6 +3,7 @@ package com.hansung.hansungcommunity.entity;
 
 import com.hansung.hansungcommunity.dto.QnaBoardDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -15,22 +16,20 @@ import java.util.Objects;
 @Getter
 @ToString(callSuper = true)
 @Entity
+@NoArgsConstructor
 public class QnaBoard extends ModifiedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_board_id")
     private Long id;
-
     @NotNull
     private String title;
     @NotNull
     @Lob
     private String content;  //TODO: length 설정하기
-    //@NotNull
     private int point;
     @Column
     private String tag;
-
     @ColumnDefault(value = "0")
     private int hits;
     @ColumnDefault(value = "0")
@@ -38,28 +37,20 @@ public class QnaBoard extends ModifiedEntity {
     @ColumnDefault(value = "0")
     private int reports;
 
-
     @OneToMany(fetch = FetchType.LAZY)
     private List<FileEntity> fileEntity = new ArrayList<>();
-
 
     @ToString.Exclude
     @JoinColumn(name = "stu_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-
     // 조회 편의성을 위해 댓글 Entity 와 연관관계 매핑
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<QnaReply> replies = new ArrayList<>();
 
-
     @NotNull
     private String language;
-
-
-    public QnaBoard() {
-    }
 
     public QnaBoard(User user, String title, String content, String tag, int point,String language) {
         this.user = user;
@@ -68,7 +59,6 @@ public class QnaBoard extends ModifiedEntity {
         this.tag = tag;
         this.point = point;
         this.language=language;
-
     }
 
     public QnaBoard(String title, String content, int point,String language) {
@@ -99,7 +89,6 @@ public class QnaBoard extends ModifiedEntity {
     public void setUser(User user) {
         this.user = user;
     }
-
 
     @Override
     public boolean equals(Object o) {

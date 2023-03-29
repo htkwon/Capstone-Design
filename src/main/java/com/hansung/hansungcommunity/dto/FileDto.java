@@ -16,8 +16,6 @@ public class FileDto {
     private String name;
     private String path;
 
-
-
     public static FileDto of(QnaBoard qnaBoard, String originalName, String name, String path){
         return new FileDto(qnaBoard,originalName,name,path);
     }
@@ -30,6 +28,5 @@ public class FileDto {
                 entity.getPath()
         );
     }
-
 
 }

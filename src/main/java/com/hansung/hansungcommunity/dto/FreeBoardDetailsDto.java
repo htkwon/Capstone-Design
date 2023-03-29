@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class FreeBoardDetailsDto {
+
     private Long id;
     private String title;
     private String content;
@@ -26,4 +27,5 @@ public class FreeBoardDetailsDto {
         this.report = board.getReports();
         this.bookmark = board.getBookmarks();
     }
+
 }

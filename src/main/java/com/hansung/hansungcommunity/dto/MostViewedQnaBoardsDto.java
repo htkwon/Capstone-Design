@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class MostViewedQnaBoardsDto {
+
     private Long id;
     private String nickname;
     private String title;
@@ -28,4 +29,5 @@ public class MostViewedQnaBoardsDto {
                 "C" // language 필드 생성 후 수정 필요
         );
     }
+
 }

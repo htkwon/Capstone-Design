@@ -12,9 +12,7 @@ public class QnaBoardListDto {
     private Long id;
     private String title;
     private String content;
-
     private Long stuId;
-
     //TODO : 파일
     private LocalDateTime createdDate;
     private int bookmarks;
@@ -31,9 +29,5 @@ public class QnaBoardListDto {
         this.bookmarks = board.getBookmarks();
         this.report = board.getReports();
     }
-
-
-
-
 
 }

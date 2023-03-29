@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class QnaListResponseDto {
+
     private Long id;
     private String nickname;
     private LocalDateTime time;

@@ -11,15 +11,12 @@ import lombok.NoArgsConstructor;
 
 public class QnaBoardDto {
 
-
     private Long id;
     private String title;
     private String content;
     private int point;
     private String tag;
     private String language;
-
-
 
     //Testcode 및 생성의 편의를 위한 Factory method
     public static QnaBoardDto of(Long id, String title, String content, int point, String tag,String language){
@@ -45,11 +42,5 @@ public class QnaBoardDto {
                 language
         );
     }
-
-
-
-
-
-
 
 }

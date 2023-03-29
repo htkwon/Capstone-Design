@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor // 생성자 주입 (final 키워드)
 @Transactional(readOnly = true) // 읽기 전용
 public class FreeBoardService {
+
     private final FreeBoardRepository freeBoardRepository;
     private final UserRepository userRepository;
 
@@ -102,6 +103,7 @@ public class FreeBoardService {
 
         board.increaseHits();
     }
+
      /**
      * 게시글 리스트 조회
      * 프론트에서 요청한 페이지 정보에 맞게 게시글 반환

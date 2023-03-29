@@ -4,11 +4,10 @@ import com.hansung.hansungcommunity.entity.FreeBoard;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 public class FreeBoardDto {
+
     private Long id;
     private String title;
     private String content;

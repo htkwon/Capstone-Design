@@ -54,4 +54,5 @@ public class QnaReply extends AuditingFields {
     public void updateParent(QnaReply parent) {
         this.parent = parent;
     }
+
 }
