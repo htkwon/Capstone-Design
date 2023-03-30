@@ -49,7 +49,7 @@ public class QnaBoard extends ModifiedEntity {
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<QnaReply> replies = new ArrayList<>();
 
-    @NotNull
+    @Column
     private String language;
 
     public QnaBoard(User user, String title, String content, String tag, int point,String language) {
