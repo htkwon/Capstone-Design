@@ -2,7 +2,6 @@ package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.dto.UserRequestDto;
 import com.hansung.hansungcommunity.service.UserService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,11 @@ public class UserApiController {
      * 유저 저장
      */
     @PostMapping("/api/join")
-    public ResponseEntity<Long> saveUser(@RequestBody UserRequestDto dto) { // api 통신 시, Entity 가 아닌 DTO 로 주고받기 !!!
+    public ResponseEntity<Long> saveUser(Authentication authentication, @RequestBody UserRequestDto dto) { // api 통신 시, Entity 가 아닌 DTO 로 주고받기 !!!
+        if (!dto.getStudentId().equals(authentication.getName())) {
+            throw new IllegalArgumentException("인가 서버와의 학번이 동일하지 않습니다.");
+        }
+
         Long userId = userService.join(dto);
 
         return ResponseEntity.status(HttpStatus.OK).body(userId);

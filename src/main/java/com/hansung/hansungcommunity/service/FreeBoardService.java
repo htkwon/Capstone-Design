@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +34,7 @@ public class FreeBoardService {
     @Transactional // 필요 시 쓰기 전용
     public FreeBoardDto post(Long userId, FreeBoardDto boardDto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 게시 실패, 해당하는 유저가 없음"));
-
+                .orElseThrow(() -> new UsernameNotFoundException("해당하는 학생이 없습니다."));
         FreeBoard board = FreeBoard.createBoard(user, boardDto); // 게시글 생성
 
         FreeBoard savedBoard = freeBoardRepository.save(board); // DB에 저장
