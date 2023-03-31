@@ -11,21 +11,25 @@ public class FreeBoardDetailsDto {
     private Long id;
     private String title;
     private String content;
-//    private String writer;
-//    private String profileImg;
+    private String writer;
+    private String profileImg;
+    private String stuId;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private int report;
+    private int reply;
     private int bookmark;
+    private int views;
 
     public FreeBoardDetailsDto(FreeBoard board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
+        this.writer = board.getUser().getNickname();
+        this.stuId = board.getUser().getStudentId();
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
-        this.report = board.getReports();
         this.bookmark = board.getBookmarks();
+        this.views = board.getHits();
     }
 
 }

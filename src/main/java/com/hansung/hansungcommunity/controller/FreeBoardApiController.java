@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.controller;
 
+import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FreeBoardDetailsDto;
 import com.hansung.hansungcommunity.dto.FreeBoardDto;
 import com.hansung.hansungcommunity.dto.FreeBoardListDto;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -66,10 +68,11 @@ public class FreeBoardApiController {
      */
     @PostMapping("/freeBoards")
     public ResponseEntity<Result<FreeBoardDto>> create(
-            @RequestParam(name = "uid") Long userId, // 유저 id도 필요한가 ?
-            @RequestBody FreeBoardDto dto
+            @RequestBody FreeBoardDto dto,
+            Authentication authentication
     ) {
-        FreeBoardDto boardDto  = freeBoardService.post(userId, dto);
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        FreeBoardDto boardDto  = freeBoardService.post(ca.getUser().getId(), dto);
 
         // Wrapper 클래스로 감싼 후,
         // ResponseEntity 의 body 에 담아 반환
