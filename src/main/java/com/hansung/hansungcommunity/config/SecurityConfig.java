@@ -29,6 +29,8 @@ public class SecurityConfig {
                 .antMatchers("/").permitAll()
                 .antMatchers("/api/join").permitAll()
                 .antMatchers("/api/check").permitAll()
+                .antMatchers("/api/return/imageUrl").permitAll()
+                .antMatchers("/images/**").permitAll()
                 .anyRequest().hasRole("USER")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
