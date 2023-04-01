@@ -10,15 +10,17 @@ import lombok.Data;
 public class MostViewedQnaBoardsDto {
 
     private Long id;
-    private String nickname;
     private String title;
+    private String writer;
     private String language;
+    private int point;
 
-    private MostViewedQnaBoardsDto(Long id, String nickname, String title, String language) {
+    private MostViewedQnaBoardsDto(Long id, String nickname, String title, String language, int point) {
         this.id = id;
-        this.nickname = nickname;
+        this.writer = nickname;
         this.title = title;
         this.language = language;
+        this.point = point;
     }
 
     public static MostViewedQnaBoardsDto of(QnaBoard board) {
@@ -26,7 +28,8 @@ public class MostViewedQnaBoardsDto {
                 board.getId(),
                 board.getUser().getNickname(),
                 board.getTitle(),
-                "C" // language 필드 생성 후 수정 필요
+                board.getLanguage(),
+                board.getPoint()
         );
     }
 

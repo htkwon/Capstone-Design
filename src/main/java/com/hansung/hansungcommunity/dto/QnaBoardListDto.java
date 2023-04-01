@@ -12,22 +12,25 @@ public class QnaBoardListDto {
     private Long id;
     private String title;
     private String content;
-    private Long stuId;
+    private String writer;
     //TODO : 파일
     private LocalDateTime createdDate;
-    private int bookmarks;
-    //TODO: 댓글
-    private int report;
+    private LocalDateTime modifiedDate;
+    private String language;
+    private int bookmark;
+    private int reply;
+    private int point;
 
     public QnaBoardListDto(QnaBoard board){
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
-        //this.user = board.getUser();
-        this.stuId = board.getUser().getId();
+        this.writer = board.getUser().getNickname();
         this.createdDate = board.getCreatedAt();
-        this.bookmarks = board.getBookmarks();
-        this.report = board.getReports();
+        this.modifiedDate = board.getModifiedAt();
+        this.bookmark = board.getBookmarks();
+        this.reply = board.getReplies().size();
+        this.point = board.getPoint();
     }
 
 }

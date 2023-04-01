@@ -2,6 +2,7 @@ package com.hansung.hansungcommunity.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.*;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.service.FileService;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,8 +67,8 @@ public class QnaBoardApiController {
     @GetMapping("/qnaBoardsPage")
     public ResponseEntity<List<QnaBoardListDto>> listOfPage(Pageable pageable){
         List<QnaBoardListDto> dtoList = qnaBoardService.findByPage(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
 
+        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
 
     /**
@@ -82,24 +84,27 @@ public class QnaBoardApiController {
     /**
      * 게시글 저장 (업로드 파일 없을 때)
      */
-    @PostMapping("/qnaBoardsNoFile/{userId}")
-    public ResponseEntity<QnaBoardDto> create(@RequestBody QnaBoardDto dto, @PathVariable Long userId){
-        System.out.println(dto.getPoint());
-
-        QnaBoardDto articleDto = qnaBoardService.post(userId,dto);
+    @PostMapping("/qnaBoardsNoFile")
+    public ResponseEntity<QnaBoardDto> create(@RequestBody QnaBoardDto dto, Authentication authentication){
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        QnaBoardDto articleDto = qnaBoardService.post(ca.getUser().getId(), dto);
         return ResponseEntity.status(HttpStatus.OK).body(articleDto);
     }
 
     /**
-     *게시글 저장 (업로드 파일 있을 때)
+     * 게시글 저장 (업로드 파일 있을 때)
      */
-    @PostMapping("/qnaBoards/{userId}")
-    public ResponseEntity<Object> create(MultipartFile[] multipartFiles,String stringQna,@PathVariable Long userId){
-
+    @PostMapping("/qnaBoards")
+    public ResponseEntity<Object> create(
+            MultipartFile[] multipartFiles,
+            String stringQna,
+            Authentication authentication
+    ) {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
         try {
             QnaBoard qnaBoard = new ObjectMapper().readValue(stringQna, QnaBoard.class);
             //objectMapper() 사용으로인해 자동으로 db에 등록되어, user 컬럼이 비어 있어 user 컬럼만 따로 매핑해주는 mappingUser사용
-            qnaBoardService.mappingUser(userId,qnaBoard);
+            qnaBoardService.mappingUser(ca.getUser().getId(), qnaBoard);
 
             for (MultipartFile file : multipartFiles) {
                 String name = (new Date().getTime()) + "" + (new Random().ints(1000, 9999).findAny().getAsInt());
@@ -107,18 +112,18 @@ public class QnaBoardApiController {
                 String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
 
                 assert originalName != null;
-                String extension = getFilename(originalName,path);
+                String extension = getFilename(originalName, path);
                 File save = new File(path, name + "." + extension);
                 file.transferTo(save);
 
-                FileDto dto = FileDto.of(qnaBoard,originalName,name,path);
+                FileDto dto = FileDto.of(qnaBoard, originalName, name, path);
                 fileService.save(dto);
 
 
             }
-            } catch(IOException e){
-                throw new RuntimeException(e);
-            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
