@@ -1,10 +1,12 @@
 package com.hansung.hansungcommunity.controller;
 
+import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.QnaReplyDto;
 import com.hansung.hansungcommunity.service.QnaReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,10 +26,12 @@ public class QnaReplyController {
     @PostMapping("/qnaBoards/{boardId}/replies")
     public ResponseEntity<QnaReplyDto> create(
             @PathVariable("boardId") Long boardId,
-            @RequestBody @Valid QnaReplyDto replyDto
+            @RequestBody @Valid QnaReplyDto replyDto,
+            Authentication authentication
     ) {
-        Long userId = 100L; // 임시 유저 id
-        QnaReplyDto reply = replyService.create(userId, boardId, replyDto);
+
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        QnaReplyDto reply = replyService.create(ca.getUser().getId(), boardId, replyDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
