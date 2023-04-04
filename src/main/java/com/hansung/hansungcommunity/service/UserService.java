@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
+import com.hansung.hansungcommunity.dto.UserInfoDto;
 import com.hansung.hansungcommunity.dto.UserRequestDto;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.UserRepository;
@@ -41,5 +42,11 @@ public class UserService {
     public Optional<User> getByStudentId(String studentId) {
         return userRepository.findByStudentId(studentId);
     }
+
+    public UserInfoDto getUserInfo(Long stuId) {
+        User user = userRepository.findById(stuId).orElseThrow(()->new RuntimeException("유저가 존재하지 않습니다."));
+        return UserInfoDto.from(user);
+    }
+
 
 }
