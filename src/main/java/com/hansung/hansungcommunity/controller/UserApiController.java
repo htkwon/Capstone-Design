@@ -1,5 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
+import com.hansung.hansungcommunity.auth.CustomAuthentication;
+import com.hansung.hansungcommunity.dto.UserInfoDto;
 import com.hansung.hansungcommunity.dto.UserRequestDto;
 import com.hansung.hansungcommunity.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -41,4 +43,19 @@ public class UserApiController {
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
+    /**
+     * 유저 정보 반환
+     */
+    @GetMapping("/api/user-info")
+    public ResponseEntity<UserInfoDto> userInfo(Authentication authentication){
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        UserInfoDto userInfoDto = userService.getUserInfo(ca.getUser().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(userInfoDto);
+    }
+
+
 }
+
+
+
+
