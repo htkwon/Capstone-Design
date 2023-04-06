@@ -4,6 +4,7 @@ import com.hansung.hansungcommunity.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,11 +27,11 @@ public class SecurityConfig {
         );
 
         http.authorizeHttpRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/api/join").permitAll()
-                .antMatchers("/api/check").permitAll()
-                .antMatchers("/api/return/imageUrl").permitAll()
                 .antMatchers("/images/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/join").hasRole("STUDENT")
+                .antMatchers(HttpMethod.GET, "/api/check").hasAnyRole("STUDENT", "USER")
+                .antMatchers(HttpMethod.GET, "/api/freeBoards").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/qnaBoards").permitAll()
                 .anyRequest().hasRole("USER")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
