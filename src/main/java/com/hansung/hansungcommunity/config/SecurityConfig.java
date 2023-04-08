@@ -21,6 +21,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http.csrf().disable();
+
         http.oauth2ResourceServer(
                 r -> r.jwt().jwkSetUri(jwksUri) // get Public key from Authorization Server
                         .jwtAuthenticationConverter(new CustomJwtAuthenticationTokenConverter(userService))
