@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Path;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -43,7 +44,16 @@ public class FreeReplyController {
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
+    @PutMapping("/free-boards/update/replies")
+    public ResponseEntity<String> update(@RequestBody  FreeReplyDto replyDto){
+        freeReplyService.update(replyDto);
+        return ResponseEntity.status(HttpStatus.OK).body("수정 완료");
+    }
 
-
+    @DeleteMapping("/free-boards/{replyId}/replies")
+    public ResponseEntity<String> delete(@PathVariable("replyId") Long replyId){
+        freeReplyService.delete(replyId);
+        return ResponseEntity.status(HttpStatus.OK).body("삭제 완료");
+    }
 
 }

@@ -1,10 +1,8 @@
 package com.hansung.hansungcommunity.service;
 
 import com.hansung.hansungcommunity.dto.FreeReplyDto;
-import com.hansung.hansungcommunity.dto.QnaReplyDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.FreeReply;
-import com.hansung.hansungcommunity.entity.QnaReply;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.FreeBoardRepository;
 import com.hansung.hansungcommunity.repository.FreeReplyRepository;
@@ -12,9 +10,8 @@ import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -68,9 +65,18 @@ public class FreeReplyService {
 
     }
 
+    @Transactional
+    public void update(FreeReplyDto replyDto) {
+        FreeReply reply = freeReplyRepository.findById(replyDto.getId())
+                .orElseThrow(()->new IllegalArgumentException("해당 댓글이 없습니다."));
+        reply.update(replyDto.getArticle());
+        freeReplyRepository.save(reply);
 
-
-
-
-
+    }
+    @Transactional
+    public void delete(Long replyId) {
+        FreeReply reply = freeReplyRepository.findById(replyId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
+        freeReplyRepository.delete(reply);
+    }
 }
