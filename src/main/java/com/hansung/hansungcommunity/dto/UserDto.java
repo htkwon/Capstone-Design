@@ -30,4 +30,12 @@ public class UserDto {
         );
     }
 
+    public static UserDto of(User user) {
+        return new UserDto(
+                user.getId(),
+                user.getName(),
+                user.getPoint(),
+                user.getNickname()
+        );
+    }
 }
