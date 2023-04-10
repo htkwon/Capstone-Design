@@ -5,6 +5,7 @@ import com.hansung.hansungcommunity.dto.FreeReplyDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class FreeReply extends AuditingFields{
     @OneToMany(mappedBy = "parent")
     private List<FreeReply> children = new ArrayList<>();
 
+
     private FreeReply( User user, FreeBoard board, String article){
         this.user = user;
         this.board = board;
@@ -50,8 +52,10 @@ public class FreeReply extends AuditingFields{
                 user,
                 board,
                 dto.getArticle()
-
         );
+    }
+    public  void update(String article){
+        this.article = article;
     }
 
     public void updateParent(FreeReply parent){
