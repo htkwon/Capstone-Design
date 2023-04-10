@@ -1,10 +1,7 @@
 package com.hansung.hansungcommunity.service;
 
 import com.hansung.hansungcommunity.dto.QnaReplyDto;
-import com.hansung.hansungcommunity.entity.QQnaReply;
-import com.hansung.hansungcommunity.entity.QnaBoard;
-import com.hansung.hansungcommunity.entity.QnaReply;
-import com.hansung.hansungcommunity.entity.User;
+import com.hansung.hansungcommunity.entity.*;
 import com.hansung.hansungcommunity.repository.QnaBoardRepository;
 import com.hansung.hansungcommunity.repository.QnaReplyRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
@@ -92,4 +89,27 @@ public class QnaReplyService {
         return result;
     }
 
+    /**
+     *채택 (해당 댓글 id로 채택값을 true로 바꾸고, 해당 댓글의 유저 포인트 증가)
+     */
+    @Transactional
+    public Boolean adopt(Long replyId,int point) {
+        QnaReply reply = replyRepository.findById(replyId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
+        reply.adopt(true);
+        reply.getUser().setPoint(point);
+
+        replyRepository.save(reply);
+        return reply.getAdopt();
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean adoptCheck(Long boardId) {
+        QnaReply reply = replyRepository.findById(boardId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다."));
+
+        return replyRepository.findAllByBoardId(reply.getId())
+                .stream()
+                .anyMatch(freeReply -> Boolean.TRUE.equals(reply.getAdopt()));
+    }
 }
