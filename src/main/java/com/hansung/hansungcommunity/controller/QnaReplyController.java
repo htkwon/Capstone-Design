@@ -48,4 +48,27 @@ public class QnaReplyController {
         return ResponseEntity.status(HttpStatus.OK).body(replies);
     }
 
+    /**
+     * 채택
+     */
+    @PutMapping("/qna-boards/{replyId}/adopt-replies/{point}")
+    public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId,@PathVariable("point") int point){
+        Boolean adopt = replyService.adopt(replyId,point);
+        return ResponseEntity.status(HttpStatus.OK).body(adopt);
+    }
+
+    /**
+     * 해당 id 게시글의 댓글들중 이미 채택한 댓글이 있는지 체크
+     * 프론트단에서 체크 후, true면 이미 해당 글의 댓글을 채택하셨다는 알림
+     * false면 채택 가능
+     */
+    @GetMapping("/qna-boards/{boardId}/adopt-check")
+    public ResponseEntity<Boolean> adoptCheck(@PathVariable("boardId") Long boardId){
+        Boolean check = replyService.adoptCheck(boardId);
+        return ResponseEntity.status(HttpStatus.OK).body(check);
+    }
+
+
+
+
 }

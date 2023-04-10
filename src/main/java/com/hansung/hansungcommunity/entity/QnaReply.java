@@ -4,6 +4,7 @@ import com.hansung.hansungcommunity.dto.QnaReplyDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ public class QnaReply extends AuditingFields {
     @OneToMany(mappedBy = "parent")
     private List<QnaReply> children = new ArrayList<>();
 
+    @ColumnDefault(value = "false")
+    private Boolean adopt;
+
     private QnaReply(User user, QnaBoard board, String article) {
         this.user = user;
         this.board = board;
@@ -54,5 +58,7 @@ public class QnaReply extends AuditingFields {
     public void updateParent(QnaReply parent) {
         this.parent = parent;
     }
+
+    public void adopt(Boolean adopt){this.adopt = adopt;}
 
 }
