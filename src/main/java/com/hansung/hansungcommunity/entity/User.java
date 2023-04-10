@@ -49,6 +49,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Party> parties = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<FreeBoardBookmark> bookmarks = new ArrayList<>();
+
     public User(String studentId, String name, String nickname, String introduce, String track1, String track2) {
         this.studentId = studentId;
         this.name = name;
@@ -68,6 +71,10 @@ public class User {
                 dto.getTrack2()
         );
 
+    }
+
+    public void setPoint(int point){
+        this.point += point;
     }
 
 }
