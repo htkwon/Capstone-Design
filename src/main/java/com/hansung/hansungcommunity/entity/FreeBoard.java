@@ -1,12 +1,16 @@
 package com.hansung.hansungcommunity.entity;
 
 import com.hansung.hansungcommunity.dto.FreeBoardDto;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "free_board")
 @Getter
@@ -32,6 +36,9 @@ public class FreeBoard extends ModifiedEntity {
     @JoinColumn(name = "stu_id")
     private User user;
     // private Image image; // 게시글 내부 이미지, 추후 개발
+
+    @OneToMany(mappedBy = "freeBoard")
+    private List<FreeBoardBookmark> bookmakrs = new ArrayList<>();
 
     // 생성 메소드
     public static FreeBoard createBoard(User user, FreeBoardDto dto) {
