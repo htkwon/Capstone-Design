@@ -100,8 +100,9 @@ public class QnaReplyService {
                 .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
         reply.adopt(true);
         reply.getUser().setPlustPoint(point);
-        user.setMinusPoint(point);
-
+        if(user.getPoint()>=point) {
+            user.setMinusPoint(point);
+        }
         replyRepository.save(reply);
         return reply.getAdopt();
     }
