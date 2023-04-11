@@ -50,7 +50,10 @@ public class User {
     private List<Party> parties = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<FreeBoardBookmark> bookmarks = new ArrayList<>();
+    private List<FreeBoardBookmark> freeBookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<QnaBoardBookmark> qnaBookmarks = new ArrayList<>();
 
     public User(String studentId, String name, String nickname, String introduce, String track1, String track2) {
         this.studentId = studentId;
@@ -73,8 +76,8 @@ public class User {
 
     }
 
-    public void setPoint(int point){
+    public void setPlustPoint(int point){
         this.point += point;
     }
-
+    public void setMinusPoint(int point){this.point-=point;}
 }

@@ -49,11 +49,16 @@ public class QnaReplyController {
     }
 
     /**
+     * 수정, 삭제
+     */
+
+    /**
      * 채택
      */
     @PutMapping("/qna-boards/{replyId}/adopt-replies/{point}")
-    public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId,@PathVariable("point") int point){
-        Boolean adopt = replyService.adopt(replyId,point);
+    public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId,@PathVariable("point") int point,Authentication authentication){
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        Boolean adopt = replyService.adopt(replyId,point,ca.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(adopt);
     }
 

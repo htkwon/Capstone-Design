@@ -93,11 +93,14 @@ public class QnaReplyService {
      *채택 (해당 댓글 id로 채택값을 true로 바꾸고, 해당 댓글의 유저 포인트 증가)
      */
     @Transactional
-    public Boolean adopt(Long replyId,int point) {
+    public Boolean adopt(Long replyId,int point,Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다."));
         QnaReply reply = replyRepository.findById(replyId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
         reply.adopt(true);
-        reply.getUser().setPoint(point);
+        reply.getUser().setPlustPoint(point);
+        user.setMinusPoint(point);
 
         replyRepository.save(reply);
         return reply.getAdopt();
