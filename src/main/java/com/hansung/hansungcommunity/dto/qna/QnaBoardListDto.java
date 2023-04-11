@@ -1,35 +1,36 @@
-package com.hansung.hansungcommunity.dto;
+package com.hansung.hansungcommunity.dto.qna;
 
-import com.hansung.hansungcommunity.entity.FreeBoard;
+import com.hansung.hansungcommunity.entity.QnaBoard;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-
 @Data
-public class FreeBoardDetailsDto {
+@NoArgsConstructor
+public class QnaBoardListDto {
 
     private Long id;
     private String title;
     private String content;
     private String writer;
-    private String profileImg;
-    private String stuId;
+    //TODO : 파일
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private int reply;
+    private String language;
     private int bookmark;
-    private int views;
+    private int reply;
+    private int point;
 
-    public FreeBoardDetailsDto(FreeBoard board) {
+    public QnaBoardListDto(QnaBoard board){
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
-        this.stuId = board.getUser().getStudentId();
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
         this.bookmark = board.getBookmarks();
-        this.views = board.getHits();
+        this.reply = board.getReplies().size();
+        this.point = board.getPoint();
     }
 
 }

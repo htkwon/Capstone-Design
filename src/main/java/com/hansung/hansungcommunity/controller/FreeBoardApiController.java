@@ -1,10 +1,10 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.FreeBoardDetailsDto;
-import com.hansung.hansungcommunity.dto.FreeBoardDto;
-import com.hansung.hansungcommunity.dto.FreeBoardListDto;
-import com.hansung.hansungcommunity.dto.FreeBoardResponseDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardDetailsDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardRequestDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardListDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardMainDto;
 import com.hansung.hansungcommunity.service.FreeBoardService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,8 +30,8 @@ public class FreeBoardApiController {
      * 모든 게시글 조회 (게시글 4개반환)
      */
     @GetMapping("/freeBoards")
-    public ResponseEntity<Result<List<FreeBoardResponseDto>>> list() {
-        List<FreeBoardResponseDto> dtoList = freeBoardService.findAll();
+    public ResponseEntity<Result<List<FreeBoardMainDto>>> list() {
+        List<FreeBoardMainDto> dtoList = freeBoardService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
     }
@@ -67,12 +67,12 @@ public class FreeBoardApiController {
      * 게시글 저장
      */
     @PostMapping("/freeBoards")
-    public ResponseEntity<Result<FreeBoardDto>> create(
-            @RequestBody FreeBoardDto dto,
+    public ResponseEntity<Result<FreeBoardRequestDto>> create(
+            @RequestBody FreeBoardRequestDto dto,
             Authentication authentication
     ) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        FreeBoardDto boardDto  = freeBoardService.post(ca.getUser().getId(), dto);
+        FreeBoardRequestDto boardDto  = freeBoardService.post(ca.getUser().getId(), dto);
 
         // Wrapper 클래스로 감싼 후,
         // ResponseEntity 의 body 에 담아 반환
@@ -83,11 +83,11 @@ public class FreeBoardApiController {
      * 게시글 수정
      */
     @PutMapping("/freeBoards/{boardId}")
-    public ResponseEntity<Result<FreeBoardDto>> update(
+    public ResponseEntity<Result<FreeBoardRequestDto>> update(
             @PathVariable("boardId") Long boardId,
-            @RequestBody FreeBoardDto dto
+            @RequestBody FreeBoardRequestDto dto
     ) {
-        FreeBoardDto boardDto  = freeBoardService.update(boardId, dto);
+        FreeBoardRequestDto boardDto  = freeBoardService.update(boardId, dto);
 
         // Wrapper 클래스로 감싼 후,
         // ResponseEntity 의 body 에 담아 반환
@@ -98,8 +98,8 @@ public class FreeBoardApiController {
      * 게시글 삭제
      */
     @DeleteMapping("/freeBoards/{boardId}")
-    public ResponseEntity<Result<FreeBoardDto>> delete(@PathVariable("boardId") Long boardId) {
-        FreeBoardDto boardDto = freeBoardService.delete(boardId);
+    public ResponseEntity<Result<FreeBoardRequestDto>> delete(@PathVariable("boardId") Long boardId) {
+        FreeBoardRequestDto boardDto = freeBoardService.delete(boardId);
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
     }

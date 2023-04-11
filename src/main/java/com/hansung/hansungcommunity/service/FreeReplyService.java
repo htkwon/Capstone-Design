@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.FreeReplyDto;
+import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.FreeReply;
 import com.hansung.hansungcommunity.entity.User;

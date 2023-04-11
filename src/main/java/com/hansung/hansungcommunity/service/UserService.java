@@ -1,7 +1,7 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.UserInfoDto;
-import com.hansung.hansungcommunity.dto.UserRequestDto;
+import com.hansung.hansungcommunity.dto.user.UserInfoDto;
+import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

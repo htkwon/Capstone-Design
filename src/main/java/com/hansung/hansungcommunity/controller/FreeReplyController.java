@@ -1,8 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.FreeReplyDto;
-import com.hansung.hansungcommunity.dto.QnaReplyDto;
+import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
 import com.hansung.hansungcommunity.service.FreeReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Path;
 import javax.validation.Valid;
 import java.util.List;
 

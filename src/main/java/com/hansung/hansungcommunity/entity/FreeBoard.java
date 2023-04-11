@@ -1,9 +1,7 @@
 package com.hansung.hansungcommunity.entity;
 
-import com.hansung.hansungcommunity.dto.FreeBoardDto;
-import lombok.AccessLevel;
+import com.hansung.hansungcommunity.dto.free.FreeBoardRequestDto;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -41,7 +39,7 @@ public class FreeBoard extends ModifiedEntity {
     private List<FreeBoardBookmark> bookmakrs = new ArrayList<>();
 
     // 생성 메소드
-    public static FreeBoard createBoard(User user, FreeBoardDto dto) {
+    public static FreeBoard createBoard(User user, FreeBoardRequestDto dto) {
         FreeBoard board = new FreeBoard();
 
         board.setUser(user); // 연관관계 설정
@@ -59,7 +57,7 @@ public class FreeBoard extends ModifiedEntity {
     }
 
     // 비즈니스 메소드
-    public void patch(FreeBoardDto dto) {
+    public void patch(FreeBoardRequestDto dto) {
         if (dto.getTitle() != null)
             this.title = dto.getTitle();
 

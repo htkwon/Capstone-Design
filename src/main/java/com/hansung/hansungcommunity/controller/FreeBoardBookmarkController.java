@@ -1,7 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.FreeBoardBookmarkDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardBookmarkDto;
 import com.hansung.hansungcommunity.entity.FreeBoardBookmark;
 import com.hansung.hansungcommunity.service.FreeBoardBookmarkService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
