@@ -1,7 +1,7 @@
 //package com.hansung.hansungcommunity.service;
 //
-//import com.hansung.hansungcommunity.dto.QnaBoardDto;
-//import com.hansung.hansungcommunity.dto.UserDto;
+//import com.hansung.hansungcommunity.dto.qna.QnaBoardDto;
+//import com.hansung.hansungcommunity.dto.user.UserDto;
 //import com.hansung.hansungcommunity.entity.QnaBoard;
 //import com.hansung.hansungcommunity.entity.User;
 //import com.hansung.hansungcommunity.repository.QnaBoardRepository;

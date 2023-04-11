@@ -1,10 +1,7 @@
 package com.hansung.hansungcommunity.service;
 
 
-import com.hansung.hansungcommunity.dto.*;
-
-import com.hansung.hansungcommunity.dto.QnaBoardDto;
-import com.hansung.hansungcommunity.dto.QnaBoardResponseDto;
+import com.hansung.hansungcommunity.dto.qna.*;
 
 
 import com.hansung.hansungcommunity.entity.QnaBoard;
@@ -46,23 +43,23 @@ public class QnaBoardService {
      * 정렬 된 4개 Qna 게시글 반환
      *
      */
-    public List<QnaBoardResponseDto> findAll() {
+    public List<QnaBoardMainDto> findAll() {
         Pageable pageable = PageRequest.of(0,4, Sort.Direction.DESC,"createdAt");
         return qnaBoardRepository.findAll(pageable).getContent()
                 .stream()
-                .map(QnaBoardResponseDto::new)
+                .map(QnaBoardMainDto::new)
                 .collect(Collectors.toList());
     }
 
     /**
      * 조회수를 기준으로 4개의 게시글 조회
      */
-    public List<MostViewedQnaBoardsDto> findMostViewedBoards() {
+    public List<QnaBoardMostViewedDto> findMostViewedBoards() {
         Pageable pageable = PageRequest.of(0,4, Sort.Direction.DESC,"hits");
 
         return qnaBoardRepository.findAll(pageable).getContent()
                 .stream()
-                .map(MostViewedQnaBoardsDto::of)
+                .map(QnaBoardMostViewedDto::of)
                 .collect(Collectors.toList());
     }
 
@@ -70,14 +67,14 @@ public class QnaBoardService {
      * 게시글 저장
      */
     @Transactional
-    public QnaBoardDto post(Long userId, QnaBoardDto dto) {
+    public QnaBoardRequestDto post(Long userId, QnaBoardRequestDto dto) {
         User user = userRepository.getReferenceById(userId);
 
         QnaBoard board = dto.toEntity();
         board.setUser(user);
 
         QnaBoard savedBoard = qnaBoardRepository.save(board);
-        return QnaBoardDto.from(savedBoard);
+        return QnaBoardRequestDto.from(savedBoard);
 
     }
 
@@ -95,7 +92,7 @@ public class QnaBoardService {
      * 게시글 수정
      */
     @Transactional
-    public void update(QnaBoardDto dto) {
+    public void update(QnaBoardRequestDto dto) {
         QnaBoard target = qnaBoardRepository.getReferenceById(dto.getId());
         target.updateBoard(dto);
         qnaBoardRepository.save(target);

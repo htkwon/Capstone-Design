@@ -1,5 +1,6 @@
-package com.hansung.hansungcommunity.dto;
+package com.hansung.hansungcommunity.dto.qna;
 
+import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.QnaReply;
 import lombok.AllArgsConstructor;
 import lombok.Data;

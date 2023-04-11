@@ -1,7 +1,7 @@
 package com.hansung.hansungcommunity.entity;
 
 
-import com.hansung.hansungcommunity.dto.QnaBoardDto;
+import com.hansung.hansungcommunity.dto.qna.QnaBoardRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -77,7 +77,7 @@ public class QnaBoard extends ModifiedEntity {
         return new QnaBoard(title, content, point,language);
     }
 
-    public void updateBoard(QnaBoardDto dto) {
+    public void updateBoard(QnaBoardRequestDto dto) {
         if (dto.getTitle() != null) this.title = dto.getTitle();
         if (dto.getContent() != null) this.content = dto.getContent();
         this.tag = dto.getTag();

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.*;
+import com.hansung.hansungcommunity.dto.qna.*;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.service.FileService;
 
@@ -39,8 +40,8 @@ public class QnaBoardApiController {
      * 게시글 리스트 조회 - 홈View전용 (게시글 4개 반환)
      */
     @GetMapping("/qnaBoards")
-    public ResponseEntity<Result<List<QnaBoardResponseDto>>> QnaList(){
-        List<QnaBoardResponseDto> dtoList = qnaBoardService.findAll();
+    public ResponseEntity<Result<List<QnaBoardMainDto>>> QnaList(){
+        List<QnaBoardMainDto> dtoList = qnaBoardService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
     }
 
@@ -75,8 +76,8 @@ public class QnaBoardApiController {
      * 조회수가 높은 4개의 게시글 조회
      */
     @GetMapping("/qnaBoards/most")
-    public ResponseEntity<List<MostViewedQnaBoardsDto>> mostViewed() {
-        List<MostViewedQnaBoardsDto> mostViewedBoards = qnaBoardService.findMostViewedBoards();
+    public ResponseEntity<List<QnaBoardMostViewedDto>> mostViewed() {
+        List<QnaBoardMostViewedDto> mostViewedBoards = qnaBoardService.findMostViewedBoards();
 
         return ResponseEntity.status(HttpStatus.OK).body(mostViewedBoards);
     }
@@ -85,9 +86,9 @@ public class QnaBoardApiController {
      * 게시글 저장 (업로드 파일 없을 때)
      */
     @PostMapping("/qnaBoardsNoFile")
-    public ResponseEntity<QnaBoardDto> create(@RequestBody QnaBoardDto dto, Authentication authentication){
+    public ResponseEntity<QnaBoardRequestDto> create(@RequestBody QnaBoardRequestDto dto, Authentication authentication){
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        QnaBoardDto articleDto = qnaBoardService.post(ca.getUser().getId(), dto);
+        QnaBoardRequestDto articleDto = qnaBoardService.post(ca.getUser().getId(), dto);
         return ResponseEntity.status(HttpStatus.OK).body(articleDto);
     }
 

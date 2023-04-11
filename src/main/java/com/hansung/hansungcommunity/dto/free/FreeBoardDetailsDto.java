@@ -1,4 +1,4 @@
-package com.hansung.hansungcommunity.dto;
+package com.hansung.hansungcommunity.dto.free;
 
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import lombok.Data;
@@ -6,23 +6,30 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class FreeBoardResponseDto {
+public class FreeBoardDetailsDto {
 
     private Long id;
     private String title;
     private String content;
     private String writer;
+    private String profileImg;
+    private String stuId;
     private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
+    private int reply;
     private int bookmark;
-//  private int reply; // 댓글 기능 구현 후 추가
+    private int views;
 
-    public FreeBoardResponseDto(FreeBoard board) {
+    public FreeBoardDetailsDto(FreeBoard board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
+        this.stuId = board.getUser().getStudentId();
         this.createdDate = board.getCreatedAt();
+        this.modifiedDate = board.getModifiedAt();
         this.bookmark = board.getBookmarks();
+        this.views = board.getHits();
     }
 
 }

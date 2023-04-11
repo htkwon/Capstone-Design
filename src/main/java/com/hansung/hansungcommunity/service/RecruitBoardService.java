@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.RecruitBoardRequestDto;
+import com.hansung.hansungcommunity.dto.recruit.RecruitBoardRequestDto;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.RecruitBoardRepository;

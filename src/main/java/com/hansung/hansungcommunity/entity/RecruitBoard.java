@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.entity;
 
-import com.hansung.hansungcommunity.dto.RecruitBoardRequestDto;
+import com.hansung.hansungcommunity.dto.recruit.RecruitBoardRequestDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

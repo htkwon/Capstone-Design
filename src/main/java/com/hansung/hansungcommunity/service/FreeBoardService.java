@@ -1,9 +1,9 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.FreeBoardDetailsDto;
-import com.hansung.hansungcommunity.dto.FreeBoardDto;
-import com.hansung.hansungcommunity.dto.FreeBoardListDto;
-import com.hansung.hansungcommunity.dto.FreeBoardResponseDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardDetailsDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardRequestDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardListDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardMainDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.FreeBoardRepository;
@@ -32,21 +32,21 @@ public class FreeBoardService {
      * 자유 게시글 게시
      */
     @Transactional // 필요 시 쓰기 전용
-    public FreeBoardDto post(Long userId, FreeBoardDto boardDto) {
+    public FreeBoardRequestDto post(Long userId, FreeBoardRequestDto boardDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 학생이 없습니다."));
         FreeBoard board = FreeBoard.createBoard(user, boardDto); // 게시글 생성
 
         FreeBoard savedBoard = freeBoardRepository.save(board); // DB에 저장
 
-        return new FreeBoardDto(savedBoard); // DTO 변환 후 반환
+        return new FreeBoardRequestDto(savedBoard); // DTO 변환 후 반환
     }
 
     /**
      * 자유 게시글 수정
      */
     @Transactional
-    public FreeBoardDto update(Long boardId, FreeBoardDto dto) {
+    public FreeBoardRequestDto update(Long boardId, FreeBoardRequestDto dto) {
         FreeBoard target = freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 수정 실패, 해당하는 게시글이 없음"));
 
@@ -60,25 +60,25 @@ public class FreeBoardService {
      * 자유 게시글 삭제
      */
     @Transactional
-    public FreeBoardDto delete(Long boardId) {
+    public FreeBoardRequestDto delete(Long boardId) {
         FreeBoard target = freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 삭제 실패, 해당하는 게시글이 없음"));
 
         // 게시글 삭제
         freeBoardRepository.delete(target);
 
-        return new FreeBoardDto(target);
+        return new FreeBoardRequestDto(target);
     }
 
     /**
      * 게시글 리스트 조회
      * 정렬 후, 4개의 게시글만 반환
      */
-    public List<FreeBoardResponseDto> findAll() {
+    public List<FreeBoardMainDto> findAll() {
         Pageable pageable = PageRequest.of(0,4, Sort.Direction.DESC,"createdAt");
         return freeBoardRepository.findAll(pageable).getContent()
                 .stream()
-                .map(FreeBoardResponseDto::new)
+                .map(FreeBoardMainDto::new)
                 .collect(Collectors.toList());
     }
 

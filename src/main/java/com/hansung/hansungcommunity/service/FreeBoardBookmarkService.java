@@ -1,8 +1,8 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.FreeBoardDto;
-import com.hansung.hansungcommunity.dto.FreeBoardBookmarkDto;
-import com.hansung.hansungcommunity.dto.UserDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardRequestDto;
+import com.hansung.hansungcommunity.dto.free.FreeBoardBookmarkDto;
+import com.hansung.hansungcommunity.dto.user.UserBookmarkDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.FreeBoardBookmark;
 import com.hansung.hansungcommunity.entity.User;
@@ -29,9 +29,9 @@ public class FreeBoardBookmarkService {
                 .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다."));
         return freeBoardBookmarks.stream()
                 .map(bookmark -> {
-                    UserDto userDto = UserDto.of(bookmark.getUser());
-                    FreeBoardDto freeBoardDto = FreeBoardDto.of(bookmark.getFreeBoard());
-                    return new FreeBoardBookmarkDto(userDto, freeBoardDto);
+                    UserBookmarkDto userBookmarkDto = UserBookmarkDto.of(bookmark.getUser());
+                    FreeBoardRequestDto freeBoardRequestDto = FreeBoardRequestDto.of(bookmark.getFreeBoard());
+                    return new FreeBoardBookmarkDto(userBookmarkDto, freeBoardRequestDto);
                 }).collect(Collectors.toList());
 
 

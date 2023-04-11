@@ -1,7 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.RecruitBoardRequestDto;
+import com.hansung.hansungcommunity.dto.recruit.RecruitBoardRequestDto;
 import com.hansung.hansungcommunity.service.RecruitBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

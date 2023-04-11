@@ -1,7 +1,7 @@
 package com.hansung.hansungcommunity.entity;
 
 
-import com.hansung.hansungcommunity.dto.UserRequestDto;
+import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

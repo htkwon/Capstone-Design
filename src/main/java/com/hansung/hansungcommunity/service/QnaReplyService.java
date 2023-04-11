@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.QnaReplyDto;
+import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
 import com.hansung.hansungcommunity.entity.*;
 import com.hansung.hansungcommunity.repository.QnaBoardRepository;
 import com.hansung.hansungcommunity.repository.QnaReplyRepository;

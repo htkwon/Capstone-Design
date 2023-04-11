@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.entity;
 
-import com.hansung.hansungcommunity.dto.QnaReplyDto;
+import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

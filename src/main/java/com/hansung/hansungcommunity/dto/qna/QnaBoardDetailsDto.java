@@ -1,4 +1,4 @@
-package com.hansung.hansungcommunity.dto;
+package com.hansung.hansungcommunity.dto.qna;
 
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import lombok.Data;
