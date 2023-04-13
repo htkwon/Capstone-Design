@@ -1,6 +1,6 @@
-INSERT INTO user (stu_id, name, nickname, point, career, introduce)
-VALUES (100, 'USER1', 'NICK1', 0, '', ''),
-       (101, 'USER2', 'NICK2', 0, '', '');
+INSERT INTO user (stu_id, name, nickname, point, student_id,career, introduce)
+VALUES (100, 'USER1', 'NICK1', 0,'181234', '', ''),
+       (101, 'USER2', 'NICK2', 0, '185678','', '');
 
 INSERT INTO free_board (free_board_id, title, content, stu_id, created_at)
 VALUES (100, 'Test title 1', 'Test content 1', 100, '2023-02-07 18:41:40.000000'),

@@ -13,7 +13,7 @@ public class FreeBoardDetailsDto {
     private String content;
     private String writer;
     private String profileImg;
-    private String stuId;
+    private Long stuId;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private int reply;
@@ -25,7 +25,7 @@ public class FreeBoardDetailsDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
-        this.stuId = board.getUser().getStudentId();
+        this.stuId = Long.parseLong(board.getUser().getStudentId());
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
         this.bookmark = board.getBookmarks();
