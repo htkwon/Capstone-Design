@@ -22,13 +22,14 @@ public class RecruitBoard extends ModifiedEntity {
     private Long id;
     private String title;
     private String content;
+    private String required;
+    private String optional;
     @ColumnDefault(value = "0")
     private int hits;
     @ColumnDefault(value = "0")
     private int bookmarks;
-    @ColumnDefault(value = "0")
-    private int reports;
     private int party; // 모집할 인원 수
+    private int gathered; // 모집된 인원 수
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stu_id")
@@ -38,15 +39,23 @@ public class RecruitBoard extends ModifiedEntity {
     private List<Party> parties = new ArrayList<>();
 
     // 테스트용, 추후 인자 추가 등 작업 요망
-    private RecruitBoard(String title, String content) {
+    private RecruitBoard(String title, String content, String required, String optional, int party, int gathered) {
         this.title = title;
         this.content = content;
+        this.required = required;
+        this.optional = optional;
+        this.party = party;
+        this.gathered = gathered;
     }
 
     public static RecruitBoard createBoard(RecruitBoardRequestDto dto, User user) {
         RecruitBoard board = new RecruitBoard(
                 dto.getTitle(),
-                dto.getContent()
+                dto.getContent(),
+                dto.getRequired(),
+                dto.getOptional(),
+                dto.getParty(),
+                dto.getGathered()
         );
         board.setUser(user);
 

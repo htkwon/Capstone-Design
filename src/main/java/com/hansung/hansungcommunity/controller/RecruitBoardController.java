@@ -21,7 +21,7 @@ public class RecruitBoardController {
     /**
      * 게시글 생성
      */
-    @PostMapping("/recruit-board")
+    @PostMapping("/recruit")
     public ResponseEntity<Long> create(@RequestBody RecruitBoardRequestDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long savedId = recruitBoardService.post(ca.getUser().getId(), dto);

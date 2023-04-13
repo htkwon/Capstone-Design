@@ -12,5 +12,9 @@ public class RecruitBoardRequestDto {
 
     private String title;
     private String content;
+    private String required;
+    private String optional;
+    private int party;
+    private int gathered;
 
 }
