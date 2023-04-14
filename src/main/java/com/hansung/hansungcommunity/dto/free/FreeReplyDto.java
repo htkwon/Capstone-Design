@@ -1,6 +1,5 @@
 package com.hansung.hansungcommunity.dto.free;
 
-
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.FreeReply;
 import lombok.AllArgsConstructor;
@@ -70,5 +69,5 @@ public class FreeReplyDto {
                 .collect(Collectors.toList());
     }
 
-
 }
+
