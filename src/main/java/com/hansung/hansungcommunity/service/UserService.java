@@ -3,7 +3,7 @@ package com.hansung.hansungcommunity.service;
 import com.hansung.hansungcommunity.dto.user.UserInfoDto;
 import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import com.hansung.hansungcommunity.entity.User;
-import com.hansung.hansungcommunity.repository.UserRepository;
+import com.hansung.hansungcommunity.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +16,10 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final QnaReplyRepository qnaReplyRepository;
+    private final FreeReplyRepository freeReplyRepository;
+    private final FreeBoardBookmarkRepository freeBoardBookmarkRepository;
+    private final QnaBoardBookmarkRepository qnaBoardBookmarkRepository;
 
     /**
      * 회원가입
@@ -45,7 +49,22 @@ public class UserService {
 
     public UserInfoDto getUserInfo(Long stuId) {
         User user = userRepository.findById(stuId).orElseThrow(()->new RuntimeException("유저가 존재하지 않습니다."));
-        return UserInfoDto.from(user);
+        int replyCount =
+                freeReplyRepository.findAllByUserId(stuId)
+                    .orElseThrow(()->new IllegalArgumentException("해당 댓글이 없습니다.")).size()
+                + qnaReplyRepository.findAllByUserId(stuId)
+                    .orElseThrow(()->new IllegalArgumentException("해당 댓글이 없습니다.")).size();
+        int bookmarkCount =
+                freeBoardBookmarkRepository.findAllByUserId(stuId)
+                        .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다.")).size()
+                + qnaBoardBookmarkRepository.findAllByUserId(stuId)
+                        .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다.")).size();
+
+        UserInfoDto userInfoDto = UserInfoDto.from(user);
+        userInfoDto.setReply(replyCount);
+        userInfoDto.setBookmark(bookmarkCount);
+
+        return userInfoDto;
     }
 
 
