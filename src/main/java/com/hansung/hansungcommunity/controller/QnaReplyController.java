@@ -23,7 +23,7 @@ public class QnaReplyController {
      * 댓글 생성
      * 대댓글 생성 uri 논의 필요
      */
-    @PostMapping("/qnaBoards/{boardId}/replies")
+    @PostMapping("/qna/{boardId}/replies")
     public ResponseEntity<QnaReplyDto> create(
             @PathVariable("boardId") Long boardId,
             @RequestBody @Valid QnaReplyDto replyDto,
@@ -39,7 +39,7 @@ public class QnaReplyController {
     /**
      * 댓글 조회(임시)
      */
-    @GetMapping("/qnaBoards/{boardId}/replies")
+    @GetMapping("/qna/{boardId}/replies")
     public ResponseEntity<List<QnaReplyDto>> list(
             @PathVariable("boardId") Long boardId
     ) {
@@ -55,10 +55,10 @@ public class QnaReplyController {
     /**
      * 채택
      */
-    @PutMapping("/qna-boards/{replyId}/adopt-replies/{point}")
-    public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId,@PathVariable("point") int point,Authentication authentication){
+    @PutMapping("/qna/{replyId}/adopt-replies/{point}")
+    public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId, @PathVariable("point") int point, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        Boolean adopt = replyService.adopt(replyId,point,ca.getUser().getId());
+        Boolean adopt = replyService.adopt(replyId, point, ca.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(adopt);
     }
 
@@ -67,13 +67,10 @@ public class QnaReplyController {
      * 프론트단에서 체크 후, true면 이미 해당 글의 댓글을 채택하셨다는 알림
      * false면 채택 가능
      */
-    @GetMapping("/qna-boards/{boardId}/adopt-check")
-    public ResponseEntity<Boolean> adoptCheck(@PathVariable("boardId") Long boardId){
+    @GetMapping("/qna/{boardId}/adopt-check")
+    public ResponseEntity<Boolean> adoptCheck(@PathVariable("boardId") Long boardId) {
         Boolean check = replyService.adoptCheck(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
-
-
-
 
 }

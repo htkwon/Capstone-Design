@@ -37,9 +37,9 @@ public class QnaBoardApiController {
     private final FileService fileService;
 
     /**
-     * 게시글 리스트 조회 - 홈View전용 (게시글 4개 반환)
+     * 게시글 리스트 조회 - 홈 View 전용 (게시글 4개 반환)
      */
-    @GetMapping("/qnaBoards")
+    @GetMapping("/qna/main")
     public ResponseEntity<Result<List<QnaBoardMainDto>>> QnaList(){
         List<QnaBoardMainDto> dtoList = qnaBoardService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
@@ -49,7 +49,7 @@ public class QnaBoardApiController {
      * 특정 게시글 조회
      * 조회수 증가 로직 구현을 위해 임의로 구현, 추후 수정
      */
-    @GetMapping("/qnaBoards/{boardId}")
+    @GetMapping("/qna/detail/{boardId}")
     public ResponseEntity<QnaBoardDetailsDto> detail(
             @PathVariable("boardId") Long boardId,
             HttpServletRequest request,
@@ -65,7 +65,7 @@ public class QnaBoardApiController {
      * Qna 게시판 목록 페이지 (해당 페이지에 개수에 맞게 데이터 반환)
      * 페이지 정보는 프론트에서 전송
      */
-    @GetMapping("/qnaBoardsPage")
+    @GetMapping("/qna/list")
     public ResponseEntity<List<QnaBoardListDto>> listOfPage(Pageable pageable){
         List<QnaBoardListDto> dtoList = qnaBoardService.findByPage(pageable);
 
@@ -75,7 +75,7 @@ public class QnaBoardApiController {
     /**
      * 조회수가 높은 4개의 게시글 조회
      */
-    @GetMapping("/qnaBoards/most")
+    @GetMapping("/qna/most")
     public ResponseEntity<List<QnaBoardMostViewedDto>> mostViewed() {
         List<QnaBoardMostViewedDto> mostViewedBoards = qnaBoardService.findMostViewedBoards();
 
@@ -85,7 +85,7 @@ public class QnaBoardApiController {
     /**
      * 게시글 저장 (업로드 파일 없을 때)
      */
-    @PostMapping("/qnaBoardsNoFile")
+    @PostMapping("/qna/no-file")
     public ResponseEntity<QnaBoardRequestDto> create(@RequestBody QnaBoardRequestDto dto, Authentication authentication){
         CustomAuthentication ca = (CustomAuthentication) authentication;
         QnaBoardRequestDto articleDto = qnaBoardService.post(ca.getUser().getId(), dto);
@@ -95,7 +95,7 @@ public class QnaBoardApiController {
     /**
      * 게시글 저장 (업로드 파일 있을 때)
      */
-    @PostMapping("/qnaBoards")
+    @PostMapping("/qna")
     public ResponseEntity<Object> create(
             MultipartFile[] multipartFiles,
             String stringQna,
@@ -131,7 +131,7 @@ public class QnaBoardApiController {
     /**
      * 사진 url 전송 API
      */
-    @PostMapping("/return/imageUrl")
+    @PostMapping("/qna/image")
     public String create2(MultipartFile[] multipartFiles) throws IOException {
 
             MultipartFile image = multipartFiles[0];
