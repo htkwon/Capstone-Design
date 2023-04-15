@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST, "/api/join").hasRole("STUDENT")
                 .antMatchers(HttpMethod.GET, "/api/check").hasAnyRole("STUDENT", "USER")
                 .antMatchers(HttpMethod.GET, "/api/freeBoards").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/qnaBoards").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/qna/main").permitAll()
                 .anyRequest().hasRole("USER")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
