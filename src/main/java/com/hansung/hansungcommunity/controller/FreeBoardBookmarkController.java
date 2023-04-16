@@ -23,7 +23,7 @@ public class FreeBoardBookmarkController {
     /**
      * 해당 유저의 북마크 글 조회
      */
-    @GetMapping("/free-boards/bookmark")
+    @GetMapping("/free/bookmark")
     public ResponseEntity<List<FreeBoardBookmarkDto>> list(Authentication authentication){
         CustomAuthentication ca = (CustomAuthentication) authentication;
         List<FreeBoardBookmarkDto> list = freeBoardBookmarkService.getBoards(ca.getUser().getId());
@@ -34,7 +34,7 @@ public class FreeBoardBookmarkController {
     /**
      * 북마크 등록
      */
-    @PostMapping("/free-boards/{boardId}/bookmark")
+    @PostMapping("/free/{boardId}/bookmark")
     public ResponseEntity<FreeBoardBookmark> create(@PathVariable("boardId") Long boardId, Authentication authentication){
         CustomAuthentication ca = (CustomAuthentication) authentication;
         FreeBoardBookmark freeBoardBookmark = freeBoardBookmarkService.create(boardId,ca.getUser().getId());
@@ -44,7 +44,7 @@ public class FreeBoardBookmarkController {
     /**
      * 북마크 취소
      */
-    @DeleteMapping("/free-boards/{boardId}/bookmark")
+    @DeleteMapping("/free/{boardId}/bookmark")
     public ResponseEntity<String> cancle(@PathVariable("boardId") Long boardId, Authentication authentication){
         CustomAuthentication ca = (CustomAuthentication) authentication;
         freeBoardBookmarkService.cancle(boardId,ca.getUser().getId());
@@ -54,7 +54,7 @@ public class FreeBoardBookmarkController {
     /**
      * 해당 유저가 해당 게시글을 북마크 했는지 체크
      */
-    @GetMapping("/free-boards/{boardId}/bookmark-check")
+    @GetMapping("/free/{boardId}/bookmark-check")
     public ResponseEntity<Boolean> check(@PathVariable("boardId") Long boardId, Authentication authentication){
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Boolean check = freeBoardBookmarkService.check(boardId,ca.getUser().getId());
@@ -64,7 +64,7 @@ public class FreeBoardBookmarkController {
     /**
      * 해당 게시글의 북마크수 조회
      */
-    @GetMapping("/free-boards/{boardId}/bookmark-count")
+    @GetMapping("/free/{boardId}/bookmark-count")
     public ResponseEntity<Integer> count(@PathVariable("boardId") Long boardId){
         int count = freeBoardBookmarkService.count(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(count);
