@@ -53,6 +53,15 @@ public class UserApiController {
         return ResponseEntity.status(HttpStatus.OK).body(userInfoDto);
     }
 
+    /**
+     * 현재 접속 유저의 id만 반환 (프론트 댓글, 대댓글에서 사용)
+     */
+    @GetMapping("/api/user-id")
+    public ResponseEntity<Long> userId(Authentication authentication){
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        return ResponseEntity.status(HttpStatus.OK).body(ca.getUser().getId());
+    }
+
 
 }
 
