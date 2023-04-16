@@ -20,7 +20,7 @@ public class FreeReplyController {
 
     private final FreeReplyService freeReplyService;
 
-    @PostMapping("/freeBoards/{boardId}/replies")
+    @PostMapping("/free/{boardId}/replies")
     public ResponseEntity<FreeReplyDto> create(
             @PathVariable("boardId") Long boardId,
             @RequestBody @Valid FreeReplyDto replyDto,
@@ -36,19 +36,19 @@ public class FreeReplyController {
 
     }
 
-    @GetMapping("/freeBoards/{boardId}/replies")
+    @GetMapping("/free/{boardId}/replies")
     public ResponseEntity<List<FreeReplyDto>> list(@PathVariable("boardId") Long boardId ){
         List<FreeReplyDto> list = freeReplyService.getReplyList(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @PutMapping("/free-boards/update/replies")
+    @PutMapping("/free/update/replies")
     public ResponseEntity<String> update(@RequestBody  FreeReplyDto replyDto){
         freeReplyService.update(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body("수정 완료");
     }
 
-    @DeleteMapping("/free-boards/{replyId}/replies")
+    @DeleteMapping("/free/delete/{replyId}/replies")
     public ResponseEntity<String> delete(@PathVariable("replyId") Long replyId){
         freeReplyService.delete(replyId);
         return ResponseEntity.status(HttpStatus.OK).body("삭제 완료");

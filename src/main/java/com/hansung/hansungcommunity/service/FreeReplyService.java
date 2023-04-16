@@ -79,4 +79,5 @@ public class FreeReplyService {
                 .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
         freeReplyRepository.delete(reply);
     }
+
 }

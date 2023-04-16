@@ -29,7 +29,7 @@ public class FreeBoardApiController {
     /**
      * 모든 게시글 조회 (게시글 4개반환)
      */
-    @GetMapping("/freeBoards")
+    @GetMapping("/free/main")
     public ResponseEntity<Result<List<FreeBoardMainDto>>> list() {
         List<FreeBoardMainDto> dtoList = freeBoardService.findAll();
 
@@ -40,7 +40,7 @@ public class FreeBoardApiController {
      * 특정 게시글 조회
      * 조회수 증가 로직 구현을 위해 임의로 구현, 추후 수정
      */
-    @GetMapping("/freeBoards/{boardId}")
+    @GetMapping("/free/detail/{boardId}")
     public ResponseEntity<Result<FreeBoardDetailsDto>> detail(
             @PathVariable("boardId") Long boardId,
             HttpServletRequest request,
@@ -56,7 +56,7 @@ public class FreeBoardApiController {
      * 자유 게시판 목록 페이지 (해당 페이지에 개수에 맞게 데이터 반환)
      * 페이지 정보는 프론트에서 전송
      */
-    @GetMapping("/freeBoardsPage")
+    @GetMapping("/free/list")
     public ResponseEntity<List<FreeBoardListDto>> listOfPage(Pageable pageable){
         List<FreeBoardListDto> dtoList = freeBoardService.findByPage(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
@@ -66,7 +66,7 @@ public class FreeBoardApiController {
     /**
      * 게시글 저장
      */
-    @PostMapping("/freeBoards")
+    @PostMapping("/free")
     public ResponseEntity<Result<FreeBoardRequestDto>> create(
             @RequestBody FreeBoardRequestDto dto,
             Authentication authentication
@@ -82,7 +82,7 @@ public class FreeBoardApiController {
     /**
      * 게시글 수정
      */
-    @PutMapping("/freeBoards/{boardId}")
+    @PutMapping("/free/update/{boardId}")
     public ResponseEntity<Result<FreeBoardRequestDto>> update(
             @PathVariable("boardId") Long boardId,
             @RequestBody FreeBoardRequestDto dto
@@ -97,7 +97,7 @@ public class FreeBoardApiController {
     /**
      * 게시글 삭제
      */
-    @DeleteMapping("/freeBoards/{boardId}")
+    @DeleteMapping("/free/delete/{boardId}")
     public ResponseEntity<Result<FreeBoardRequestDto>> delete(@PathVariable("boardId") Long boardId) {
         FreeBoardRequestDto boardDto = freeBoardService.delete(boardId);
 
