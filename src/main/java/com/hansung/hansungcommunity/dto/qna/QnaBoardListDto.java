@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 public class QnaBoardListDto {
@@ -21,14 +22,14 @@ public class QnaBoardListDto {
     private int reply;
     private int point;
 
-    public QnaBoardListDto(QnaBoard board){
+    public QnaBoardListDto(QnaBoard board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
-        this.bookmark = board.getBookmarks();
+        this.bookmark = board.getBookmarks().size();
         this.reply = board.getReplies().size();
         this.point = board.getPoint();
     }

@@ -8,7 +8,9 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Table(name = "free_board")
 @Getter
@@ -26,17 +28,14 @@ public class FreeBoard extends ModifiedEntity {
     private String content; // 내용
     @ColumnDefault(value = "0")
     private int hits; // 조회수
-    @ColumnDefault(value = "0")
-    private int bookmarks; // 북마크 횟수
-    @ColumnDefault(value = "0")
-    private int reports; // 신고 횟수
     @ManyToOne(fetch = FetchType.LAZY) // JPA 활용 시, XToOne 인 경우 fetch 타입을 LAZY 로 설정 !!!
     @JoinColumn(name = "stu_id")
     private User user;
-    // private Image image; // 게시글 내부 이미지, 추후 개발
-
     @OneToMany(mappedBy = "freeBoard")
-    private List<FreeBoardBookmark> bookmakrs = new ArrayList<>();
+    private Set<FreeBoardBookmark> bookmarks = new HashSet<>();
+    @OneToMany(mappedBy = "freeBoard")
+    public List<FreeReply> replies = new ArrayList<>();
+
 
     // 생성 메소드
     public static FreeBoard createBoard(User user, FreeBoardRequestDto dto) {

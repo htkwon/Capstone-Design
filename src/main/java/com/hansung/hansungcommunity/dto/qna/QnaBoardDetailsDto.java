@@ -28,7 +28,7 @@ public class QnaBoardDetailsDto {
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
         this.language = board.getLanguage();
-        this.bookmark = board.getBookmarks();
+        this.bookmark = board.getBookmarks().size();
         this.views = board.getHits();
         this.reply = board.getReplies().size();
         this.point = board.getPoint();

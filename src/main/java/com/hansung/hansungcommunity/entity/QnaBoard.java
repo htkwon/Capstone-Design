@@ -9,15 +9,14 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @ToString(callSuper = true)
 @Entity
 @NoArgsConstructor
 public class QnaBoard extends ModifiedEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_board_id")
@@ -32,10 +31,8 @@ public class QnaBoard extends ModifiedEntity {
     private String tag;
     @ColumnDefault(value = "0")
     private int hits;
-    @ColumnDefault(value = "0")
-    private int bookmarks;
-    @ColumnDefault(value = "0")
-    private int reports;
+    @Column
+    private String language;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<FileEntity> fileEntity = new ArrayList<>();
@@ -49,19 +46,19 @@ public class QnaBoard extends ModifiedEntity {
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<QnaReply> replies = new ArrayList<>();
 
-    @Column
-    private String language;
+    @OneToMany(mappedBy = "qnaBoard")
+    private Set<QnaBoardBookmark> bookmarks = new HashSet<>();
 
-    public QnaBoard(User user, String title, String content, String tag, int point,String language) {
+    public QnaBoard(User user, String title, String content, String tag, int point, String language) {
         this.user = user;
         this.title = title;
         this.content = content;
         this.tag = tag;
         this.point = point;
-        this.language=language;
+        this.language = language;
     }
 
-    public QnaBoard(String title, String content, int point,String language) {
+    public QnaBoard(String title, String content, int point, String language) {
         this.title = title;
         this.content = content;
         this.point = point;
@@ -69,12 +66,12 @@ public class QnaBoard extends ModifiedEntity {
     }
 
     //추후 다른 곳에서(EX.. Test)에서 편하게 만들기위해 Factory method 사용
-    public static QnaBoard of(User user, String title, String content, String tag, int point,String language) {
-        return new QnaBoard(user, title, content, tag, point,language);
+    public static QnaBoard of(User user, String title, String content, String tag, int point, String language) {
+        return new QnaBoard(user, title, content, tag, point, language);
     }
 
-    public static QnaBoard of(String title, String content, int point,String language) {
-        return new QnaBoard(title, content, point,language);
+    public static QnaBoard of(String title, String content, int point, String language) {
+        return new QnaBoard(title, content, point, language);
     }
 
     public void updateBoard(QnaBoardRequestDto dto) {
