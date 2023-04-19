@@ -10,17 +10,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class QnaBoardBookmark {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name ="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name ="free_board_id")
+    @JoinColumn(name = "qna_board_id")
     private QnaBoard qnaBoard;
 
     public QnaBoardBookmark(User user, QnaBoard qnaBoard) {
@@ -28,13 +27,11 @@ public class QnaBoardBookmark {
         this.qnaBoard = qnaBoard;
     }
 
-    public static QnaBoardBookmark of(User user, QnaBoard qnaBoard){
+    public static QnaBoardBookmark of(User user, QnaBoard qnaBoard) {
         return new QnaBoardBookmark(
                 user,
                 qnaBoard
         );
     }
-
-
 
 }

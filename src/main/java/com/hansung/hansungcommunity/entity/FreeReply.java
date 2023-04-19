@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FreeReply extends AuditingFields{
+public class FreeReply extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class FreeReply extends AuditingFields{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "free_board_id")
-    private FreeBoard board;
+    private FreeBoard freeBoard;
 
     @Column
     private String article;
@@ -39,28 +39,26 @@ public class FreeReply extends AuditingFields{
     @OneToMany(mappedBy = "parent")
     private List<FreeReply> children = new ArrayList<>();
 
-
-    private FreeReply( User user, FreeBoard board, String article){
+    private FreeReply(User user, FreeBoard freeBoard, String article) {
         this.user = user;
-        this.board = board;
+        this.freeBoard = freeBoard;
         this.article = article;
     }
 
-    public static FreeReply of(User user, FreeBoard board, FreeReplyDto dto){
+    public static FreeReply of(User user, FreeBoard board, FreeReplyDto dto) {
         return new FreeReply(
                 user,
                 board,
                 dto.getArticle()
         );
     }
-    public  void update(String article){
+
+    public void update(String article) {
         this.article = article;
     }
 
-    public void updateParent(FreeReply parent){
+    public void updateParent(FreeReply parent) {
         this.parent = parent;
     }
-
-
 
 }

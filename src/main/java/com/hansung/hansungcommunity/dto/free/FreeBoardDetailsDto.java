@@ -28,7 +28,7 @@ public class FreeBoardDetailsDto {
         this.stuId = Long.parseLong(board.getUser().getStudentId());
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
-        this.bookmark = board.getBookmarks();
+        this.bookmark = board.getBookmarks().size();
         this.views = board.getHits();
     }
 
