@@ -1,7 +1,9 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
+import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
+import com.hansung.hansungcommunity.repository.QnaReplyRepository;
 import com.hansung.hansungcommunity.service.QnaReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,6 +53,11 @@ public class QnaReplyController {
     /**
      * 수정, 삭제
      */
+    @PutMapping("/qna/update/replies")
+    public ResponseEntity<QnaReplyDto> update(@RequestBody QnaReplyDto replyDto){
+        QnaReplyDto dto = replyService.update(replyDto);
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
+    }
 
     /**
      * 채택

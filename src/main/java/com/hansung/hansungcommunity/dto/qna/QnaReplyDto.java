@@ -36,6 +36,15 @@ public class QnaReplyDto {
         this.createdAt = createdAt;
     }
 
+    public static QnaReplyDto from (QnaReply qnaReply,UserReplyDto dto){
+        return new QnaReplyDto(
+                qnaReply.getId(),
+                qnaReply.getArticle(),
+                dto,
+                qnaReply.getCreatedAt()
+        );
+    }
+
     // 부모 댓글 DTO 생성
     public static QnaReplyDto createParent(QnaReply qnaReply) {
         return new QnaReplyDto(

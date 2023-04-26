@@ -1,8 +1,11 @@
 package com.hansung.hansungcommunity.service;
 
 import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
+import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
+import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.FreeReply;
+import com.hansung.hansungcommunity.entity.QnaReply;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.FreeBoardRepository;
 import com.hansung.hansungcommunity.repository.FreeReplyRepository;
@@ -67,13 +70,17 @@ public class FreeReplyService {
     }
 
     @Transactional
-    public void update(FreeReplyDto replyDto) {
+    public FreeReplyDto update(FreeReplyDto replyDto) {
         FreeReply reply = freeReplyRepository.findById(replyDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다."));
         reply.update(replyDto.getArticle());
-        freeReplyRepository.save(reply);
+        UserReplyDto userReplyDto = new UserReplyDto(userRepository.findById(reply.getUser().getId())
+                .orElseThrow(()->new IllegalArgumentException("해당 유저가 없습니다.")));
+        return FreeReplyDto.from(freeReplyRepository.save(reply),userReplyDto);
 
     }
+
+
 
     @Transactional
     public void delete(Long replyId) {

@@ -61,4 +61,5 @@ public class QnaReply extends AuditingFields {
 
     public void adopt(Boolean adopt){this.adopt = adopt;}
 
+    public void update(String article) {this.article = article;}
 }
