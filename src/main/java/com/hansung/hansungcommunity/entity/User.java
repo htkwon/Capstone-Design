@@ -55,6 +55,15 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<QnaBoardBookmark> qnaBookmarks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<FreeReply> freeReplies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<QnaReply> qnaReplies = new ArrayList<>();
+
+
+
+
     public User(String studentId, String name, String nickname, String introduce, String track1, String track2) {
         this.studentId = studentId;
         this.name = name;

@@ -51,8 +51,8 @@ public class UserInfoDto {
                 user.getTrack2(),
                 user.getPoint(),
                 user.getPostQnaBoard().size()+user.getPostFreeBoards().size(),
-                0,
-                0,
+                user.getFreeReplies().size() + user.getQnaReplies().size(),
+                user.getFreeBookmarks().size()+user.getQnaBookmarks().size(),
                 user.getIntroduce()
         );
     }

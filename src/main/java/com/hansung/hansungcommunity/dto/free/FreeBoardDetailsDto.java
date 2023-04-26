@@ -29,6 +29,7 @@ public class FreeBoardDetailsDto {
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
         this.bookmark = board.getBookmarks().size();
+        this.reply = board.getReplies().size();
         this.views = board.getHits();
     }
 

@@ -12,6 +12,7 @@ public class QnaBoardDetailsDto {
     private String title;
     private String content;
     private String writer;
+    private Long stuId;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private String language;
@@ -25,6 +26,7 @@ public class QnaBoardDetailsDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
+        this.stuId = Long.parseLong(board.getUser().getStudentId());
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
         this.language = board.getLanguage();
