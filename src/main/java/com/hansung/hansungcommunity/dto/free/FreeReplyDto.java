@@ -1,7 +1,9 @@
 package com.hansung.hansungcommunity.dto.free;
 
+import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.FreeReply;
+import com.hansung.hansungcommunity.entity.QnaReply;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,6 +43,15 @@ public class FreeReplyDto {
         this.user = new UserReplyDto(freeReply.getUser());
         this.createdAt = freeReply.getCreatedAt();
 
+    }
+
+    public static FreeReplyDto from (FreeReply freeReply, UserReplyDto dto){
+        return new FreeReplyDto(
+                freeReply.getId(),
+                freeReply.getArticle(),
+                dto,
+                freeReply.getCreatedAt()
+        );
     }
 
 

@@ -43,9 +43,9 @@ public class FreeReplyController {
     }
 
     @PutMapping("/free/update/replies")
-    public ResponseEntity<String> update(@RequestBody  FreeReplyDto replyDto){
-        freeReplyService.update(replyDto);
-        return ResponseEntity.status(HttpStatus.OK).body("수정 완료");
+    public ResponseEntity<FreeReplyDto> update(@RequestBody  FreeReplyDto replyDto){
+        FreeReplyDto dto = freeReplyService.update(replyDto);
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     @DeleteMapping("/free/delete/{replyId}/replies")

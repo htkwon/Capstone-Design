@@ -1,6 +1,8 @@
 package com.hansung.hansungcommunity.service;
 
+import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
+import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.*;
 import com.hansung.hansungcommunity.repository.QnaBoardRepository;
 import com.hansung.hansungcommunity.repository.QnaReplyRepository;
@@ -115,5 +117,16 @@ public class QnaReplyService {
         return replyRepository.findAllByBoardId(reply.getId())
                 .stream()
                 .anyMatch(freeReply -> Boolean.TRUE.equals(reply.getAdopt()));
+    }
+
+    @Transactional
+    public QnaReplyDto update(QnaReplyDto replyDto) {
+        QnaReply reply = replyRepository.findById(replyDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다."));
+        reply.update(replyDto.getArticle());
+        UserReplyDto userReplyDto = new UserReplyDto(userRepository.findById(reply.getUser().getId())
+                .orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다.")));
+        return QnaReplyDto.from(replyRepository.save(reply), userReplyDto);
+
     }
 }
