@@ -49,6 +49,10 @@ public class QnaBoard extends ModifiedEntity {
     @OneToMany(mappedBy = "qnaBoard")
     private Set<QnaBoardBookmark> bookmarks = new HashSet<>();
 
+    @OneToOne
+    @JoinColumn(name="adopt_id")
+    private Adopt adopt;
+
     public QnaBoard(User user, String title, String content, String tag, int point, String language) {
         this.user = user;
         this.title = title;

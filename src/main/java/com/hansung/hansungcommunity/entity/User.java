@@ -5,6 +5,8 @@ import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -61,8 +63,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<QnaReply> qnaReplies = new ArrayList<>();
 
-
-
+    @OneToMany(mappedBy = "user")
+    private List<Adopt> qnaAdopt = new ArrayList<>();
 
     public User(String studentId, String name, String nickname, String introduce, String track1, String track2) {
         this.studentId = studentId;
