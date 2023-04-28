@@ -2,8 +2,10 @@ package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.user.UserInfoDto;
+import com.hansung.hansungcommunity.dto.user.UserRankDto;
 import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import com.hansung.hansungcommunity.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,6 +64,15 @@ public class UserApiController {
     public ResponseEntity<Long> userId(Authentication authentication){
         CustomAuthentication ca = (CustomAuthentication) authentication;
         return ResponseEntity.status(HttpStatus.OK).body(ca.getUser().getId());
+    }
+
+    /**
+     * 메인페이지( 유저 채택 순위 TOP5 )
+     */
+    @GetMapping("/api/user-rank")
+    public ResponseEntity<List<UserRankDto>> userRank(){
+        List<UserRankDto> dto = userService.getUserRank();
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
 

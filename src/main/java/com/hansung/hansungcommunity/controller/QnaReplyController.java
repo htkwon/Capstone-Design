@@ -62,12 +62,12 @@ public class QnaReplyController {
     /**
      * 채택
      */
-    @PutMapping("/qna/{replyId}/adopt-replies/{point}")
-    public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId, @PathVariable("point") int point, Authentication authentication) {
-        CustomAuthentication ca = (CustomAuthentication) authentication;
-        Boolean adopt = replyService.adopt(replyId, point, ca.getUser().getId());
+    @PostMapping("/qna/{replyId}/adopt-replies")
+    public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId, Authentication authentication){
+        Boolean adopt = replyService.adopt(replyId);
         return ResponseEntity.status(HttpStatus.OK).body(adopt);
     }
+
 
     /**
      * 해당 id 게시글의 댓글들중 이미 채택한 댓글이 있는지 체크

@@ -4,6 +4,7 @@ import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.*;
+import com.hansung.hansungcommunity.repository.AdoptRepository;
 import com.hansung.hansungcommunity.repository.QnaBoardRepository;
 import com.hansung.hansungcommunity.repository.QnaReplyRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
@@ -23,6 +24,7 @@ public class QnaReplyService {
     private final QnaReplyRepository replyRepository;
     private final QnaBoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final AdoptRepository adoptRepository;
 
     /**
      * 댓글 생성
@@ -128,5 +130,15 @@ public class QnaReplyService {
                 .orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다.")));
         return QnaReplyDto.from(replyRepository.save(reply), userReplyDto);
 
+    }
+    @Transactional
+    public Boolean adopt(Long replyId) {
+        QnaReply reply = replyRepository.findById(replyId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
+        reply.adopt(true);
+        replyRepository.save(reply);
+        adoptRepository.save(Adopt.of(reply.getBoard(),reply.getUser()));
+
+        return reply.getAdopt();
     }
 }

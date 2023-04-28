@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.service;
 
 import com.hansung.hansungcommunity.dto.user.UserInfoDto;
+import com.hansung.hansungcommunity.dto.user.UserRankDto;
 import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.*;
@@ -8,7 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor // 생성자 주입 (final 키워드)
@@ -20,6 +24,7 @@ public class UserService {
     private final FreeReplyRepository freeReplyRepository;
     private final FreeBoardBookmarkRepository freeBoardBookmarkRepository;
     private final QnaBoardBookmarkRepository qnaBoardBookmarkRepository;
+    private final AdoptRepository adoptRepository;
 
     /**
      * 회원가입
@@ -67,5 +72,12 @@ public class UserService {
         return userInfoDto;
     }
 
-
+    public List<UserRankDto> getUserRank() {
+        List<UserRankDto> list = adoptRepository.findTop5UsersByAdoptCount()
+                .stream()
+                .map(UserRankDto::of)
+                .limit(5)
+                .collect(Collectors.toList());
+        return list;
+    }
 }
