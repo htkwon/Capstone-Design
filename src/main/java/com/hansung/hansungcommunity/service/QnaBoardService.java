@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,9 +56,10 @@ public class QnaBoardService {
      * 조회수를 기준으로 4개의 게시글 조회
      */
     public List<QnaBoardMostViewedDto> findMostViewedBoards() {
-        Pageable pageable = PageRequest.of(0,4, Sort.Direction.DESC,"hits");
+        Pageable pageable = PageRequest.of(0,4, Sort.Direction.DESC,"views");
+        LocalDateTime standardTime = LocalDateTime.now().minusWeeks(1); // 1주일 기준
 
-        return qnaBoardRepository.findAll(pageable).getContent()
+        return qnaBoardRepository.findByCreatedAtAfter(standardTime, pageable)
                 .stream()
                 .map(QnaBoardMostViewedDto::of)
                 .collect(Collectors.toList());

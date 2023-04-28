@@ -3,7 +3,6 @@ package com.hansung.hansungcommunity.entity;
 import com.hansung.hansungcommunity.dto.free.FreeBoardRequestDto;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,18 +15,14 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class FreeBoard extends ModifiedEntity {
+public class FreeBoard extends Board {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "free_board_id")
     private Long id;
     @NotNull
     private String title; // 제목
     @NotNull
     private String content; // 내용
-    @ColumnDefault(value = "0")
-    private int hits; // 조회수
     @ManyToOne(fetch = FetchType.LAZY) // JPA 활용 시, XToOne 인 경우 fetch 타입을 LAZY 로 설정 !!!
     @JoinColumn(name = "stu_id")
     private User user;
@@ -66,9 +61,8 @@ public class FreeBoard extends ModifiedEntity {
         modified();
     }
 
-    // 조회수 증가 메소드
     public void increaseHits() {
-        this.hits++;
+        increaseViews();
     }
 
 }

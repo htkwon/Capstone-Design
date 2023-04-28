@@ -33,7 +33,7 @@ public class FreeBoardListDto {
         this.modifiedDate = board.getModifiedAt();
         this.bookmark = board.getBookmarks().size();
         this.reply = board.getReplies().size();
-        this.views = board.getHits();
+        this.views = board.getViews();
     }
 
 }

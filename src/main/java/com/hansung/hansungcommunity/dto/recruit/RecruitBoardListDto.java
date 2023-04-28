@@ -36,7 +36,7 @@ public class RecruitBoardListDto {
                 recruitBoard.getCreatedAt(),
                 recruitBoard.getModifiedAt(),
                 recruitBoard.getBookmarks(),
-                recruitBoard.getHits(),
+                recruitBoard.getViews(),
                 Long.parseLong(recruitBoard.getUser().getStudentId()),
                 recruitBoard.getRequired(),
                 recruitBoard.getOptional(),
