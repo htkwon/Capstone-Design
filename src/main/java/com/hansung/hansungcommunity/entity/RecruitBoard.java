@@ -14,18 +14,14 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class RecruitBoard extends ModifiedEntity {
+public class RecruitBoard extends Board {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "recruit_board_id")
     private Long id;
     private String title;
     private String content;
     private String required;
     private String optional;
-    @ColumnDefault(value = "0")
-    private int hits;
     @ColumnDefault(value = "0")
     private int bookmarks;
     private int party; // 모집할 인원 수
@@ -80,7 +76,7 @@ public class RecruitBoard extends ModifiedEntity {
 
     // 조회수 증가 메소드
     public void increaseHits() {
-        this.hits++;
+        increaseViews();
     }
 
 }

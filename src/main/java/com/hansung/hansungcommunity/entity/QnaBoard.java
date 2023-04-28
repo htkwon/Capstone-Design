@@ -5,7 +5,6 @@ import com.hansung.hansungcommunity.dto.qna.QnaBoardRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,11 +14,9 @@ import java.util.*;
 @ToString(callSuper = true)
 @Entity
 @NoArgsConstructor
-public class QnaBoard extends ModifiedEntity {
+public class QnaBoard extends Board {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "qna_board_id")
     private Long id;
     @NotNull
     private String title;
@@ -29,8 +26,6 @@ public class QnaBoard extends ModifiedEntity {
     private int point;
     @Column
     private String tag;
-    @ColumnDefault(value = "0")
-    private int hits;
     @Column
     private String language;
 
@@ -50,7 +45,7 @@ public class QnaBoard extends ModifiedEntity {
     private Set<QnaBoardBookmark> bookmarks = new HashSet<>();
 
     @OneToOne
-    @JoinColumn(name="adopt_id")
+    @JoinColumn(name = "adopt_id")
     private Adopt adopt;
 
     public QnaBoard(User user, String title, String content, String tag, int point, String language) {
@@ -107,7 +102,7 @@ public class QnaBoard extends ModifiedEntity {
 
     // 조회수 증가 메소드
     public void increaseHits() {
-        this.hits++;
+        increaseViews();
     }
 
 }
