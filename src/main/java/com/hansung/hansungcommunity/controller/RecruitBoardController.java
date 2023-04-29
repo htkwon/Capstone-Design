@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
+import com.hansung.hansungcommunity.dto.recruit.RecruitBoardApplyRequestDto;
 import com.hansung.hansungcommunity.dto.recruit.RecruitBoardDetailDto;
 import com.hansung.hansungcommunity.dto.recruit.RecruitBoardListDto;
 import com.hansung.hansungcommunity.dto.recruit.RecruitBoardRequestDto;
@@ -57,6 +58,36 @@ public class RecruitBoardController {
         RecruitBoardDetailDto detailDto = recruitBoardService.getDetail(boardId);
 
         return ResponseEntity.ok(detailDto);
+    }
+
+    /**
+     * 팀 소속 신청
+     */
+    @PostMapping("/recruit/{boardId}/application")
+    public ResponseEntity<Long> apply(
+            @PathVariable("boardId") Long boardId,
+            Authentication authentication,
+            @RequestBody RecruitBoardApplyRequestDto dto
+    ) {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        Long partyId = recruitBoardService.apply(boardId, ca.getUser().getId(), dto);
+
+        return ResponseEntity.ok(partyId);
+    }
+
+    /**
+     * 팀 소속 신청 승인
+     */
+    @PutMapping("/recruit/{boardId}/approval/{targetUserId}")
+    public ResponseEntity<Boolean> approve(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("targetUserId") Long targetUserId,
+            Authentication authentication
+    ) {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        boolean status = recruitBoardService.approve(boardId, ca.getUser().getId(), targetUserId);
+
+        return ResponseEntity.ok(status);
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.hansung.hansungcommunity.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,15 +13,38 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-public class Party {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Party extends AuditingFields {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private boolean isApproved;
+    private boolean isMeetRequired;
+    private boolean isMeetOptional;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
     @JoinColumn(name = "recruit_board_id")
     private RecruitBoard recruitBoard;
+
+    private Party(User user, RecruitBoard recruitBoard, boolean isMeetRequired, boolean isMeetOptional) {
+        this.user = user;
+        this.recruitBoard = recruitBoard;
+        this.isApproved = false;
+        this.isMeetRequired = isMeetRequired;
+        this.isMeetOptional = isMeetOptional;
+    }
+
+    public static Party from(User user, RecruitBoard recruitBoard, boolean isMeetRequired, boolean isMeetOptional) {
+        return new Party(user, recruitBoard, isMeetRequired, isMeetOptional);
+    }
+
+    public void approve() {
+        if (!this.isApproved) {
+            this.isApproved = true;
+        }
+    }
 
 }

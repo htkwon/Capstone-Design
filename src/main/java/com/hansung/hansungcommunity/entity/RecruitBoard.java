@@ -26,6 +26,7 @@ public class RecruitBoard extends Board {
     private int bookmarks;
     private int party; // 모집할 인원 수
     private int gathered; // 모집된 인원 수
+    private boolean isCompleted; // 모집 완료 여부
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stu_id")
@@ -42,6 +43,7 @@ public class RecruitBoard extends Board {
         this.optional = optional;
         this.party = party;
         this.gathered = gathered;
+        this.isCompleted = party <= gathered;
     }
 
     public static RecruitBoard createBoard(RecruitBoardRequestDto dto, User user) {
@@ -77,6 +79,16 @@ public class RecruitBoard extends Board {
     // 조회수 증가 메소드
     public void increaseHits() {
         increaseViews();
+    }
+
+    public void increaseGathered() {
+        this.gathered++;
+    }
+
+    public void updateIsCompleted() {
+        if (this.gathered >= this.party) {
+            this.isCompleted = true;
+        }
     }
 
 }
