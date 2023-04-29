@@ -11,6 +11,7 @@ import com.hansung.hansungcommunity.service.FileService;
 import com.hansung.hansungcommunity.service.QnaBoardService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -149,6 +150,12 @@ public class QnaBoardApiController {
             return "/images/"+name+"."+extension;
     }
 
+    @GetMapping("/qna/return/user-id/{boardId}")
+    public ResponseEntity<Long> getUserId(@PathVariable("boardId") Long boardId){
+        Long userId = qnaBoardService.getUserId(boardId);
+        return ResponseEntity.status(HttpStatus.OK).body(userId);
+    }
+
     /**
      * 조회수 증가 로직
      */
@@ -193,6 +200,9 @@ public class QnaBoardApiController {
         return extension;
 
     }
+
+
+
 
     @Data
     @AllArgsConstructor

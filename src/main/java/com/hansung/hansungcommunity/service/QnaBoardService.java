@@ -133,4 +133,9 @@ public class QnaBoardService {
                 .collect(Collectors.toList());
     }
 
+    public Long getUserId(Long boardId) {
+        QnaBoard qnaBoard = qnaBoardRepository.findById(boardId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다."));
+        return qnaBoard.getUser().getId();
+    }
 }
