@@ -2,6 +2,8 @@ package com.hansung.hansungcommunity.dto.user;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class UserRequestDto {
 
@@ -11,5 +13,6 @@ public class UserRequestDto {
     private String introduce; // 소개글
     private String track1;
     private String track2;
+    private List<String> skills; // 관심 기술
 
 }

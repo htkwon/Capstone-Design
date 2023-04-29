@@ -1,7 +1,11 @@
 package com.hansung.hansungcommunity.dto.user;
 
+import com.hansung.hansungcommunity.entity.Skill;
 import com.hansung.hansungcommunity.entity.User;
 import lombok.Data;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 public class UserInfoDto {
@@ -17,16 +21,15 @@ public class UserInfoDto {
     private int reply;
     private int bookmark;
     private String selfIntroduction;
+    private Set<String> skills; // 관심 기술
 
-    //TODO
     /**
+     * TODO
      * 이미지
      * 공부 내용 요약 기록
-     * 기술 스택
      */
 
-
-    public UserInfoDto(Long id, String studentId, String name, String nickname, String track1, String track2,int point,int board,int reply,int bookmark,String selfIntroduction) {
+    public UserInfoDto(Long id, String studentId, String name, String nickname, String track1, String track2, int point, int board, int reply, int bookmark, String selfIntroduction, Set<Skill> skills) {
         this.id = id;
         this.studentId = studentId;
         this.name = name;
@@ -38,8 +41,8 @@ public class UserInfoDto {
         this.reply = reply;
         this.bookmark = bookmark;
         this.selfIntroduction = selfIntroduction;
+        this.skills = skills.stream().map(Skill::getName).collect(Collectors.toSet());
     }
-
 
     public static UserInfoDto from(User user) {
         return new UserInfoDto(
@@ -50,10 +53,11 @@ public class UserInfoDto {
                 user.getTrack1(),
                 user.getTrack2(),
                 user.getPoint(),
-                user.getPostQnaBoard().size()+user.getPostFreeBoards().size(),
+                user.getPostQnaBoard().size() + user.getPostFreeBoards().size(),
                 user.getFreeReplies().size() + user.getQnaReplies().size(),
-                user.getFreeBookmarks().size()+user.getQnaBookmarks().size(),
-                user.getIntroduce()
+                user.getFreeBookmarks().size() + user.getQnaBookmarks().size(),
+                user.getIntroduce(),
+                user.getSkills()
         );
     }
 

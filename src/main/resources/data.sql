@@ -54,3 +54,12 @@ VALUES (15, '게임 개발 공모전 같이 나가실 분을 구합니다.', '�
         1, false),
        (20, '디자인띵킹 팀원 구해봅니다 [한명만 더!!]', '한 학기 잘 마무리해봐요 !!!', 0, 101, '디띵 C분반!!!', NULL, 3,
         1, false);
+
+-- FE에 정의된 "skillData"의 이름을 미리 DB에 저장
+INSERT INTO skill (skill_id, name)
+VALUES (1, 'JavaScript'),
+       (2, 'C'),
+       (3, 'JAVA'),
+       (4, 'C++'),
+       (5, 'Flutter'),
+       (6, 'React');

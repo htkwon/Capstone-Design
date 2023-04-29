@@ -3,15 +3,16 @@ package com.hansung.hansungcommunity.service;
 import com.hansung.hansungcommunity.dto.user.UserInfoDto;
 import com.hansung.hansungcommunity.dto.user.UserRankDto;
 import com.hansung.hansungcommunity.dto.user.UserRequestDto;
+import com.hansung.hansungcommunity.entity.Skill;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +26,7 @@ public class UserService {
     private final FreeBoardBookmarkRepository freeBoardBookmarkRepository;
     private final QnaBoardBookmarkRepository qnaBoardBookmarkRepository;
     private final AdoptRepository adoptRepository;
+    private final SkillRepository skillRepository;
 
     /**
      * 회원가입
@@ -32,7 +34,11 @@ public class UserService {
     @Transactional // 필요 시 쓰기 전용
     public Long join(UserRequestDto dto) {
         validateDuplicateUser(dto);
-        User user = userRepository.save(User.of(dto));
+        Set<Skill> skills = dto.getSkills().stream().map(s -> skillRepository.findByName(s)
+                        .orElseThrow(() -> new IllegalArgumentException("관심 기술 등록 실패, 해당하는 기술이 없습니다.")))
+                .collect(Collectors.toSet());
+
+        User user = userRepository.save(User.from(dto, skills));
 
         return user.getId();
     }
@@ -53,17 +59,17 @@ public class UserService {
     }
 
     public UserInfoDto getUserInfo(Long stuId) {
-        User user = userRepository.findById(stuId).orElseThrow(()->new RuntimeException("유저가 존재하지 않습니다."));
+        User user = userRepository.findById(stuId).orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다."));
         int replyCount =
                 freeReplyRepository.findAllByUserId(stuId)
-                    .orElseThrow(()->new IllegalArgumentException("해당 댓글이 없습니다.")).size()
-                + qnaReplyRepository.findAllByUserId(stuId)
-                    .orElseThrow(()->new IllegalArgumentException("해당 댓글이 없습니다.")).size();
+                        .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다.")).size()
+                        + qnaReplyRepository.findAllByUserId(stuId)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다.")).size();
         int bookmarkCount =
                 freeBoardBookmarkRepository.findAllByUserId(stuId)
-                        .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다.")).size()
-                + qnaBoardBookmarkRepository.findAllByUserId(stuId)
-                        .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다.")).size();
+                        .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다.")).size()
+                        + qnaBoardBookmarkRepository.findAllByUserId(stuId)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다.")).size();
 
         UserInfoDto userInfoDto = UserInfoDto.from(user);
         userInfoDto.setReply(replyCount);
@@ -80,4 +86,5 @@ public class UserService {
                 .collect(Collectors.toList());
         return list;
     }
+
 }
