@@ -91,4 +91,19 @@ public class RecruitBoard extends Board {
         }
     }
 
+    public void patch(RecruitBoardRequestDto dto) {
+        if (dto.getTitle() != null)
+            this.title = dto.getTitle();
+
+        if (dto.getContent() != null)
+            this.content = dto.getContent();
+
+        if (dto.getOptional() != null)
+            this.optional = dto.getOptional();
+
+        this.party = dto.getParty();
+
+        modified();
+    }
+
 }

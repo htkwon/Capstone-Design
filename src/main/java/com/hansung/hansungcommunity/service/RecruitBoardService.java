@@ -1,9 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.recruit.RecruitBoardApplyRequestDto;
-import com.hansung.hansungcommunity.dto.recruit.RecruitBoardDetailDto;
-import com.hansung.hansungcommunity.dto.recruit.RecruitBoardListDto;
-import com.hansung.hansungcommunity.dto.recruit.RecruitBoardRequestDto;
+import com.hansung.hansungcommunity.dto.recruit.*;
 import com.hansung.hansungcommunity.entity.Party;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
 import com.hansung.hansungcommunity.entity.User;
@@ -100,6 +97,37 @@ public class RecruitBoardService {
         } else {
             throw new IllegalArgumentException("신청 승인 실패, 게시글을 작성한 유저가 아니거나 팀 구성이 완료된 게시글입니다.");
         }
+    }
+
+    /**
+     * 게시글 수정 시, 기존 게시글 정보 반환
+     */
+    public RecruitBoardUpdateDto getDetailForUpdate(Long boardId) {
+        RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 구인 게시글이 없습니다."));
+
+        return new RecruitBoardUpdateDto(recruitBoard);
+    }
+
+    /**
+     * 게시글 수정
+     */
+    @Transactional
+    public Long update(Long boardId, RecruitBoardRequestDto dto) {
+        RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 수정 실패, 해당하는 구인 게시글이 없습니다."));
+
+        recruitBoard.patch(dto);
+
+        return boardId;
+    }
+
+    /**
+     * 게시글 삭제
+     */
+    @Transactional
+    public void delete(Long boardId) {
+        recruitBoardRepository.deleteById(boardId);
     }
 
 }
