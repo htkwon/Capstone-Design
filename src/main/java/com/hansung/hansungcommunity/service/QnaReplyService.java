@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -114,11 +116,14 @@ public class QnaReplyService {
     @Transactional(readOnly = true)
     public Boolean adoptCheck(Long boardId) {
         QnaReply reply = replyRepository.findById(boardId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다."));
-
+                .orElse(null);
+        if(reply == null){
+            return false;
+        }
         return replyRepository.findAllByBoardId(reply.getId())
-                .stream()
-                .anyMatch(freeReply -> Boolean.TRUE.equals(reply.getAdopt()));
+                .map(replies -> replies.stream()
+                        .anyMatch(qnaReply -> Boolean.TRUE.equals(reply.getAdopt())))
+                .orElse(false);
     }
 
     @Transactional
