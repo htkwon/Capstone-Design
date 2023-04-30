@@ -5,12 +5,11 @@ import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -66,6 +65,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Adopt> qnaAdopt = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_skill",
+            joinColumns = {@JoinColumn(name = "stu_id")},
+            inverseJoinColumns = {@JoinColumn(name = "skill_id")}
+    )
+    private Set<Skill> skills;
+
     public User(String studentId, String name, String nickname, String introduce, String track1, String track2) {
         this.studentId = studentId;
         this.name = name;
@@ -75,8 +81,8 @@ public class User {
         this.track2 = track2;
     }
 
-    public static User of(UserRequestDto dto){
-        return new User(
+    public static User from(UserRequestDto dto, Set<Skill> skills) {
+        User user = new User(
                 dto.getStudentId(),
                 dto.getName(),
                 dto.getNickname(),
@@ -85,10 +91,17 @@ public class User {
                 dto.getTrack2()
         );
 
+        user.setSkills(skills);
+
+        return user;
     }
 
-    public void setPlustPoint(int point){
+    public void setPlustPoint(int point) {
         this.point += point;
     }
-    public void setMinusPoint(int point){this.point-=point;}
+
+    public void setMinusPoint(int point) {
+        this.point -= point;
+    }
+
 }
