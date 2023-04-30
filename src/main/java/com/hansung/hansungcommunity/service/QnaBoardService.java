@@ -2,8 +2,6 @@ package com.hansung.hansungcommunity.service;
 
 
 import com.hansung.hansungcommunity.dto.qna.*;
-
-
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.QnaBoardRepository;
@@ -16,14 +14,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
-@Transactional (readOnly = true)
+@Transactional(readOnly = true)
 @Service
 public class QnaBoardService {
 
@@ -42,10 +39,9 @@ public class QnaBoardService {
 
     /**
      * 정렬 된 4개 Qna 게시글 반환
-     *
      */
     public List<QnaBoardMainDto> findAll() {
-        Pageable pageable = PageRequest.of(0,4, Sort.Direction.DESC,"createdAt");
+        Pageable pageable = PageRequest.of(0, 4, Sort.Direction.DESC, "createdAt");
         return qnaBoardRepository.findAll(pageable).getContent()
                 .stream()
                 .map(QnaBoardMainDto::new)
@@ -56,7 +52,7 @@ public class QnaBoardService {
      * 조회수를 기준으로 4개의 게시글 조회
      */
     public List<QnaBoardMostViewedDto> findMostViewedBoards() {
-        Pageable pageable = PageRequest.of(0,4, Sort.Direction.DESC,"views");
+        Pageable pageable = PageRequest.of(0, 4, Sort.Direction.DESC, "views");
         LocalDateTime standardTime = LocalDateTime.now().minusWeeks(1); // 1주일 기준
 
         return qnaBoardRepository.findByCreatedAtAfter(standardTime, pageable)
@@ -84,7 +80,7 @@ public class QnaBoardService {
      * user 컬럼만 비어있는 qnaBoard 엔티티에 유저 매핑
      */
     @Transactional
-    public void mappingUser(Long userId, QnaBoard entity){
+    public void mappingUser(Long userId, QnaBoard entity) {
         User user = userRepository.getReferenceById(userId);
 
         entity.setUser(user);
@@ -94,19 +90,21 @@ public class QnaBoardService {
      * 게시글 수정
      */
     @Transactional
-    public void update(QnaBoardRequestDto dto) {
-        QnaBoard target = qnaBoardRepository.getReferenceById(dto.getId());
+    public Long update(Long boardId, QnaBoardRequestDto dto) {
+        QnaBoard target = qnaBoardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 수정 실패, 해당하는 게시글이 없음"));
+
         target.updateBoard(dto);
-        qnaBoardRepository.save(target);
+
+        return boardId;
     }
 
     /**
      * 게시글 삭제
      */
     @Transactional
-    public void delete(long boardId) {
+    public void delete(Long boardId) {
         qnaBoardRepository.deleteById(boardId);
-
     }
 
     /**
@@ -125,8 +123,8 @@ public class QnaBoardService {
      * 게시글 리스트 조회
      * 프론트에서 요청한 페이지 정보에 맞게 게시글 반환
      */
-    public List<QnaBoardListDto> findByPage(Pageable pageable){
-        Pageable setPage = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),Sort.Direction.DESC,"createdAt");
+    public List<QnaBoardListDto> findByPage(Pageable pageable) {
+        Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createdAt");
         return qnaBoardRepository.findAll(setPage).getContent()
                 .stream()
                 .map(QnaBoardListDto::new)
@@ -135,7 +133,18 @@ public class QnaBoardService {
 
     public Long getUserId(Long boardId) {
         QnaBoard qnaBoard = qnaBoardRepository.findById(boardId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
         return qnaBoard.getUser().getId();
     }
+
+    /**
+     * 게시글 수정 시, 기존 게시글 정보 반환
+     */
+    public QnaBoardUpdateDto findOneForUpdate(Long boardId) {
+        QnaBoard board = qnaBoardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패, 해당하는 게시글이 없음"));
+
+        return new QnaBoardUpdateDto(board);
+    }
+
 }
