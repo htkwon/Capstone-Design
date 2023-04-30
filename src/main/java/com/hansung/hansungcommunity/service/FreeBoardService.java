@@ -1,9 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.free.FreeBoardDetailsDto;
-import com.hansung.hansungcommunity.dto.free.FreeBoardRequestDto;
-import com.hansung.hansungcommunity.dto.free.FreeBoardListDto;
-import com.hansung.hansungcommunity.dto.free.FreeBoardMainDto;
+import com.hansung.hansungcommunity.dto.free.*;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.FreeBoardRepository;
@@ -15,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,7 +71,7 @@ public class FreeBoardService {
      * 정렬 후, 4개의 게시글만 반환
      */
     public List<FreeBoardMainDto> findAll() {
-        Pageable pageable = PageRequest.of(0,4, Sort.Direction.DESC,"createdAt");
+        Pageable pageable = PageRequest.of(0, 4, Sort.Direction.DESC, "createdAt");
         return freeBoardRepository.findAll(pageable).getContent()
                 .stream()
                 .map(FreeBoardMainDto::new)
@@ -104,16 +100,26 @@ public class FreeBoardService {
         board.increaseHits();
     }
 
-     /**
+    /**
      * 게시글 리스트 조회
      * 프론트에서 요청한 페이지 정보에 맞게 게시글 반환
      */
-    public List<FreeBoardListDto> findByPage(Pageable pageable){
-        Pageable setPage = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),Sort.Direction.DESC,"createdAt");
+    public List<FreeBoardListDto> findByPage(Pageable pageable) {
+        Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createdAt");
         return freeBoardRepository.findAll(setPage).getContent()
                 .stream()
                 .map(FreeBoardListDto::new)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 게시글 수정 시, 기존 게시글 정보 반환
+     */
+    public FreeBoardUpdateDto findOneForUpdate(Long boardId) {
+        FreeBoard board = freeBoardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패, 해당하는 게시글이 없음"));
+
+        return new FreeBoardUpdateDto(board);
     }
 
 }

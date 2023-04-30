@@ -1,10 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.free.FreeBoardDetailsDto;
-import com.hansung.hansungcommunity.dto.free.FreeBoardRequestDto;
-import com.hansung.hansungcommunity.dto.free.FreeBoardListDto;
-import com.hansung.hansungcommunity.dto.free.FreeBoardMainDto;
+import com.hansung.hansungcommunity.dto.free.*;
 import com.hansung.hansungcommunity.service.FreeBoardService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,12 +50,22 @@ public class FreeBoardApiController {
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
     }
 
-     /**
+    /**
+     * 게시글 수정 시, 게시글 상세 정보 조회
+     */
+    @GetMapping("/free/update/{boardId}")
+    public ResponseEntity<FreeBoardUpdateDto> detailForUpdate(@PathVariable("boardId") Long boardId) {
+        FreeBoardUpdateDto boardDto = freeBoardService.findOneForUpdate(boardId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(boardDto);
+    }
+
+    /**
      * 자유 게시판 목록 페이지 (해당 페이지에 개수에 맞게 데이터 반환)
      * 페이지 정보는 프론트에서 전송
      */
     @GetMapping("/free/list")
-    public ResponseEntity<List<FreeBoardListDto>> listOfPage(Pageable pageable){
+    public ResponseEntity<List<FreeBoardListDto>> listOfPage(Pageable pageable) {
         List<FreeBoardListDto> dtoList = freeBoardService.findByPage(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
 
@@ -72,7 +80,7 @@ public class FreeBoardApiController {
             Authentication authentication
     ) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        FreeBoardRequestDto boardDto  = freeBoardService.post(ca.getUser().getId(), dto);
+        FreeBoardRequestDto boardDto = freeBoardService.post(ca.getUser().getId(), dto);
 
         // Wrapper 클래스로 감싼 후,
         // ResponseEntity 의 body 에 담아 반환
@@ -87,7 +95,7 @@ public class FreeBoardApiController {
             @PathVariable("boardId") Long boardId,
             @RequestBody FreeBoardRequestDto dto
     ) {
-        FreeBoardRequestDto boardDto  = freeBoardService.update(boardId, dto);
+        FreeBoardRequestDto boardDto = freeBoardService.update(boardId, dto);
 
         // Wrapper 클래스로 감싼 후,
         // ResponseEntity 의 body 에 담아 반환
@@ -129,7 +137,7 @@ public class FreeBoardApiController {
             }
         } else {
             freeBoardService.increaseHits(boardId);
-            Cookie newCookie = new Cookie("freeBoardHits","[" + boardId + "]");
+            Cookie newCookie = new Cookie("freeBoardHits", "[" + boardId + "]");
             newCookie.setPath("/");
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
