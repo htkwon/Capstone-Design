@@ -59,22 +59,8 @@ public class UserService {
     }
 
     public UserInfoDto getUserInfo(Long stuId) {
-        User user = userRepository.findById(stuId).orElseThrow(() -> new RuntimeException("유저가 존재하지 않습니다."));
-        int replyCount =
-                freeReplyRepository.findAllByUserId(stuId)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다.")).size()
-                        + qnaReplyRepository.findAllByUserId(stuId)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다.")).size();
-        int bookmarkCount =
-                freeBoardBookmarkRepository.findAllByUserId(stuId)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다.")).size()
-                        + qnaBoardBookmarkRepository.findAllByUserId(stuId)
-                        .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다.")).size();
-
+       User user = userRepository.findById(stuId).orElseThrow(()->new IllegalArgumentException("유저가 존재하지 않습니다."));
         UserInfoDto userInfoDto = UserInfoDto.from(user);
-        userInfoDto.setReply(replyCount);
-        userInfoDto.setBookmark(bookmarkCount);
-
         return userInfoDto;
     }
 
