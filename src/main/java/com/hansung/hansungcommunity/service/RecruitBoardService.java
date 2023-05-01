@@ -137,4 +137,14 @@ public class RecruitBoardService {
         return recruitBoardRepository.count();
     }
 
+    /**
+     * 게시글 4개 반환 (메인페이지용)
+     */
+    public List<RecruitBoardMainDto> getMainList() {
+        Pageable pageable = PageRequest.of(0,4,Sort.Direction.DESC,"createdAt");
+        return recruitBoardRepository.findAll(pageable).getContent()
+                .stream()
+                .map(RecruitBoardMainDto::new)
+                .collect(Collectors.toList());
+    }
 }

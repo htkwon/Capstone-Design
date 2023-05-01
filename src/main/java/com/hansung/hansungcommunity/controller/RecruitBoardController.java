@@ -3,8 +3,11 @@ package com.hansung.hansungcommunity.controller;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.recruit.*;
 import com.hansung.hansungcommunity.service.RecruitBoardService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,16 @@ import java.util.List;
 public class RecruitBoardController {
 
     private final RecruitBoardService recruitBoardService;
+
+
+    /**
+     * 메인페이지 리스트 조회
+     */
+    @GetMapping("/recruit/main")
+    public ResponseEntity<Result<List<RecruitBoardMainDto>>> list(){
+        List<RecruitBoardMainDto> dtoList = recruitBoardService.getMainList();
+        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
+    }
 
     /**
      * 게시글 생성
@@ -159,5 +172,13 @@ public class RecruitBoardController {
             response.addCookie(newCookie);
         }
     }
+
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T> {
+        private T data;
+    }
+
 
 }

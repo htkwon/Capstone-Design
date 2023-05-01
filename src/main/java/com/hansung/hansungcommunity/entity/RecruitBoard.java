@@ -8,7 +8,9 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Table(name = "recruit_board")
 @Getter
@@ -22,8 +24,7 @@ public class RecruitBoard extends Board {
     private String content;
     private String required;
     private String optional;
-    @ColumnDefault(value = "0")
-    private int bookmarks;
+
     private int party; // 모집할 인원 수
     private int gathered; // 모집된 인원 수
     private boolean isCompleted; // 모집 완료 여부
@@ -37,6 +38,9 @@ public class RecruitBoard extends Board {
 
     @OneToMany(mappedBy = "recruitBoard")
     public List<RecruitReply> replies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recruitBoard")
+    private Set<RecruitBoardBookmark> bookmarks = new HashSet<>();
 
     // 테스트용, 추후 인자 추가 등 작업 요망
     private RecruitBoard(String title, String content, String required, String optional, int party, int gathered) {
