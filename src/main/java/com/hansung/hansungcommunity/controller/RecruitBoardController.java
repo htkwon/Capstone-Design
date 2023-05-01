@@ -56,6 +56,14 @@ public class RecruitBoardController {
     }
 
     /**
+     * 전체 게시글 수
+     */
+    @GetMapping("/recruit/total")
+    public ResponseEntity<Long> getTotal() {
+        return ResponseEntity.ok(recruitBoardService.getTotal());
+    }
+
+    /**
      * 게시글 목록 조회
      */
     @GetMapping("/recruit/list")

@@ -122,5 +122,12 @@ public class FreeBoardService {
         return new FreeBoardUpdateDto(board);
     }
 
+    /**
+     * 전체 게시글 수
+     */
+    public long getTotal() {
+        return freeBoardRepository.count();
+    }
+
 }
 

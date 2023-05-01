@@ -147,4 +147,11 @@ public class QnaBoardService {
         return new QnaBoardUpdateDto(board);
     }
 
+    /**
+     * 전체 게시글 수
+     */
+    public long getTotal() {
+        return qnaBoardRepository.count();
+    }
+
 }

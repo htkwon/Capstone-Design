@@ -130,4 +130,11 @@ public class RecruitBoardService {
         recruitBoardRepository.deleteById(boardId);
     }
 
+    /**
+     * 전체 게시글 수
+     */
+    public long getTotal() {
+        return recruitBoardRepository.count();
+    }
+
 }
