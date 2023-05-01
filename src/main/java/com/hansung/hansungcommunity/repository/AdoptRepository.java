@@ -10,7 +10,9 @@ import java.util.List;
 public interface AdoptRepository extends JpaRepository<Adopt, Long> {
 
 
-    @Query(value = "SELECT a FROM Adopt a GROUP BY a.user ORDER BY COUNT(a) DESC")
-    List<Adopt> findTop5UsersByAdoptCount();
+
+    @Query(value = "SELECT a.user, COUNT(a) FROM Adopt a GROUP BY a.user ORDER BY COUNT(a) DESC ")
+    List<Object[]> findTop5UsersByAdoptCount();
+
 
 }

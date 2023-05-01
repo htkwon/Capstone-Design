@@ -18,13 +18,14 @@ public class UserRankDto {
     }
 
     //TODO : 프로필 이미지
-
-    public static UserRankDto of(Adopt adopt){
+    
+    public static UserRankDto of(Object[] obj){
         return new UserRankDto(
-                adopt.getUser().getQnaAdopt().size(),
-                adopt.getUser().getNickname(),
-                adopt.getUser().getStudentId()
+                ((Long) obj[1]).intValue(),
+                ((User)obj[0]).getNickname(),
+                ((User)obj[0]).getStudentId()
         );
     }
+
 
 }
