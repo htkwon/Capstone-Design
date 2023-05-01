@@ -160,6 +160,14 @@ public class QnaBoardApiController {
     }
 
     /**
+     * 전체 게시글 수
+     */
+    @GetMapping("/questions/total")
+    public ResponseEntity<Long> getTotal() {
+        return ResponseEntity.ok(qnaBoardService.getTotal());
+    }
+
+    /**
      * 사진 url 전송 API
      */
     @PostMapping("/qna/image")

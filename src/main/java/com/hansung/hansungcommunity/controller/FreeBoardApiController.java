@@ -113,6 +113,14 @@ public class FreeBoardApiController {
     }
 
     /**
+     * 전체 게시글 수
+     */
+    @GetMapping("/free/total")
+    public ResponseEntity<Long> getTotal() {
+        return ResponseEntity.ok(freeBoardService.getTotal());
+    }
+
+    /**
      * 조회수 증가 로직
      */
     private void increaseHits(Long boardId, HttpServletRequest request, HttpServletResponse response) {
