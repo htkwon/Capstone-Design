@@ -76,7 +76,6 @@ public class QnaBoard extends Board {
     public void updateBoard(QnaBoardRequestDto dto) {
         if (dto.getTitle() != null) this.title = dto.getTitle();
         if (dto.getContent() != null) this.content = dto.getContent();
-        this.tag = dto.getTag();
         this.point = dto.getPoint();
         this.language = dto.getLanguage();
         modified();

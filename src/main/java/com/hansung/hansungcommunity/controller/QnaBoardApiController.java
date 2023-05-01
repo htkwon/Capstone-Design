@@ -1,17 +1,14 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.*;
+import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.qna.*;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.service.FileService;
-
 import com.hansung.hansungcommunity.service.QnaBoardService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -41,7 +38,7 @@ public class QnaBoardApiController {
      * 게시글 리스트 조회 - 홈 View 전용 (게시글 4개 반환)
      */
     @GetMapping("/qna/main")
-    public ResponseEntity<Result<List<QnaBoardMainDto>>> QnaList(){
+    public ResponseEntity<Result<List<QnaBoardMainDto>>> QnaList() {
         List<QnaBoardMainDto> dtoList = qnaBoardService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
     }
@@ -63,11 +60,21 @@ public class QnaBoardApiController {
     }
 
     /**
+     * 게시글 수정 시, 게시글 상세 정보 조회
+     */
+    @GetMapping("/questions/update/{boardId}")
+    public ResponseEntity<QnaBoardUpdateDto> detailForUpdate(@PathVariable("boardId") Long boardId) {
+        QnaBoardUpdateDto boardDto = qnaBoardService.findOneForUpdate(boardId);
+
+        return ResponseEntity.ok(boardDto);
+    }
+
+    /**
      * Qna 게시판 목록 페이지 (해당 페이지에 개수에 맞게 데이터 반환)
      * 페이지 정보는 프론트에서 전송
      */
     @GetMapping("/qna/list")
-    public ResponseEntity<List<QnaBoardListDto>> listOfPage(Pageable pageable){
+    public ResponseEntity<List<QnaBoardListDto>> listOfPage(Pageable pageable) {
         List<QnaBoardListDto> dtoList = qnaBoardService.findByPage(pageable);
 
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
@@ -87,7 +94,7 @@ public class QnaBoardApiController {
      * 게시글 저장 (업로드 파일 없을 때)
      */
     @PostMapping("/qna/no-file")
-    public ResponseEntity<QnaBoardRequestDto> create(@RequestBody QnaBoardRequestDto dto, Authentication authentication){
+    public ResponseEntity<QnaBoardRequestDto> create(@RequestBody QnaBoardRequestDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         QnaBoardRequestDto articleDto = qnaBoardService.post(ca.getUser().getId(), dto);
         return ResponseEntity.status(HttpStatus.OK).body(articleDto);
@@ -130,28 +137,51 @@ public class QnaBoardApiController {
     }
 
     /**
+     * 게시글 수정
+     */
+    @PutMapping("/questions/update/{boardId}")
+    public ResponseEntity<Long> update(
+            @PathVariable("boardId") Long boardId,
+            @RequestBody QnaBoardRequestDto dto
+    ) {
+        Long id = qnaBoardService.update(boardId, dto);
+
+        return ResponseEntity.ok(id);
+    }
+
+    /**
+     * 게시글 삭제
+     */
+    @DeleteMapping("/questions/delete/{boardId}")
+    public ResponseEntity<Long> delete(@PathVariable("boardId") Long boardId) {
+        qnaBoardService.delete(boardId);
+
+        return ResponseEntity.ok(boardId);
+    }
+
+    /**
      * 사진 url 전송 API
      */
     @PostMapping("/qna/image")
     public String create2(MultipartFile[] multipartFiles) throws IOException {
 
-            MultipartFile image = multipartFiles[0];
+        MultipartFile image = multipartFiles[0];
 
-            String name = (new Date().getTime()) + "" + (new Random().ints(1000, 9999).findAny().getAsInt());
-            String originalName = image.getOriginalFilename();
-            String path = "C:\\images";
+        String name = (new Date().getTime()) + "" + (new Random().ints(1000, 9999).findAny().getAsInt());
+        String originalName = image.getOriginalFilename();
+        String path = "C:\\images";
 
         assert originalName != null;
-        String extension = getFilename(originalName,path);
+        String extension = getFilename(originalName, path);
 
 
-            File save = new File(path, name + "." + extension);
-            image.transferTo(save);
-            return "/images/"+name+"."+extension;
+        File save = new File(path, name + "." + extension);
+        image.transferTo(save);
+        return "/images/" + name + "." + extension;
     }
 
     @GetMapping("/qna/return/user-id/{boardId}")
-    public ResponseEntity<Long> getUserId(@PathVariable("boardId") Long boardId){
+    public ResponseEntity<Long> getUserId(@PathVariable("boardId") Long boardId) {
         Long userId = qnaBoardService.getUserId(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(userId);
     }
@@ -181,14 +211,14 @@ public class QnaBoardApiController {
             }
         } else {
             qnaBoardService.increaseHits(boardId);
-            Cookie newCookie = new Cookie("qnaBoardHits","[" + boardId + "]");
+            Cookie newCookie = new Cookie("qnaBoardHits", "[" + boardId + "]");
             newCookie.setPath("/");
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
         }
     }
 
-    private String getFilename(String originalName,String path) {
+    private String getFilename(String originalName, String path) {
         String extension = originalName.substring(originalName.lastIndexOf(".") + 1);
         if (!new File(path).exists()) {
             try {
@@ -200,8 +230,6 @@ public class QnaBoardApiController {
         return extension;
 
     }
-
-
 
 
     @Data

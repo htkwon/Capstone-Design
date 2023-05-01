@@ -1,10 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.recruit.RecruitBoardApplyRequestDto;
-import com.hansung.hansungcommunity.dto.recruit.RecruitBoardDetailDto;
-import com.hansung.hansungcommunity.dto.recruit.RecruitBoardListDto;
-import com.hansung.hansungcommunity.dto.recruit.RecruitBoardRequestDto;
+import com.hansung.hansungcommunity.dto.recruit.*;
 import com.hansung.hansungcommunity.service.RecruitBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +33,29 @@ public class RecruitBoardController {
     }
 
     /**
+     * 게시글 수정
+     */
+    @PutMapping("/recruit/update/{boardId}")
+    public ResponseEntity<Long> update(
+            @PathVariable("boardId") Long boardId,
+            @RequestBody RecruitBoardRequestDto dto
+    ) {
+        Long id = recruitBoardService.update(boardId, dto);
+
+        return ResponseEntity.ok(id);
+    }
+
+    /**
+     * 게시글 삭제
+     */
+    @DeleteMapping("/recruit/delete/{boardId}")
+    public ResponseEntity<Long> delete(@PathVariable("boardId") Long boardId) {
+        recruitBoardService.delete(boardId);
+
+        return ResponseEntity.ok(boardId);
+    }
+
+    /**
      * 게시글 목록 조회
      */
     @GetMapping("/recruit/list")
@@ -56,6 +76,16 @@ public class RecruitBoardController {
     ) {
         increaseHits(boardId, request, response);
         RecruitBoardDetailDto detailDto = recruitBoardService.getDetail(boardId);
+
+        return ResponseEntity.ok(detailDto);
+    }
+
+    /**
+     * 게시글 수정 시, 게시글 상세 정보 조회
+     */
+    @GetMapping("/recruit/update/{boardId}")
+    public ResponseEntity<RecruitBoardUpdateDto> detailForUpdate(@PathVariable("boardId") Long boardId) {
+        RecruitBoardUpdateDto detailDto = recruitBoardService.getDetailForUpdate(boardId);
 
         return ResponseEntity.ok(detailDto);
     }
