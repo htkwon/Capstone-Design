@@ -68,6 +68,15 @@ public class QnaReplyController {
         return ResponseEntity.status(HttpStatus.OK).body(adopt);
     }
 
+    /**
+     * 채택 취소
+     */
+    @PutMapping("/qna/{replyId}/adopt-cancel")
+    public ResponseEntity<Long> cancel(@PathVariable("replyId") Long replyId){
+        Long id = replyService.cancel(replyId);
+        return ResponseEntity.status(HttpStatus.OK).body(id);
+    }
+
 
     /**
      * 해당 id 게시글의 댓글들중 이미 채택한 댓글이 있는지 체크

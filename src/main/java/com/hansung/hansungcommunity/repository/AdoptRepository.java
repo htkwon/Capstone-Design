@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AdoptRepository extends JpaRepository<Adopt, Long> {
 
@@ -15,4 +16,6 @@ public interface AdoptRepository extends JpaRepository<Adopt, Long> {
     List<Object[]> findTop5UsersByAdoptCount();
 
 
+
+    Optional<Adopt> findByQnaBoardId(Long id);
 }

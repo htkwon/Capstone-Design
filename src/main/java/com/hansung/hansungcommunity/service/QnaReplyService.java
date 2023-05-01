@@ -146,4 +146,21 @@ public class QnaReplyService {
 
         return reply.getAdopt();
     }
+
+    @Transactional
+    public Long cancel(Long replyId) {
+        QnaReply reply = replyRepository.findById(replyId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
+        QnaBoard qnaBoard = boardRepository.findById(reply.getBoard().getId())
+                .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다."));
+        Adopt adopt = adoptRepository.findByQnaBoardId(qnaBoard.getId())
+                .orElseThrow(()-> new IllegalArgumentException("해당 게시글을 채택되지 않았습니다."));
+
+        reply.adopt(false);
+        replyRepository.save(reply);
+        adoptRepository.delete(adopt);
+
+        return reply.getId();
+
+    }
 }
