@@ -35,6 +35,9 @@ public class RecruitBoard extends Board {
     @OneToMany(mappedBy = "recruitBoard")
     private List<Party> parties = new ArrayList<>();
 
+    @OneToMany(mappedBy = "recruitBoard")
+    public List<RecruitReply> replies = new ArrayList<>();
+
     // 테스트용, 추후 인자 추가 등 작업 요망
     private RecruitBoard(String title, String content, String required, String optional, int party, int gathered) {
         this.title = title;
