@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.dto.recruit;
 
+import com.hansung.hansungcommunity.entity.RecruitBoard;
 import lombok.Data;
 
 /**
@@ -16,5 +17,20 @@ public class RecruitBoardRequestDto {
     private String optional;
     private int party;
     private int gathered;
+
+    public RecruitBoardRequestDto( String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+
+    public static RecruitBoardRequestDto of(RecruitBoard recruitBoard){
+        return new RecruitBoardRequestDto(
+                recruitBoard.getTitle(),
+                recruitBoard.getContent()
+        );
+    }
+
+
 
 }
