@@ -35,20 +35,20 @@ public class FreeBoardBookmarkController {
      * 북마크 등록
      */
     @PostMapping("/free/{boardId}/bookmark")
-    public ResponseEntity<FreeBoardBookmark> create(@PathVariable("boardId") Long boardId, Authentication authentication){
+    public ResponseEntity<FreeBoardBookmarkDto> create(@PathVariable("boardId") Long boardId, Authentication authentication){
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        FreeBoardBookmark freeBoardBookmark = freeBoardBookmarkService.create(boardId,ca.getUser().getId());
-        return ResponseEntity.status(HttpStatus.OK).body(freeBoardBookmark);
+        FreeBoardBookmarkDto dto= freeBoardBookmarkService.create(boardId,ca.getUser().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     /**
      * 북마크 취소
      */
     @DeleteMapping("/free/{boardId}/bookmark")
-    public ResponseEntity<String> cancle(@PathVariable("boardId") Long boardId, Authentication authentication){
+    public ResponseEntity<Void> cancle(@PathVariable("boardId") Long boardId, Authentication authentication){
         CustomAuthentication ca = (CustomAuthentication) authentication;
         freeBoardBookmarkService.cancle(boardId,ca.getUser().getId());
-        return ResponseEntity.status(HttpStatus.OK).body("삭제 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     /**
