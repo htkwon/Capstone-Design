@@ -37,14 +37,14 @@ public class FreeBoardBookmarkService {
 
     }
     @Transactional
-    public FreeBoardBookmark create(Long boardId, Long id) {
+    public FreeBoardBookmarkDto create(Long boardId, Long id) {
         FreeBoard freeBoard = freeBoardRepository.findById(boardId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다."));
         User user = userRepository.findById(id)
                 .orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다."));
-
-        FreeBoardBookmark freeBoardBookmark = FreeBoardBookmark.of(user,freeBoard);
-        return freeBoardBookmarkRepository.save(freeBoardBookmark);
+        FreeBoardBookmark bookmark = FreeBoardBookmark.of(user, freeBoard);
+        freeBoardBookmarkRepository.save(bookmark);
+        return FreeBoardBookmarkDto.of(bookmark);
 
     }
 

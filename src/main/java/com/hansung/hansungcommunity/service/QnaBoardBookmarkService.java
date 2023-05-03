@@ -37,14 +37,14 @@ public class QnaBoardBookmarkService {
                 }).collect(Collectors.toList());
     }
     @Transactional
-    public QnaBoardBookmark create(Long boardId, Long id) {
+    public QnaBoardBookmarkDto create(Long boardId, Long id) {
         QnaBoard qnaBoard = qnaBoardRepository.findById(boardId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다."));
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-        
-        QnaBoardBookmark qnaBoardBookmark = QnaBoardBookmark.of(user, qnaBoard);
-        return qnaBoardBookmarkRepository.save(qnaBoardBookmark);
+        QnaBoardBookmark bookmark = QnaBoardBookmark.of(user, qnaBoard);
+        qnaBoardBookmarkRepository.save(bookmark);
+        return QnaBoardBookmarkDto.of(bookmark);
     }
     @Transactional
     public void cancle(Long boardId, Long userId) {

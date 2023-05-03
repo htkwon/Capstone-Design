@@ -35,20 +35,20 @@ public class QnaBoardBookmarkController {
      * 북마크 등록
      */
     @PostMapping("/qna/{boardId}/bookmark")
-    public ResponseEntity<QnaBoardBookmark> create(@PathVariable("boardId") Long boardId, Authentication authentication) {
+    public ResponseEntity<QnaBoardBookmarkDto> create(@PathVariable("boardId") Long boardId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        QnaBoardBookmark qnaBoardBookmark = qnaBoardBookmarkService.create(boardId, ca.getUser().getId());
-        return ResponseEntity.status(HttpStatus.OK).body(qnaBoardBookmark);
+        QnaBoardBookmarkDto dto = qnaBoardBookmarkService.create(boardId, ca.getUser().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     /**
      * 북마크 취소
      */
     @DeleteMapping("/qna/{boardId}/bookmark")
-    public ResponseEntity<String> cancle(@PathVariable("boardId") Long boardId, Authentication authentication) {
+    public ResponseEntity<Void> cancle(@PathVariable("boardId") Long boardId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         qnaBoardBookmarkService.cancle(boardId, ca.getUser().getId());
-        return ResponseEntity.status(HttpStatus.OK).body("삭제 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     /**
