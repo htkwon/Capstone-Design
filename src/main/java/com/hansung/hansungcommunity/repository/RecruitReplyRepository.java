@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.repository;
 
 
+import com.hansung.hansungcommunity.entity.FreeReply;
 import com.hansung.hansungcommunity.entity.RecruitReply;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,5 @@ public interface RecruitReplyRepository extends JpaRepository<RecruitReply,Long>
     List<RecruitReply> findAllWithChildrenByArticleId(@Param("articleId") Long articleId);
 
     Optional<List<RecruitReply>> findAllByUserId(Long userId);
+    Optional<RecruitReply> findByRecruitBoardId(Long userId);
 }

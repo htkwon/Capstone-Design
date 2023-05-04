@@ -16,5 +16,6 @@ public interface QnaReplyRepository extends JpaRepository<QnaReply, Long>,
     @Query("SELECT f FROM QnaReply f WHERE f.board.id = :boardId")
     Optional<List<QnaReply>> findAllByBoardId(@Param("boardId") Long boardId);
 
-    Optional<List<FreeReply>> findAllByUserId(Long userId);
+    Optional<List<QnaReply>> findAllByUserId(Long userId);
+    Optional<QnaReply> findByBoardId(Long userId);
 }
