@@ -14,6 +14,12 @@ public abstract class Board extends ModifiedEntity {
     private Long id;
     private int views;
 
+    @ManyToOne(fetch = FetchType.LAZY) // JPA 활용 시, XToOne 인 경우 fetch 타입을 LAZY 로 설정 !!!
+    @JoinColumn(name = "stu_id")
+    private User user;
+
+
+
     public void increaseViews() {
         this.views++;
     }
@@ -28,4 +34,7 @@ public abstract class Board extends ModifiedEntity {
      */
     public abstract String getTitle();
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
