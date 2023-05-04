@@ -32,10 +32,6 @@ public class QnaBoard extends Board {
     @OneToMany(fetch = FetchType.LAZY)
     private List<FileEntity> fileEntity = new ArrayList<>();
 
-    @ToString.Exclude
-    @JoinColumn(name = "stu_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
 
     // 조회 편의성을 위해 댓글 Entity 와 연관관계 매핑
     @OneToMany(mappedBy = "board", orphanRemoval = true)
@@ -49,7 +45,7 @@ public class QnaBoard extends Board {
     private Adopt adopt;
 
     public QnaBoard(User user, String title, String content, String tag, int point, String language) {
-        this.user = user;
+        super.setUser(user);
         this.title = title;
         this.content = content;
         this.tag = tag;
@@ -82,7 +78,7 @@ public class QnaBoard extends Board {
     }
 
     public void setUser(User user) {
-        this.user = user;
+        super.setUser(user);
     }
 
     @Override

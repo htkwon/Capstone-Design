@@ -23,9 +23,7 @@ public class FreeBoard extends Board {
     private String title; // 제목
     @NotNull
     private String content; // 내용
-    @ManyToOne(fetch = FetchType.LAZY) // JPA 활용 시, XToOne 인 경우 fetch 타입을 LAZY 로 설정 !!!
-    @JoinColumn(name = "stu_id")
-    private User user;
+
     @OneToMany(mappedBy = "freeBoard")
     private Set<FreeBoardBookmark> bookmarks = new HashSet<>();
     @OneToMany(mappedBy = "freeBoard")
@@ -46,7 +44,7 @@ public class FreeBoard extends Board {
 
     // 연관관계 메소드
     public void setUser(User user) {
-        this.user = user;
+        super.setUser(user);
         user.getPostFreeBoards().add(this); // 필요한가?
     }
 

@@ -29,9 +29,6 @@ public class RecruitBoard extends Board {
     private int gathered; // 모집된 인원 수
     private boolean isCompleted; // 모집 완료 여부
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stu_id")
-    private User user;
 
     @OneToMany(mappedBy = "recruitBoard")
     private List<Party> parties = new ArrayList<>();
@@ -69,7 +66,7 @@ public class RecruitBoard extends Board {
 
     // 연관관계 메소드
     public void setUser(User user) {
-        this.user = user;
+        super.setUser(user);
         user.getPostRecruitBoards().add(this);
     }
 
