@@ -2,6 +2,7 @@ package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
+import com.hansung.hansungcommunity.dto.qna.QnaReplyAdoptCheckDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
 import com.hansung.hansungcommunity.repository.QnaReplyRepository;
 import com.hansung.hansungcommunity.service.QnaReplyService;
@@ -84,9 +85,9 @@ public class QnaReplyController {
      * false면 채택 가능
      */
     @GetMapping("/qna/{boardId}/adopt-check")
-    public ResponseEntity<Boolean> adoptCheck(@PathVariable("boardId") Long boardId) {
-        Boolean check = replyService.adoptCheck(boardId);
-        return ResponseEntity.status(HttpStatus.OK).body(check);
+    public ResponseEntity<QnaReplyAdoptCheckDto> adoptCheck(@PathVariable("boardId") Long boardId) {
+        QnaReplyAdoptCheckDto dto = replyService.adoptCheck(boardId);
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
 }

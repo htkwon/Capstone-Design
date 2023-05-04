@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.service;
 
 import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
+import com.hansung.hansungcommunity.dto.qna.QnaReplyAdoptCheckDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.*;
@@ -114,16 +115,13 @@ public class QnaReplyService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean adoptCheck(Long boardId) {
-        QnaReply reply = replyRepository.findById(boardId)
-                .orElse(null);
+    public QnaReplyAdoptCheckDto adoptCheck(Long boardId) {
+        QnaReply reply = replyRepository.findFirstByBoardIdAndAdoptTrue(boardId);
+
         if(reply == null){
-            return false;
+            return new QnaReplyAdoptCheckDto(false,null);
         }
-        return replyRepository.findAllByBoardId(reply.getId())
-                .map(replies -> replies.stream()
-                        .anyMatch(qnaReply -> Boolean.TRUE.equals(reply.getAdopt())))
-                .orElse(false);
+        return new QnaReplyAdoptCheckDto(true, reply.getId());
     }
 
     @Transactional
