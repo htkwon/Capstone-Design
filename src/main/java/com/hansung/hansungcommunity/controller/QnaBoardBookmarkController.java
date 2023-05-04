@@ -23,7 +23,7 @@ public class QnaBoardBookmarkController {
     /**
      * 해당 유저의 북마크 글 조회
      */
-    @GetMapping("/qna/bookmark")
+    @GetMapping("/questions/bookmark")
     public ResponseEntity<List<QnaBoardBookmarkDto>> list(Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         List<QnaBoardBookmarkDto> list = qnaBoardBookmarkService.getBoards(ca.getUser().getId());
@@ -34,7 +34,7 @@ public class QnaBoardBookmarkController {
     /**
      * 북마크 등록
      */
-    @PostMapping("/qna/{boardId}/bookmark")
+    @PostMapping("/questions/{boardId}/bookmark")
     public ResponseEntity<QnaBoardBookmarkDto> create(@PathVariable("boardId") Long boardId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         QnaBoardBookmarkDto dto = qnaBoardBookmarkService.create(boardId, ca.getUser().getId());
@@ -44,7 +44,7 @@ public class QnaBoardBookmarkController {
     /**
      * 북마크 취소
      */
-    @DeleteMapping("/qna/{boardId}/bookmark")
+    @DeleteMapping("/questions/{boardId}/bookmark")
     public ResponseEntity<Void> cancle(@PathVariable("boardId") Long boardId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         qnaBoardBookmarkService.cancle(boardId, ca.getUser().getId());
@@ -54,7 +54,7 @@ public class QnaBoardBookmarkController {
     /**
      * 해당 유저가 해당 게시글을 북마크 했는지 체크
      */
-    @GetMapping("/qna/{boardId}/bookmark-check")
+    @GetMapping("/questions/{boardId}/bookmark-check")
     public ResponseEntity<Boolean> check(@PathVariable("boardId") Long boardId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Boolean check = qnaBoardBookmarkService.check(boardId, ca.getUser().getId());
@@ -64,7 +64,7 @@ public class QnaBoardBookmarkController {
     /**
      * 해당 게시글의 북마크수 조회
      */
-    @GetMapping("/qna/{boardId}/bookmark-count")
+    @GetMapping("/questions/{boardId}/bookmark-count")
     public ResponseEntity<Integer> count(@PathVariable("boardId") Long boardId) {
         int count = qnaBoardBookmarkService.count(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(count);

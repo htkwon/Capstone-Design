@@ -37,7 +37,7 @@ public class QnaBoardApiController {
     /**
      * 게시글 리스트 조회 - 홈 View 전용 (게시글 4개 반환)
      */
-    @GetMapping("/qna/main")
+    @GetMapping("/questions/main")
     public ResponseEntity<Result<List<QnaBoardMainDto>>> QnaList() {
         List<QnaBoardMainDto> dtoList = qnaBoardService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
