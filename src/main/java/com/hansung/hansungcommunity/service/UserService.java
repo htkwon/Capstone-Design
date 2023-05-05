@@ -27,6 +27,8 @@ public class UserService {
     private final QnaBoardBookmarkRepository qnaBoardBookmarkRepository;
     private final AdoptRepository adoptRepository;
     private final SkillRepository skillRepository;
+    private final MyPageService myPageService;
+
 
     /**
      * 회원가입
@@ -61,6 +63,9 @@ public class UserService {
     public UserInfoDto getUserInfo(Long stuId) {
        User user = userRepository.findById(stuId).orElseThrow(()->new IllegalArgumentException("유저가 존재하지 않습니다."));
         UserInfoDto userInfoDto = UserInfoDto.from(user);
+        userInfoDto.setReply(myPageService.getReplyList(stuId).size());
+        userInfoDto.setBoard(myPageService.getBoardList(stuId).size());
+        userInfoDto.setBookmark(myPageService.getBookmarkList(stuId).size());
         return userInfoDto;
     }
 

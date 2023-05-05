@@ -20,4 +20,6 @@ public interface RecruitReplyRepository extends JpaRepository<RecruitReply,Long>
 
     Optional<List<RecruitReply>> findAllByUserId(Long userId);
     Optional<RecruitReply> findByRecruitBoardId(Long userId);
+
+    List<RecruitReply> findByUserId(Long userId);
 }
