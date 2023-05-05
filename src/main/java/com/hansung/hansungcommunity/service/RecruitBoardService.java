@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,15 +42,25 @@ public class RecruitBoardService {
         Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createdAt");
         return recruitBoardRepository.findAll(setPage).getContent()
                 .stream()
-                .map(RecruitBoardListDto::from)
+                .map(recruitBoard -> {
+                    Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(recruitBoard.getId());
+                    RecruitBoardListDto dto = RecruitBoardListDto.from(recruitBoard);
+                    dto.setGathered((int) (recruitBoard.getGathered() + count));
+
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
     public RecruitBoardDetailDto getDetail(Long boardId) {
         RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 구인 게시글이 없습니다."));
+        Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId);
 
-        return RecruitBoardDetailDto.from(recruitBoard);
+        RecruitBoardDetailDto dto = RecruitBoardDetailDto.from(recruitBoard);
+        dto.setGathered((int) (recruitBoard.getGathered() + count));
+
+        return dto;
     }
 
     /**
@@ -72,10 +83,19 @@ public class RecruitBoardService {
                 .orElseThrow(() -> new IllegalArgumentException("신청 실패, 해당하는 유저가 없음"));
         RecruitBoard board = recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("신청 실패, 해당하는 게시글이 없음"));
+        Optional<Party> check = partyRepository.findByUserIdAndRecruitBoardId(userId, boardId);
 
-        Party party = partyRepository.save(Party.from(user, board, dto.getIsMeetRequired(), dto.getIsMeetOptional()));
+        if (board.isCompleted()) {
+            throw new IllegalArgumentException("신청 실패, 모집이 마감된 게시글입니다.");
+        }
 
-        return party.getId();
+        if (check.isEmpty()) {
+            Party party = partyRepository.save(Party.from(user, board, dto.getIsMeetRequired(), dto.getIsMeetOptional()));
+            return party.getId();
+        } else {
+            return check.get().getId();
+        }
+
     }
 
     /**
@@ -89,9 +109,13 @@ public class RecruitBoardService {
         if (board.getUser().getId().equals(userId) && !board.isCompleted()) {
             Party party = partyRepository.findByUserIdAndRecruitBoardId(targetUserId, boardId)
                     .orElseThrow(() -> new IllegalArgumentException("신청 승인 실패, 해당하는 신청 정보가 없음"));
-            party.approve();
-            board.increaseGathered();
-            board.updateIsCompleted();
+
+            if (!party.isApproved()) {
+                party.approve();
+                partyRepository.flush();
+                Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId); // 해당 게시글의 승인 인원
+                board.updateIsCompleted(count);
+            }
 
             return party.isApproved();
         } else {
@@ -105,8 +129,12 @@ public class RecruitBoardService {
     public RecruitBoardUpdateDto getDetailForUpdate(Long boardId) {
         RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 구인 게시글이 없습니다."));
+        Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId);
 
-        return new RecruitBoardUpdateDto(recruitBoard);
+        RecruitBoardUpdateDto dto = new RecruitBoardUpdateDto(recruitBoard);
+        dto.setGathered((int) (recruitBoard.getGathered() + count));
+
+        return dto;
     }
 
     /**
@@ -141,10 +169,52 @@ public class RecruitBoardService {
      * 게시글 4개 반환 (메인페이지용)
      */
     public List<RecruitBoardMainDto> getMainList() {
-        Pageable pageable = PageRequest.of(0,4,Sort.Direction.DESC,"createdAt");
+        Pageable pageable = PageRequest.of(0, 4, Sort.Direction.DESC, "createdAt");
         return recruitBoardRepository.findAll(pageable).getContent()
                 .stream()
                 .map(RecruitBoardMainDto::new)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 모집 완료
+     */
+    @Transactional
+    public void complete(Long boardId, Long userId) {
+        RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("모집 완료 처리 실패, 해당 게시글이 없습니다."));
+
+        if (recruitBoard.getUser().getId().equals(userId) && !recruitBoard.isCompleted()) {
+            recruitBoard.complete();
+        }
+    }
+
+    /**
+     * 신청자 목록
+     */
+    public List<ApplicantDto> getApplicants(Long boardId, Long userId) {
+        RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("신청자 목록 조회 실패, 해당 게시글이 없습니다."));
+        List<Party> parties = partyRepository.findByRecruitBoardId(boardId);
+
+        if (recruitBoard.getUser().getId().equals(userId)) {
+            return parties.stream().map(party -> {
+                ApplicantDto dto = new ApplicantDto(party.getUser());
+                dto.setMeetRequired(party.isMeetRequired());
+                dto.setMeetOptional(party.isMeetOptional());
+
+                return dto;
+            }).collect(Collectors.toList());
+        } else {
+            throw new IllegalArgumentException("신청자 목록 조회 실패, 해당 게시글을 작성한 유저가 아닙니다.");
+        }
+    }
+
+    /**
+     * 신청자 수
+     */
+    public Long getApplicantsNumber(Long boardId) {
+        return partyRepository.countByRecruitBoardId(boardId);
+    }
+
 }

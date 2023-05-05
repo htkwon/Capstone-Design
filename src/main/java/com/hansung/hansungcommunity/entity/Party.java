@@ -41,10 +41,9 @@ public class Party extends AuditingFields {
         return new Party(user, recruitBoard, isMeetRequired, isMeetOptional);
     }
 
+    // 승인 처리
     public void approve() {
-        if (!this.isApproved) {
-            this.isApproved = true;
-        }
+        this.isApproved = true;
     }
 
 }

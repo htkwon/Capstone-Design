@@ -25,7 +25,6 @@ public class RecruitBoardUpdateDto {
         this.required = board.getRequired();
         this.optional = board.getOptional();
         this.party = board.getParty();
-        this.gathered = board.getGathered();
     }
 
 }
