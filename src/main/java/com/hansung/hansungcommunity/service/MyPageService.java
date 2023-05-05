@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,38 +28,24 @@ public class MyPageService {
 
     /**
      * 해당 유저가 댓글 단 게시글을 최신 순으로
-     *  1. 작성한 댓글을 보이게 할 것인지?
-     *  2. 작성한 댓글이 있는 게시글을 보여줄 것인지?
      */
-    public List<UserActivityDto> getReplyList(Long userId){
-        List<UserActivityDto> userActivityDtos = boardRepository.findAll()
-                .stream()
-                .map(board -> {
-                    if(board.getBoardType().equals("FreeBoard")){
-                        FreeReply freeReply = freeReplyRepository.findByFreeBoardId(board.getId())
-                                .orElse(null);
-                        if(freeReply!=null && freeReply.getUser().getId().equals(userId)){
-                            return UserActivityDto.of(freeReply.getFreeBoard());
-                        }
-                    }else if(board.getBoardType().equals("QnaBoard")){
-                        QnaReply qnaReply = qnaReplyRepository.findByBoardId(board.getId())
-                                .orElse(null);
-                        if(qnaReply!=null && qnaReply.getUser().getId().equals(userId)){
-                            return UserActivityDto.of(qnaReply.getBoard());
-                        }
-                    }else{
-                        RecruitReply recruitReply = recruitReplyRepository.findByRecruitBoardId(board.getId())
-                                .orElse(null);
-                        if(recruitReply!=null && recruitReply.getUser().getId().equals(userId)){
-                            return UserActivityDto.of(recruitReply.getRecruitBoard());
-                        }
-                    }
-                    return null;
-                })
-                .filter(Objects::nonNull)
-                .sorted(Comparator.comparing(UserActivityDto :: getCreatedDate).reversed())
-                .collect(Collectors.toList());
-        return userActivityDtos;
+    public List<UserActivityDto> getReplyList(Long userId) {
+        Set<UserActivityDto> userActivityDtos = new HashSet<>();
+        List<FreeReply> freeReplies = freeReplyRepository.findByUserId(userId);
+        for (FreeReply freeReply : freeReplies) {
+            userActivityDtos.add(UserActivityDto.of(freeReply.getFreeBoard()));
+        }
+        List<QnaReply> qnaReplies = qnaReplyRepository.findByUserId(userId);
+        for (QnaReply qnaReply : qnaReplies) {
+            userActivityDtos.add(UserActivityDto.of(qnaReply.getBoard()));
+        }
+        List<RecruitReply> recruitReplies = recruitReplyRepository.findByUserId(userId);
+        for (RecruitReply recruitReply : recruitReplies) {
+            userActivityDtos.add(UserActivityDto.of(recruitReply.getRecruitBoard()));
+        }
+        List<UserActivityDto> sortedList = new ArrayList<>(userActivityDtos);
+        Collections.sort(sortedList, Comparator.comparing(UserActivityDto::getCreatedDate).reversed());
+        return sortedList;
     }
 
 
@@ -102,24 +86,24 @@ public class MyPageService {
                 .stream()
                 .map(board -> {
                     if (board.getBoardType().equals("FreeBoard")) {
-                        FreeBoardBookmark freeBoardBookmark = freeBoardBookmarkRepository.findById(board.getId())
+                        FreeBoardBookmark freeBoardBookmark = freeBoardBookmarkRepository.findByFreeBoardIdAndUserId(board.getId(),userId)
                                 .orElse(null);
                         if (freeBoardBookmark != null && freeBoardBookmark.getUser().getId().equals(userId)) {
-                            return UserActivityDto.of(freeBoardRepository.findById(freeBoardBookmark.getId())
+                            return UserActivityDto.of(freeBoardRepository.findById(freeBoardBookmark.getFreeBoard().getId())
                                     .orElseThrow(() -> new IllegalArgumentException("Mypage - 에러")));
                         }
                     } else if (board.getBoardType().equals("QnaBoard")) {
-                        QnaBoardBookmark qnaBoardBookmark = qnaBoardBookmarkRepository.findById(board.getId())
+                        QnaBoardBookmark qnaBoardBookmark = qnaBoardBookmarkRepository.findByQnaBoardIdAndUserId(board.getId(),userId)
                                 .orElse(null);
                         if (qnaBoardBookmark != null && qnaBoardBookmark.getUser().getId().equals(userId)) {
-                            return UserActivityDto.of(qnaBoardRepository.findById(qnaBoardBookmark.getId())
+                            return UserActivityDto.of(qnaBoardRepository.findById(qnaBoardBookmark.getQnaBoard().getId())
                                     .orElseThrow(() -> new IllegalArgumentException("Mypage - 에러")));
                         }
                     } else {
-                        RecruitBoardBookmark recruitBoardBookmark = recruitBoardBookmarkRepository.findById(board.getId())
+                        RecruitBoardBookmark recruitBoardBookmark = recruitBoardBookmarkRepository.findByRecruitBoardIdAndUserId(board.getId(),userId)
                                 .orElse(null);
                         if(recruitBoardBookmark!=null && recruitBoardBookmark.getUser().getId().equals(userId)){
-                            return UserActivityDto.of(recruitBoardRepository.findById(recruitBoardBookmark.getId())
+                            return UserActivityDto.of(recruitBoardRepository.findById(recruitBoardBookmark.getRecruitBoard().getId())
                                     .orElseThrow(()->new IllegalArgumentException("Mypage - 에러")));
                         }
                     }

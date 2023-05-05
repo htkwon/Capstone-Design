@@ -18,6 +18,7 @@ public interface FreeReplyRepository extends JpaRepository<FreeReply, Long>,
 
     Optional<List<FreeReply>> findAllByUserId(Long userId);
     Optional<FreeReply> findByFreeBoardId(Long userId);
+    List<FreeReply> findByUserId(Long userId);
 
 
 }

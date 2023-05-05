@@ -20,4 +20,6 @@ public interface QnaReplyRepository extends JpaRepository<QnaReply, Long>,
     Optional<QnaReply> findByBoardId(Long boardId);
 
     QnaReply findFirstByBoardIdAndAdoptTrue(Long boardId);
+
+    List<QnaReply> findByUserId(Long userId);
 }
