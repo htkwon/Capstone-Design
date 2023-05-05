@@ -29,7 +29,7 @@ public class RecruitBoardController {
      * 메인페이지 리스트 조회
      */
     @GetMapping("/recruit/main")
-    public ResponseEntity<Result<List<RecruitBoardMainDto>>> list(){
+    public ResponseEntity<Result<List<RecruitBoardMainDto>>> list() {
         List<RecruitBoardMainDto> dtoList = recruitBoardService.getMainList();
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
     }
@@ -139,6 +139,39 @@ public class RecruitBoardController {
         boolean status = recruitBoardService.approve(boardId, ca.getUser().getId(), targetUserId);
 
         return ResponseEntity.ok(status);
+    }
+
+    /**
+     * 모집 완료
+     */
+    @PutMapping("/recruit/{boardId}/complete")
+    public ResponseEntity<Void> complete(@PathVariable("boardId") Long boardId, Authentication authentication) {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        recruitBoardService.complete(boardId, ca.getUser().getId());
+
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 신청자 목록
+     * @return 유저 ID, 유저 닉네임, 필수/우대 사항 충족 여부, 프로필 사진, 학번, 1트랙, 관심 기술
+     */
+    @GetMapping("/recruit/{boardId}/applicants")
+    public ResponseEntity<List<ApplicantDto>> getApplicants(@PathVariable("boardId") Long boardId, Authentication authentication) {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        List<ApplicantDto> applicants = recruitBoardService.getApplicants(boardId, ca.getUser().getId());
+
+        return ResponseEntity.ok(applicants);
+    }
+
+    /**
+     * 신청 인원
+     */
+    @GetMapping("/recruit/{boardId}/applicants-number")
+    public ResponseEntity<Long> getApplicantsNumber(@PathVariable("boardId") Long boardId) {
+        Long number = recruitBoardService.getApplicantsNumber(boardId);
+
+        return ResponseEntity.ok(number);
     }
 
     /**

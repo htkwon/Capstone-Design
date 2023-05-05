@@ -29,6 +29,21 @@ public class RecruitBoardDetailDto {
     private int party;
     private int gathered;
 
+    private RecruitBoardDetailDto(Long id, String title, String content, String writer, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int views, Long stuId, String require, String optional, int party) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.bookmark = bookmark;
+        this.views = views;
+        this.stuId = stuId;
+        this.require = require;
+        this.optional = optional;
+        this.party = party;
+    }
+
     public static RecruitBoardDetailDto from(RecruitBoard recruitBoard) {
         return new RecruitBoardDetailDto(
                 recruitBoard.getId(),
@@ -42,8 +57,7 @@ public class RecruitBoardDetailDto {
                 Long.parseLong(recruitBoard.getUser().getStudentId()),
                 recruitBoard.getRequired(),
                 recruitBoard.getOptional(),
-                recruitBoard.getParty(),
-                recruitBoard.getGathered()
+                recruitBoard.getParty()
         );
     }
 
