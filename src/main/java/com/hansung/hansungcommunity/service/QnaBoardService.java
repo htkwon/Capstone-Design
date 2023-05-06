@@ -65,15 +65,14 @@ public class QnaBoardService {
      * 게시글 저장
      */
     @Transactional
-    public QnaBoardRequestDto post(Long userId, QnaBoardRequestDto dto) {
+    public Long post(Long userId, QnaBoardRequestDto dto) {
         User user = userRepository.getReferenceById(userId);
 
         QnaBoard board = dto.toEntity();
         board.setUser(user);
 
         QnaBoard savedBoard = qnaBoardRepository.save(board);
-        return QnaBoardRequestDto.from(savedBoard);
-
+        return savedBoard.getId();
     }
 
     /**

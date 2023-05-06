@@ -75,16 +75,16 @@ public class FreeBoardApiController {
      * 게시글 저장
      */
     @PostMapping("/free")
-    public ResponseEntity<Result<FreeBoardRequestDto>> create(
+    public ResponseEntity<Long> create(
             @RequestBody FreeBoardRequestDto dto,
             Authentication authentication
     ) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        FreeBoardRequestDto boardDto = freeBoardService.post(ca.getUser().getId(), dto);
+        Long savedId = freeBoardService.post(ca.getUser().getId(), dto);
 
         // Wrapper 클래스로 감싼 후,
         // ResponseEntity 의 body 에 담아 반환
-        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
+        return ResponseEntity.status(HttpStatus.OK).body(savedId);
     }
 
     /**
