@@ -26,7 +26,7 @@ public class QnaReplyController {
      * 댓글 생성
      * 대댓글 생성 uri 논의 필요
      */
-    @PostMapping("/qna/{boardId}/replies")
+    @PostMapping("/questions/{boardId}/replies")
     public ResponseEntity<QnaReplyDto> create(
             @PathVariable("boardId") Long boardId,
             @RequestBody @Valid QnaReplyDto replyDto,
@@ -42,7 +42,7 @@ public class QnaReplyController {
     /**
      * 댓글 조회(임시)
      */
-    @GetMapping("/qna/{boardId}/replies")
+    @GetMapping("/questions/{boardId}/replies")
     public ResponseEntity<List<QnaReplyDto>> list(
             @PathVariable("boardId") Long boardId
     ) {
@@ -54,7 +54,7 @@ public class QnaReplyController {
     /**
      * 수정, 삭제
      */
-    @PutMapping("/qna/update/replies")
+    @PutMapping("/questions/update/replies")
     public ResponseEntity<QnaReplyDto> update(@RequestBody QnaReplyDto replyDto){
         QnaReplyDto dto = replyService.update(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
@@ -63,7 +63,7 @@ public class QnaReplyController {
     /**
      * 채택
      */
-    @PostMapping("/qna/{replyId}/adopt-replies")
+    @PostMapping("/questions/{replyId}/adopt-replies")
     public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId, Authentication authentication){
         Boolean adopt = replyService.adopt(replyId);
         return ResponseEntity.status(HttpStatus.OK).body(adopt);
@@ -72,7 +72,7 @@ public class QnaReplyController {
     /**
      * 채택 취소
      */
-    @PutMapping("/qna/{replyId}/adopt-cancel")
+    @PutMapping("/questions/{replyId}/adopt-cancel")
     public ResponseEntity<Long> cancel(@PathVariable("replyId") Long replyId){
         Long id = replyService.cancel(replyId);
         return ResponseEntity.status(HttpStatus.OK).body(id);
@@ -84,7 +84,7 @@ public class QnaReplyController {
      * 프론트단에서 체크 후, true면 이미 해당 글의 댓글을 채택하셨다는 알림
      * false면 채택 가능
      */
-    @GetMapping("/qna/{boardId}/adopt-check")
+    @GetMapping("/questions/{boardId}/adopt-check")
     public ResponseEntity<QnaReplyAdoptCheckDto> adoptCheck(@PathVariable("boardId") Long boardId) {
         QnaReplyAdoptCheckDto dto = replyService.adoptCheck(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(dto);

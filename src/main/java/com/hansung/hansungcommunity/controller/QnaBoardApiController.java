@@ -47,7 +47,7 @@ public class QnaBoardApiController {
      * 특정 게시글 조회
      * 조회수 증가 로직 구현을 위해 임의로 구현, 추후 수정
      */
-    @GetMapping("/qna/detail/{boardId}")
+    @GetMapping("/questions/detail/{boardId}")
     public ResponseEntity<QnaBoardDetailsDto> detail(
             @PathVariable("boardId") Long boardId,
             HttpServletRequest request,
@@ -73,7 +73,7 @@ public class QnaBoardApiController {
      * Qna 게시판 목록 페이지 (해당 페이지에 개수에 맞게 데이터 반환)
      * 페이지 정보는 프론트에서 전송
      */
-    @GetMapping("/qna/list")
+    @GetMapping("/questions/list")
     public ResponseEntity<List<QnaBoardListDto>> listOfPage(Pageable pageable) {
         List<QnaBoardListDto> dtoList = qnaBoardService.findByPage(pageable);
 
@@ -83,7 +83,7 @@ public class QnaBoardApiController {
     /**
      * 조회수가 높은 4개의 게시글 조회
      */
-    @GetMapping("/qna/most")
+    @GetMapping("/questions/most")
     public ResponseEntity<List<QnaBoardMostViewedDto>> mostViewed() {
         List<QnaBoardMostViewedDto> mostViewedBoards = qnaBoardService.findMostViewedBoards();
 
@@ -93,7 +93,7 @@ public class QnaBoardApiController {
     /**
      * 게시글 저장 (업로드 파일 없을 때)
      */
-    @PostMapping("/qna/no-file")
+    @PostMapping("/questions/no-file")
     public ResponseEntity<QnaBoardRequestDto> create(@RequestBody QnaBoardRequestDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         QnaBoardRequestDto articleDto = qnaBoardService.post(ca.getUser().getId(), dto);
@@ -103,7 +103,7 @@ public class QnaBoardApiController {
     /**
      * 게시글 저장 (업로드 파일 있을 때)
      */
-    @PostMapping("/qna")
+    @PostMapping("/questions")
     public ResponseEntity<Object> create(
             MultipartFile[] multipartFiles,
             String stringQna,
@@ -170,7 +170,7 @@ public class QnaBoardApiController {
     /**
      * 사진 url 전송 API
      */
-    @PostMapping("/qna/image")
+    @PostMapping("/questions/image")
     public String create2(MultipartFile[] multipartFiles) throws IOException {
 
         MultipartFile image = multipartFiles[0];
@@ -188,7 +188,7 @@ public class QnaBoardApiController {
         return "/images/" + name + "." + extension;
     }
 
-    @GetMapping("/qna/return/user-id/{boardId}")
+    @GetMapping("/questions/return/user-id/{boardId}")
     public ResponseEntity<Long> getUserId(@PathVariable("boardId") Long boardId) {
         Long userId = qnaBoardService.getUserId(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(userId);
