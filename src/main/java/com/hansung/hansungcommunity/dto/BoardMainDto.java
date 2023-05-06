@@ -30,7 +30,7 @@ public class BoardMainDto {
         if (type.equals("FreeBoard")) {
             return "free";
         } else if (type.equals("QnaBoard")) {
-            return "qna";
+            return "questions";
         } else {
             return "recruit";
         }

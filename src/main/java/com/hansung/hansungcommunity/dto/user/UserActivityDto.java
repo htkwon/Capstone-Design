@@ -1,12 +1,9 @@
 package com.hansung.hansungcommunity.dto.user;
 
-import com.hansung.hansungcommunity.dto.BoardMainDto;
-import com.hansung.hansungcommunity.entity.Board;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
 import lombok.Data;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +16,7 @@ public class UserActivityDto {
     private String content;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private String writer ;
+    private String writer;
 
     private String language;
 
@@ -29,7 +26,7 @@ public class UserActivityDto {
 
     private String boardType;
 
-    public UserActivityDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt,String writer, int bookmark, int reply, String boardType) {
+    public UserActivityDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String writer, int bookmark, int reply, String boardType) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -40,7 +37,8 @@ public class UserActivityDto {
         this.reply = reply;
         this.boardType = boardType;
     }
-    public UserActivityDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt,String writer,String language, int bookmark, int reply, String boardType) {
+
+    public UserActivityDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String writer, String language, int bookmark, int reply, String boardType) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -54,7 +52,7 @@ public class UserActivityDto {
     }
 
 
-    public static UserActivityDto of(FreeBoard freeBoard){
+    public static UserActivityDto of(FreeBoard freeBoard) {
         return new UserActivityDto(
                 freeBoard.getId(),
                 freeBoard.getTitle(),
@@ -68,7 +66,7 @@ public class UserActivityDto {
         );
     }
 
-    public static UserActivityDto of(QnaBoard qnaBoard){
+    public static UserActivityDto of(QnaBoard qnaBoard) {
         return new UserActivityDto(
                 qnaBoard.getId(),
                 qnaBoard.getTitle(),
@@ -82,7 +80,8 @@ public class UserActivityDto {
                 typeConvert(qnaBoard.getBoardType())
         );
     }
-    public static UserActivityDto of(RecruitBoard recruitBoard){
+
+    public static UserActivityDto of(RecruitBoard recruitBoard) {
         return new UserActivityDto(
                 recruitBoard.getId(),
                 recruitBoard.getTitle(),
@@ -100,12 +99,10 @@ public class UserActivityDto {
         if (type.equals("FreeBoard")) {
             return "free";
         } else if (type.equals("QnaBoard")) {
-            return "qna";
+            return "questions";
         } else {
             return "recruit";
         }
     }
-
-
 
 }
