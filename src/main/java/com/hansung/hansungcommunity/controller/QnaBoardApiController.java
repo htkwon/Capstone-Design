@@ -94,10 +94,10 @@ public class QnaBoardApiController {
      * 게시글 저장 (업로드 파일 없을 때)
      */
     @PostMapping("/questions/no-file")
-    public ResponseEntity<QnaBoardRequestDto> create(@RequestBody QnaBoardRequestDto dto, Authentication authentication) {
+    public ResponseEntity<Long> create(@RequestBody QnaBoardRequestDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        QnaBoardRequestDto articleDto = qnaBoardService.post(ca.getUser().getId(), dto);
-        return ResponseEntity.status(HttpStatus.OK).body(articleDto);
+        Long savedId = qnaBoardService.post(ca.getUser().getId(), dto);
+        return ResponseEntity.status(HttpStatus.OK).body(savedId);
     }
 
     /**

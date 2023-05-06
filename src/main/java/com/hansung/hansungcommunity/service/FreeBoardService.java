@@ -28,14 +28,14 @@ public class FreeBoardService {
      * 자유 게시글 게시
      */
     @Transactional // 필요 시 쓰기 전용
-    public FreeBoardRequestDto post(Long userId, FreeBoardRequestDto boardDto) {
+    public Long post(Long userId, FreeBoardRequestDto boardDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("해당하는 학생이 없습니다."));
         FreeBoard board = FreeBoard.createBoard(user, boardDto); // 게시글 생성
 
         FreeBoard savedBoard = freeBoardRepository.save(board); // DB에 저장
 
-        return new FreeBoardRequestDto(savedBoard); // DTO 변환 후 반환
+        return savedBoard.getId();
     }
 
     /**
