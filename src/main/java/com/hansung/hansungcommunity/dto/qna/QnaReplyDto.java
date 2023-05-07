@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
  */
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class QnaReplyDto {
 
@@ -29,10 +28,18 @@ public class QnaReplyDto {
 
     private LocalDateTime createdAt;
 
-    private QnaReplyDto(Long id, String article,UserReplyDto dto,LocalDateTime createdAt) {
+    private QnaReplyDto(Long id, String article,Long parentId,UserReplyDto dto,LocalDateTime createdAt) {
         this.id = id;
         this.article = article;
+        this.parentId = parentId;
         this.user = dto;
+        this.createdAt = createdAt;
+    }
+
+    public QnaReplyDto(Long id, String article, UserReplyDto userReplyDto, LocalDateTime createdAt) {
+        this.id = id;
+        this.article = article;
+        this.user = userReplyDto;
         this.createdAt = createdAt;
     }
 
@@ -40,6 +47,7 @@ public class QnaReplyDto {
         return new QnaReplyDto(
                 qnaReply.getId(),
                 qnaReply.getArticle(),
+                qnaReply.getParent().getId(),
                 dto,
                 qnaReply.getCreatedAt()
         );
