@@ -27,8 +27,9 @@ public class RecruitBoardListDto {
     private String optional;
     private int party;
     private int gathered;
+    private boolean isCompleted;
 
-    private RecruitBoardListDto(Long id, String title, String writer, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int views, Long stuId, String require, String optional, int party) {
+    private RecruitBoardListDto(Long id, String title, String writer, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int views, Long stuId, String require, String optional, int party, boolean isCompleted) {
         this.id = id;
         this.title = title;
         this.writer = writer;
@@ -41,6 +42,7 @@ public class RecruitBoardListDto {
         this.require = require;
         this.optional = optional;
         this.party = party;
+        this.isCompleted = isCompleted;
     }
 
     public static RecruitBoardListDto from(RecruitBoard recruitBoard) {
@@ -56,7 +58,8 @@ public class RecruitBoardListDto {
                 Long.parseLong(recruitBoard.getUser().getStudentId()),
                 recruitBoard.getRequired(),
                 recruitBoard.getOptional(),
-                recruitBoard.getParty()
+                recruitBoard.getParty(),
+                recruitBoard.isCompleted()
         );
     }
 
