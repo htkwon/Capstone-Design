@@ -21,6 +21,7 @@ public class ApplicantDto {
     private Set<String> skills;
     private boolean isMeetRequired;
     private boolean isMeetOptional;
+    private boolean isApproved;
 
     public ApplicantDto(User user) {
         this.id = user.getId();
