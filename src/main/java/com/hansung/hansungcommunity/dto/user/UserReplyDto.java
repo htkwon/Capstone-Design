@@ -12,10 +12,12 @@ public class UserReplyDto {
 
     private Long id;
     private String nickname;
+    private String profileImg;
 
-    public UserReplyDto(User user){
+    public UserReplyDto(User user) {
         this.id = user.getId();
         this.nickname = user.getNickname();
+        this.profileImg = user.getProfileImg();
     }
 
 }

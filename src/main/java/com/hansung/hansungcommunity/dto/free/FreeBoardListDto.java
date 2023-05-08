@@ -16,7 +16,7 @@ public class FreeBoardListDto {
     private String content;
     private String writer;
     private String stuId;
-    //TODO : 이미지
+    private String profileImg;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private int bookmark;
@@ -29,6 +29,7 @@ public class FreeBoardListDto {
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
         this.stuId = board.getUser().getStudentId();
+        this.profileImg = board.getUser().getProfileImg();
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
         this.bookmark = board.getBookmarks().size();

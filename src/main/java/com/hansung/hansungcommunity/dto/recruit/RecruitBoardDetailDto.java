@@ -16,7 +16,7 @@ public class RecruitBoardDetailDto {
     private String title;
     private String content;
     private String writer;
-    // private String profileImg;
+    private String profileImg;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private int bookmark;
@@ -29,11 +29,12 @@ public class RecruitBoardDetailDto {
     private int party;
     private int gathered;
 
-    private RecruitBoardDetailDto(Long id, String title, String content, String writer, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int views, Long stuId, String require, String optional, int party) {
+    private RecruitBoardDetailDto(Long id, String title, String content, String writer, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int views, Long stuId, String require, String optional, int party) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.profileImg = profileImg;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
         this.bookmark = bookmark;
@@ -50,6 +51,7 @@ public class RecruitBoardDetailDto {
                 recruitBoard.getTitle(),
                 recruitBoard.getContent(),
                 recruitBoard.getUser().getNickname(),
+                recruitBoard.getUser().getProfileImg(),
                 recruitBoard.getCreatedAt(),
                 recruitBoard.getModifiedAt(),
                 recruitBoard.getBookmarks().size(),

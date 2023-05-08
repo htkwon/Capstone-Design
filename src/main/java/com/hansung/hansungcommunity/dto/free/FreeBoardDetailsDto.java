@@ -26,6 +26,7 @@ public class FreeBoardDetailsDto {
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
         this.stuId = Long.parseLong(board.getUser().getStudentId());
+        this.profileImg = board.getUser().getProfileImg();
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
         this.bookmark = board.getBookmarks().size();
