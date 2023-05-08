@@ -28,10 +28,11 @@ public class FreeReplyDto {
 
 
 
-    private FreeReplyDto(Long id, String article,UserReplyDto dto,LocalDateTime createdAt){
+    private FreeReplyDto(Long id, String article,UserReplyDto dto,Long parentId,LocalDateTime createdAt){
         this.id = id;
         this.article = article;
         this.user = dto;
+        this.parentId = parentId;
         this.createdAt = createdAt;
     }
 
@@ -41,8 +42,16 @@ public class FreeReplyDto {
         this.article = freeReply.getArticle();
         this.parentId = (freeReply.getParent()!=null)? freeReply.getParent().getId() : null;
         this.user = new UserReplyDto(freeReply.getUser());
+        this.parentId = parentId;
         this.createdAt = freeReply.getCreatedAt();
 
+    }
+
+    public FreeReplyDto(Long id, String article, UserReplyDto userReplyDto, LocalDateTime createdAt) {
+        this.id = id;
+        this.article = article;
+        this.user = userReplyDto;
+        this.createdAt = createdAt;
     }
 
     public static FreeReplyDto from (FreeReply freeReply, UserReplyDto dto){
@@ -50,6 +59,7 @@ public class FreeReplyDto {
                 freeReply.getId(),
                 freeReply.getArticle(),
                 dto,
+                freeReply.getParent().getId(),
                 freeReply.getCreatedAt()
         );
     }
