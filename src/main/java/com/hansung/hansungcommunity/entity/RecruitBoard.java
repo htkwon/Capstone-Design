@@ -73,9 +73,7 @@ public class RecruitBoard extends Board {
 
     // 자동 모집 완료 처리
     public void updateIsCompleted(Long count) {
-        if (this.gathered + count >= this.party) {
-            this.isCompleted = true;
-        }
+        this.isCompleted = this.gathered + count >= this.party;
     }
 
     public void patch(RecruitBoardRequestDto dto) {

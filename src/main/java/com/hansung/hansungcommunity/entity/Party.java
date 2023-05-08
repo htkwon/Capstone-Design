@@ -46,4 +46,9 @@ public class Party extends AuditingFields {
         this.isApproved = true;
     }
 
+    // 승인 취소 처리
+    public void disapprove() {
+        this.isApproved = false;
+    }
+
 }
