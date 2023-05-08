@@ -14,5 +14,6 @@ public class UserRequestDto {
     private String track1;
     private String track2;
     private List<String> skills; // 관심 기술
+    private String picture;
 
 }
