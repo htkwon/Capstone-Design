@@ -8,7 +8,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long>,
-        QuerydslPredicateExecutor<QnaBoard> {
+        QuerydslPredicateExecutor<User> {
 
     boolean existsUserByStudentId(String studentId);
 
