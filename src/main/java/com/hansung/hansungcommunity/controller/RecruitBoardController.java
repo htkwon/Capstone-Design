@@ -24,7 +24,6 @@ public class RecruitBoardController {
 
     private final RecruitBoardService recruitBoardService;
 
-
     /**
      * 메인페이지 리스트 조회
      */
@@ -142,6 +141,21 @@ public class RecruitBoardController {
     }
 
     /**
+     * 팀 소속 신청 승인 취소
+     */
+    @PutMapping("/recruit/{boardId}/disapproval/{targetUserId}")
+    public ResponseEntity<Boolean> disapprove(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("targetUserId") Long targetUserId,
+            Authentication authentication
+    ) {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        boolean status = recruitBoardService.disapprove(boardId, ca.getUser().getId(), targetUserId);
+
+        return ResponseEntity.ok(status);
+    }
+
+    /**
      * 모집 완료
      */
     @PutMapping("/recruit/{boardId}/complete")
@@ -170,6 +184,16 @@ public class RecruitBoardController {
     @GetMapping("/recruit/{boardId}/applicants-number")
     public ResponseEntity<Long> getApplicantsNumber(@PathVariable("boardId") Long boardId) {
         Long number = recruitBoardService.getApplicantsNumber(boardId);
+
+        return ResponseEntity.ok(number);
+    }
+
+    /**
+     * 승인된 인원
+     */
+    @GetMapping("/recruit/{boardId}/approvers-number")
+    public ResponseEntity<Long> getApproversNumber(@PathVariable("boardId") Long boardId) {
+        Long number = recruitBoardService.getApproversNumber(boardId);
 
         return ResponseEntity.ok(number);
     }
@@ -212,6 +236,5 @@ public class RecruitBoardController {
     static class Result<T> {
         private T data;
     }
-
 
 }

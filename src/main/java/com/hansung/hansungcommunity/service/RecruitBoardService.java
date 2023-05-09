@@ -124,6 +124,31 @@ public class RecruitBoardService {
     }
 
     /**
+     * 특정 사용자에 대한 신청 승인 취소
+     */
+    @Transactional
+    public boolean disapprove(Long boardId, Long userId, Long targetUserId) {
+        RecruitBoard board = recruitBoardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("신청 승인 취소 실패, 해당하는 게시글이 없음"));
+
+        if (board.getUser().getId().equals(userId) && !board.isCompleted()) {
+            Party party = partyRepository.findByUserIdAndRecruitBoardId(targetUserId, boardId)
+                    .orElseThrow(() -> new IllegalArgumentException("신청 승인 취소 실패, 해당하는 신청 정보가 없음"));
+
+            if (party.isApproved()) {
+                party.disapprove();
+                partyRepository.flush();
+                Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId); // 해당 게시글의 승인 인원
+                board.updateIsCompleted(count);
+            }
+
+            return party.isApproved();
+        } else {
+            throw new IllegalArgumentException("신청 승인 취소 실패, 게시글을 작성한 유저가 아닙니다.");
+        }
+    }
+
+    /**
      * 게시글 수정 시, 기존 게시글 정보 반환
      */
     public RecruitBoardUpdateDto getDetailForUpdate(Long boardId) {
@@ -202,6 +227,7 @@ public class RecruitBoardService {
                 ApplicantDto dto = new ApplicantDto(party.getUser());
                 dto.setMeetRequired(party.isMeetRequired());
                 dto.setMeetOptional(party.isMeetOptional());
+                dto.setApproved(party.isApproved());
 
                 return dto;
             }).collect(Collectors.toList());
@@ -215,6 +241,13 @@ public class RecruitBoardService {
      */
     public Long getApplicantsNumber(Long boardId) {
         return partyRepository.countByRecruitBoardId(boardId);
+    }
+
+    /**
+     * 승인된 인원 수
+     */
+    public Long getApproversNumber(Long boardId) {
+        return partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId);
     }
 
 }
