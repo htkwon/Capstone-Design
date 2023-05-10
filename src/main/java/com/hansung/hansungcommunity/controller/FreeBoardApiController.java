@@ -65,10 +65,10 @@ public class FreeBoardApiController {
      * 페이지 정보는 프론트에서 전송
      */
     @GetMapping("/free/list")
-    public ResponseEntity<List<FreeBoardListDto>> listOfPage(Pageable pageable) {
-        List<FreeBoardListDto> dtoList = freeBoardService.findByPage(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+    public ResponseEntity<List<FreeBoardListDto>> listOfPage(Pageable pageable, @RequestParam(required = false) String search) {
+        List<FreeBoardListDto> dtoList = freeBoardService.findByPage(pageable, search);
 
+        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
 
     /**
