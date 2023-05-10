@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.dto.recruit;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hansung.hansungcommunity.entity.Skill;
 import com.hansung.hansungcommunity.entity.User;
 import lombok.Data;
@@ -19,8 +20,11 @@ public class ApplicantDto {
     private String profileImg;
     private String track1;
     private Set<String> skills;
+    @JsonProperty("isMeetRequired")
     private boolean isMeetRequired;
+    @JsonProperty("isMeetOptional")
     private boolean isMeetOptional;
+    @JsonProperty("isApproved")
     private boolean isApproved;
 
     public ApplicantDto(User user) {

@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.dto.recruit;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class RecruitBoardDetailDto {
     private String optional;
     private int party;
     private int gathered;
+    @JsonProperty("isCompleted")
     private boolean isCompleted;
 
     private RecruitBoardDetailDto(Long id, String title, String content, String writer, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int views, Long stuId, String require, String optional, int party, boolean isCompleted) {
