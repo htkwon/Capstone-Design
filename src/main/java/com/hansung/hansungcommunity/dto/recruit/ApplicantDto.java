@@ -23,7 +23,7 @@ public class ApplicantDto {
     @JsonProperty("isMeetRequired")
     private boolean isMeetRequired;
     @JsonProperty("isMeetOptional")
-    private boolean isMeetOptional;
+    private Boolean isMeetOptional;
     @JsonProperty("isApproved")
     private boolean isApproved;
 

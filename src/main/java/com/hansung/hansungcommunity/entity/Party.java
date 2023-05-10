@@ -21,7 +21,7 @@ public class Party extends AuditingFields {
     private Long id;
     private boolean isApproved;
     private boolean isMeetRequired;
-    private boolean isMeetOptional;
+    private Boolean isMeetOptional;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -29,7 +29,7 @@ public class Party extends AuditingFields {
     @JoinColumn(name = "recruit_board_id")
     private RecruitBoard recruitBoard;
 
-    private Party(User user, RecruitBoard recruitBoard, boolean isMeetRequired, boolean isMeetOptional) {
+    private Party(User user, RecruitBoard recruitBoard, boolean isMeetRequired, Boolean isMeetOptional) {
         this.user = user;
         this.recruitBoard = recruitBoard;
         this.isApproved = false;
@@ -37,8 +37,19 @@ public class Party extends AuditingFields {
         this.isMeetOptional = isMeetOptional;
     }
 
-    public static Party from(User user, RecruitBoard recruitBoard, boolean isMeetRequired, boolean isMeetOptional) {
-        return new Party(user, recruitBoard, isMeetRequired, isMeetOptional);
+    private Party(User user, RecruitBoard recruitBoard, boolean isMeetRequired) {
+        this.user = user;
+        this.recruitBoard = recruitBoard;
+        this.isApproved = false;
+        this.isMeetRequired = isMeetRequired;
+    }
+
+    public static Party from(User user, RecruitBoard recruitBoard, boolean isMeetRequired, Boolean isMeetOptional) {
+        if (isMeetOptional == null) {
+            return new Party(user, recruitBoard, isMeetRequired);
+        } else {
+            return new Party(user, recruitBoard, isMeetRequired, isMeetOptional);
+        }
     }
 
     // 승인 처리

@@ -90,12 +90,16 @@ public class RecruitBoardService {
         }
 
         if (check.isEmpty()) {
-            Party party = partyRepository.save(Party.from(user, board, dto.getIsMeetRequired(), dto.getIsMeetOptional()));
+            Party party;
+            if (dto.getIsMeetOptional() == null) {
+                party = partyRepository.save(Party.from(user, board, dto.getIsMeetRequired(), null));
+            } else {
+                party = partyRepository.save(Party.from(user, board, dto.getIsMeetRequired(), dto.getIsMeetOptional()));
+            }
             return party.getId();
         } else {
             return check.get().getId();
         }
-
     }
 
     /**
@@ -226,7 +230,11 @@ public class RecruitBoardService {
             return parties.stream().map(party -> {
                 ApplicantDto dto = new ApplicantDto(party.getUser());
                 dto.setMeetRequired(party.isMeetRequired());
-                dto.setMeetOptional(party.isMeetOptional());
+                if (party.getIsMeetOptional() == null) {
+                    dto.setIsMeetOptional(null);
+                } else {
+                    dto.setIsMeetOptional(party.getIsMeetOptional());
+                }
                 dto.setApproved(party.isApproved());
 
                 return dto;
