@@ -8,6 +8,7 @@ import com.hansung.hansungcommunity.repository.QnaBoardRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -122,9 +123,17 @@ public class QnaBoardService {
      * 게시글 리스트 조회
      * 프론트에서 요청한 페이지 정보에 맞게 게시글 반환
      */
-    public List<QnaBoardListDto> findByPage(Pageable pageable) {
+    public List<QnaBoardListDto> findByPage(Pageable pageable, String search) {
         Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return qnaBoardRepository.findAll(setPage).getContent()
+        Page<QnaBoard> page;
+
+        if (search == null) {
+            page = qnaBoardRepository.findAll(setPage);
+        } else {
+            page = qnaBoardRepository.findAllWithSearchParam(search, setPage);
+        }
+
+        return page.getContent()
                 .stream()
                 .map(QnaBoardListDto::new)
                 .collect(Collectors.toList());

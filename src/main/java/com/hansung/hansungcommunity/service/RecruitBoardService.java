@@ -8,6 +8,7 @@ import com.hansung.hansungcommunity.repository.PartyRepository;
 import com.hansung.hansungcommunity.repository.RecruitBoardRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,9 +39,17 @@ public class RecruitBoardService {
         return saved.getId();
     }
 
-    public List<RecruitBoardListDto> getList(Pageable pageable) {
+    public List<RecruitBoardListDto> getList(Pageable pageable, String search) {
         Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return recruitBoardRepository.findAll(setPage).getContent()
+        Page<RecruitBoard> page;
+
+        if (search == null) {
+            page = recruitBoardRepository.findAll(setPage);
+        } else {
+            page = recruitBoardRepository.findAllWithSearchParam(search, setPage);
+        }
+
+        return page.getContent()
                 .stream()
                 .map(recruitBoard -> {
                     Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(recruitBoard.getId());

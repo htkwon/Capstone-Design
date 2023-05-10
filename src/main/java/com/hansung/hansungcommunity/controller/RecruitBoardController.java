@@ -79,8 +79,8 @@ public class RecruitBoardController {
      * 게시글 목록 조회
      */
     @GetMapping("/recruit/list")
-    public ResponseEntity<List<RecruitBoardListDto>> list(Pageable pageable) {
-        List<RecruitBoardListDto> recruitList = recruitBoardService.getList(pageable);
+    public ResponseEntity<List<RecruitBoardListDto>> list(Pageable pageable, @RequestParam(required = false) String search) {
+        List<RecruitBoardListDto> recruitList = recruitBoardService.getList(pageable, search);
 
         return ResponseEntity.ok(recruitList);
     }
@@ -168,6 +168,7 @@ public class RecruitBoardController {
 
     /**
      * 신청자 목록
+     *
      * @return 유저 ID, 유저 닉네임, 필수/우대 사항 충족 여부, 프로필 사진, 학번, 1트랙, 관심 기술
      */
     @GetMapping("/recruit/{boardId}/applicants")

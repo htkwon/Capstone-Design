@@ -74,8 +74,8 @@ public class QnaBoardApiController {
      * 페이지 정보는 프론트에서 전송
      */
     @GetMapping("/questions/list")
-    public ResponseEntity<List<QnaBoardListDto>> listOfPage(Pageable pageable) {
-        List<QnaBoardListDto> dtoList = qnaBoardService.findByPage(pageable);
+    public ResponseEntity<List<QnaBoardListDto>> listOfPage(Pageable pageable, @RequestParam(required = false) String search) {
+        List<QnaBoardListDto> dtoList = qnaBoardService.findByPage(pageable, search);
 
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }

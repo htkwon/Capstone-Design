@@ -6,6 +6,7 @@ import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.repository.FreeBoardRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -104,9 +105,17 @@ public class FreeBoardService {
      * 게시글 리스트 조회
      * 프론트에서 요청한 페이지 정보에 맞게 게시글 반환
      */
-    public List<FreeBoardListDto> findByPage(Pageable pageable) {
+    public List<FreeBoardListDto> findByPage(Pageable pageable, String search) {
         Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createdAt");
-        return freeBoardRepository.findAll(setPage).getContent()
+        Page<FreeBoard> page;
+
+        if (search == null) {
+            page = freeBoardRepository.findAll(setPage);
+        } else {
+            page = freeBoardRepository.findAllWithSearchParam(search, setPage);
+        }
+
+        return page.getContent()
                 .stream()
                 .map(FreeBoardListDto::new)
                 .collect(Collectors.toList());
