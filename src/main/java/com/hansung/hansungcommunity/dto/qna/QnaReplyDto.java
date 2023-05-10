@@ -44,14 +44,17 @@ public class QnaReplyDto {
     }
 
     public static QnaReplyDto from (QnaReply qnaReply,UserReplyDto dto){
+        Long parentId = qnaReply.getParent() != null? qnaReply.getParent().getId() : null;
         return new QnaReplyDto(
                 qnaReply.getId(),
                 qnaReply.getArticle(),
-                qnaReply.getParent().getId(),
+                parentId,
                 dto,
                 qnaReply.getCreatedAt()
         );
     }
+
+
 
     // 부모 댓글 DTO 생성
     public static QnaReplyDto createParent(QnaReply qnaReply) {
