@@ -72,6 +72,11 @@ public class User {
     )
     private Set<Skill> skills;
 
+    @OneToMany(mappedBy = "user")
+    private List<Summary> summaries = new ArrayList<>();
+
+
+
     private User(String studentId, String name, String nickname, String introduce, String track1, String track2, String profileImg) {
         this.studentId = studentId;
         this.name = name;
