@@ -55,11 +55,12 @@ public class FreeReplyDto {
     }
 
     public static FreeReplyDto from (FreeReply freeReply, UserReplyDto dto){
+        Long parentId = freeReply.getParent() != null ? freeReply.getParent().getId() : null ;
         return new FreeReplyDto(
                 freeReply.getId(),
                 freeReply.getArticle(),
                 dto,
-                freeReply.getParent().getId(),
+                parentId,
                 freeReply.getCreatedAt()
         );
     }

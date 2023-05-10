@@ -73,6 +73,13 @@ public class FreeReplyService {
     public FreeReplyDto update(FreeReplyDto replyDto) {
         FreeReply reply = freeReplyRepository.findById(replyDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다."));
+        if (replyDto.getParentId() != null) {
+            FreeReply parent = freeReplyRepository.findById(replyDto.getParentId())
+                    .orElseThrow(()-> new IllegalArgumentException("해당 부모 댓글이 없습니다."));
+            reply.setParent(parent);
+        }else {
+            reply.setParent(null);
+        }
         reply.update(replyDto.getArticle());
         UserReplyDto userReplyDto = new UserReplyDto(userRepository.findById(reply.getUser().getId())
                 .orElseThrow(()->new IllegalArgumentException("해당 유저가 없습니다.")));

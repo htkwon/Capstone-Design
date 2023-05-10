@@ -1,6 +1,5 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyAdoptCheckDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
@@ -15,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -128,12 +125,20 @@ public class QnaReplyService {
     public QnaReplyDto update(QnaReplyDto replyDto) {
         QnaReply reply = replyRepository.findById(replyDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다."));
+        if (replyDto.getParentId() != null) {
+            QnaReply parent = replyRepository.findById(replyDto.getParentId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 부모 댓글이 없습니다."));
+            reply.setParent(parent);
+        } else {
+            reply.setParent(null);
+        }
         reply.update(replyDto.getArticle());
         UserReplyDto userReplyDto = new UserReplyDto(userRepository.findById(reply.getUser().getId())
-                .orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다.")));
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다.")));
         return QnaReplyDto.from(replyRepository.save(reply), userReplyDto);
-
     }
+
+
     @Transactional
     public Boolean adopt(Long replyId) {
         QnaReply reply = replyRepository.findById(replyId)
@@ -160,5 +165,12 @@ public class QnaReplyService {
 
         return reply.getId();
 
+    }
+
+    @Transactional
+    public void delete(Long replyId) {
+        QnaReply qnaReply = replyRepository.findById(replyId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
+        replyRepository.delete(qnaReply);
     }
 }

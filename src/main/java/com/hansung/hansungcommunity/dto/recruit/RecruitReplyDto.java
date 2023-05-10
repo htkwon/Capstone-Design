@@ -26,10 +26,18 @@ public class RecruitReplyDto {
     private UserReplyDto user;
     private LocalDateTime createdAt;
 
-    private RecruitReplyDto(Long id, String article,UserReplyDto dto,LocalDateTime createdAt){
+    private RecruitReplyDto(Long id,Long parentId, String article,UserReplyDto dto,LocalDateTime createdAt){
         this.id = id;
+        this.parentId = parentId;
         this.article = article;
         this.user = dto;
+        this.createdAt = createdAt;
+    }
+
+    public RecruitReplyDto(Long id, String article, UserReplyDto userReplyDto, LocalDateTime createdAt) {
+        this.id= id;
+        this.article = article;
+        this.user = userReplyDto;
         this.createdAt = createdAt;
     }
 
@@ -42,10 +50,14 @@ public class RecruitReplyDto {
 
     }
 
+
+
     public static RecruitReplyDto from (RecruitReply recruitReply, UserReplyDto dto){
+        Long parentId  = recruitReply.getParent() != null ? recruitReply.getParent().getId() : null;
         return new RecruitReplyDto(
                 recruitReply.getId(),
                 recruitReply.getArticle(),
+                parentId,
                 dto,
                 recruitReply.getCreatedAt()
         );
@@ -64,6 +76,7 @@ public class RecruitReplyDto {
         return new RecruitReplyDto(
                 recruitReply.getId(),
                 recruitReply.getArticle(),
+                recruitReply.getParent().getId(),
                 new UserReplyDto(recruitReply.getUser()),
                 recruitReply.getCreatedAt()
         );

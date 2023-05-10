@@ -60,6 +60,13 @@ public class QnaReplyController {
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
+    @DeleteMapping("/questions/delete/{replyId}/replies")
+    public ResponseEntity<Void> delete(@PathVariable("replyId") Long replyId){
+        replyService.delete(replyId);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+
     /**
      * 채택
      */
