@@ -91,9 +91,20 @@ public class FreeReplyService {
 
     @Transactional
     public void delete(Long replyId) {
-        FreeReply reply = freeReplyRepository.findById(replyId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다."));
-        freeReplyRepository.delete(reply);
+        deleteReplyMethod(replyId);
     }
 
+    //재귀 호출로 댓글의 대댓글 및 대댓글의 댓글 있을 시 모두 삭제
+    private void deleteReplyMethod(Long replyId) {
+        FreeReply reply = freeReplyRepository.findById(replyId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다."));
+
+        // 댓글의 대댓글 삭제
+        List<FreeReply> children = freeReplyRepository.findAllByParentId(reply.getId());
+        for (FreeReply child : children) {
+            deleteReplyMethod(child.getId());
+        }
+        // 댓글 삭제
+        freeReplyRepository.delete(reply);
+    }
 }

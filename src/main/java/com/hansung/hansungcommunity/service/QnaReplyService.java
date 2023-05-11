@@ -169,8 +169,19 @@ public class QnaReplyService {
 
     @Transactional
     public void delete(Long replyId) {
-        QnaReply qnaReply = replyRepository.findById(replyId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
-        replyRepository.delete(qnaReply);
+        deleteReplyMethod(replyId);
     }
+
+    private void deleteReplyMethod(Long replyId){
+        QnaReply reply = replyRepository.findById(replyId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
+        List<QnaReply> children = replyRepository.findAllByParentId(reply.getId());
+        for(QnaReply child : children){
+            deleteReplyMethod(child.getId());
+        }
+        replyRepository.delete(reply);
+    }
+
+
+
 }

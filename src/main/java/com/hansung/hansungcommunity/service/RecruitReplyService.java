@@ -81,8 +81,16 @@ public class RecruitReplyService {
 
     @Transactional
     public void delete(Long replyId){
+        deleteReplyMethod(replyId);
+    }
+
+    private void deleteReplyMethod(Long replyId){
         RecruitReply reply = recruitReplyRepository.findById(replyId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
+        List<RecruitReply> children = recruitReplyRepository.findAllByParentId(reply.getId());
+        for(RecruitReply child : children){
+            deleteReplyMethod(child.getId());
+        }
         recruitReplyRepository.delete(reply);
     }
 
