@@ -98,6 +98,10 @@ public class RecruitBoardService {
             throw new IllegalArgumentException("신청 실패, 모집이 마감된 게시글입니다.");
         }
 
+        if (board.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("신청 실패, 게시글 작성자는 신청이 불가능합니다.");
+        }
+
         if (check.isEmpty()) {
             Party party;
             if (dto.getIsMeetOptional() == null) {
@@ -108,6 +112,23 @@ public class RecruitBoardService {
             return party.getId();
         } else {
             return check.get().getId();
+        }
+    }
+
+    /**
+     * 팀 소속 신청 취소
+     */
+    @Transactional
+    public boolean cancelApplication(Long boardId, Long userId) {
+        Party party = partyRepository.findByUserIdAndRecruitBoardId(userId, boardId)
+                .orElseThrow(() -> new IllegalArgumentException("신청 취소 실패, 해당 신청 정보가 없습니다."));
+        RecruitBoard recruitBoard = party.getRecruitBoard();
+
+        if (!party.isApproved() && !recruitBoard.isCompleted()) {
+            partyRepository.delete(party);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -265,6 +286,16 @@ public class RecruitBoardService {
      */
     public Long getApproversNumber(Long boardId) {
         return partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId);
+    }
+
+    /**
+     * 신청 여부 확인
+     */
+    public Boolean applicationCheck(Long boardId, Long userId) {
+        Optional<Party> result = partyRepository.findByUserIdAndRecruitBoardId(userId, boardId);
+
+        if (result.isEmpty()) return null;
+        else return result.get().isApproved();
     }
 
 }
