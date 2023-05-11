@@ -1,11 +1,14 @@
 package com.hansung.hansungcommunity.dto.user;
 
 import com.hansung.hansungcommunity.entity.Summary;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
 public class UserSummaryDto {
 
     private Long summaryId;
