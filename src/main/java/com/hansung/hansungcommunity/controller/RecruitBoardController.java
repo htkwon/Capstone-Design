@@ -126,6 +126,18 @@ public class RecruitBoardController {
     }
 
     /**
+     * 팀 소속 신청 취소
+     */
+    @DeleteMapping("/recruit/{boardId}/application-cancel")
+    public ResponseEntity<String> cancelApplication(@PathVariable("boardId") Long boardId, Authentication authentication) {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        boolean result = recruitBoardService.cancelApplication(boardId, ca.getUser().getId());
+
+        if (result) return ResponseEntity.ok().build();
+        else return ResponseEntity.badRequest().body("이미 승인된 신청이거나, 모집이 마감된 게시글입니다.");
+    }
+
+    /**
      * 팀 소속 신청 승인
      */
     @PutMapping("/recruit/{boardId}/approval/{targetUserId}")
@@ -197,6 +209,17 @@ public class RecruitBoardController {
         Long number = recruitBoardService.getApproversNumber(boardId);
 
         return ResponseEntity.ok(number);
+    }
+
+    /**
+     * 신청 여부 확인
+     */
+    @GetMapping("/recruit/{boardId}/application-check")
+    public ResponseEntity<Boolean> applicationCheck(@PathVariable("boardId") Long boardId, Authentication authentication) {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        Boolean result = recruitBoardService.applicationCheck(boardId, ca.getUser().getId());
+
+        return ResponseEntity.ok(result);
     }
 
     /**
