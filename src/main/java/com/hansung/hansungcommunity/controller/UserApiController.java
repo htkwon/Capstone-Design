@@ -1,10 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.user.SimpleUserInfoDto;
-import com.hansung.hansungcommunity.dto.user.UserInfoDto;
-import com.hansung.hansungcommunity.dto.user.UserRankDto;
-import com.hansung.hansungcommunity.dto.user.UserRequestDto;
+import com.hansung.hansungcommunity.dto.user.*;
 import com.hansung.hansungcommunity.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -80,6 +77,15 @@ public class UserApiController {
     public ResponseEntity<List<UserRankDto>> userRank(){
         List<UserRankDto> dto = userService.getUserRank();
         return ResponseEntity.status(HttpStatus.OK).body(dto);
+    }
+
+    /**
+     * 유저 닉네임 검사 (추가정보 페이지)
+     */
+    @PostMapping("/api/user/check-nickname")
+    public ResponseEntity<Boolean> checkNickname(@RequestBody UserCheckNicknameDto dto){
+        Boolean check = userService.checkUserNickname(dto);
+        return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
 

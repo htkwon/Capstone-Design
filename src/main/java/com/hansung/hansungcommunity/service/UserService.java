@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
+import com.hansung.hansungcommunity.dto.user.UserCheckNicknameDto;
 import com.hansung.hansungcommunity.dto.user.UserInfoDto;
 import com.hansung.hansungcommunity.dto.user.UserRankDto;
 import com.hansung.hansungcommunity.dto.user.UserRequestDto;
@@ -78,4 +79,8 @@ public class UserService {
         return list;
     }
 
+    public Boolean checkUserNickname(UserCheckNicknameDto dto) {
+        User user = userRepository.findByNickname(dto.getNickname());
+        return user != null;
+    }
 }
