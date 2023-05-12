@@ -1,10 +1,12 @@
 package com.hansung.hansungcommunity.dto.qna;
 
+import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +27,8 @@ public class QnaBoardListDto {
     private int views;
     private String stuId;
 
+    private List<ImageDto> image;
+
     public QnaBoardListDto(QnaBoard board) {
         this.id = board.getId();
         this.title = board.getTitle();
@@ -38,6 +42,7 @@ public class QnaBoardListDto {
         this.point = board.getPoint();
         this.views = board.getViews();
         this.stuId = board.getUser().getStudentId();
+        this.image = null;
     }
 
 }

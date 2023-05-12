@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.service;
 
 
+import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.dto.qna.*;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.User;
@@ -16,7 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -135,7 +139,11 @@ public class QnaBoardService {
 
         return page.getContent()
                 .stream()
-                .map(QnaBoardListDto::new)
+                .map(board -> {
+                    QnaBoardListDto dto = new QnaBoardListDto(board);
+                    dto.setImage(extractImagesFromContent(board.getContent()));
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -160,6 +168,29 @@ public class QnaBoardService {
      */
     public long getTotal() {
         return qnaBoardRepository.count();
+    }
+
+
+    /**
+     * 이미지 추출
+     */
+    private List<ImageDto> extractImagesFromContent(String content) {
+        List<ImageDto> images = new ArrayList<>();
+
+        // 정규표현식 패턴
+        String patternString = "<img\\s+[^>]*src\\s*=\\s*\"([^\"]*)\"[^>]*>";
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(content);
+
+        // 매칭된 이미지 URL 추출
+        while (matcher.find()) {
+            String imageUrl = matcher.group(1);
+            ImageDto imageDto = new ImageDto();
+            imageDto.setImageUrl(imageUrl);
+            images.add(imageDto);
+        }
+
+        return images;
     }
 
 }

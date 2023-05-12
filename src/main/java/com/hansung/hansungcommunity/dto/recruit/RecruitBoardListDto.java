@@ -1,12 +1,14 @@
 package com.hansung.hansungcommunity.dto.recruit;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +33,8 @@ public class RecruitBoardListDto {
     @JsonProperty("isCompleted")
     private boolean isCompleted;
 
+    private List<ImageDto> image;
+
     private RecruitBoardListDto(Long id, String title, String writer, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int views, Long stuId, String require, String optional, int party, boolean isCompleted) {
         this.id = id;
         this.title = title;
@@ -45,6 +49,7 @@ public class RecruitBoardListDto {
         this.optional = optional;
         this.party = party;
         this.isCompleted = isCompleted;
+        this.image = null;
     }
 
     public static RecruitBoardListDto from(RecruitBoard recruitBoard) {
