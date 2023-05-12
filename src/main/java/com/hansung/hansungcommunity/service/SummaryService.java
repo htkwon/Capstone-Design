@@ -57,4 +57,34 @@ public class SummaryService {
         return UserSummaryDto.of(summary);
     }
 
+    /**
+     * 오늘의 한줄 고정
+     */
+    @Transactional
+    public void fixSummary(Long summaryId, Long userId) {
+        Summary summary = summaryRepository.findById(summaryId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 한줄 요약이 없습니다."));
+
+        if (!summary.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("오늘의 한줄 고정 실패, 작성자가 아닙니다.");
+        }
+
+        summary.fix();
+    }
+
+    /**
+     * 오늘의 한줄 고정 해제
+     */
+    @Transactional
+    public void releaseSummary(Long summaryId, Long userId) {
+        Summary summary = summaryRepository.findById(summaryId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 한줄 요약이 없습니다."));
+
+        if (!summary.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("오늘의 한줄 고정 실패, 작성자가 아닙니다.");
+        }
+
+        summary.release();
+    }
+
 }
