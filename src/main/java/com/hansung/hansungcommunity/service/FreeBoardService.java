@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
+import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.dto.free.*;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.User;
@@ -14,7 +15,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.Document;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,6 +82,7 @@ public class FreeBoardService {
                 .stream()
                 .map(FreeBoardMainDto::new)
                 .collect(Collectors.toList());
+
     }
 
     /**
@@ -117,7 +123,11 @@ public class FreeBoardService {
 
         return page.getContent()
                 .stream()
-                .map(FreeBoardListDto::new)
+                .map(board ->{
+                    FreeBoardListDto dto = new FreeBoardListDto(board);
+                    dto.setImage(extractImagesFromContent(board.getContent()));
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -136,6 +146,28 @@ public class FreeBoardService {
      */
     public long getTotal() {
         return freeBoardRepository.count();
+    }
+
+    /**
+     * 이미지 추출
+     */
+    private List<ImageDto> extractImagesFromContent(String content) {
+        List<ImageDto> images = new ArrayList<>();
+
+        // 정규표현식 패턴
+        String patternString = "<img\\s+[^>]*src\\s*=\\s*\"([^\"]*)\"[^>]*>";
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(content);
+
+        // 매칭된 이미지 URL 추출
+        while (matcher.find()) {
+            String imageUrl = matcher.group(1);
+            ImageDto imageDto = new ImageDto();
+            imageDto.setImageUrl(imageUrl);
+            images.add(imageDto);
+        }
+
+        return images;
     }
 
 }

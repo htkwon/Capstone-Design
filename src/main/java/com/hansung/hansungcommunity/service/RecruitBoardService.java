@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
+import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.dto.recruit.*;
 import com.hansung.hansungcommunity.entity.Party;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
@@ -15,8 +16,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,6 +59,7 @@ public class RecruitBoardService {
                     Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(recruitBoard.getId());
                     RecruitBoardListDto dto = RecruitBoardListDto.from(recruitBoard);
                     dto.setGathered((int) (recruitBoard.getGathered() + count));
+                    dto.setImage(extractImagesFromContent(recruitBoard.getContent()));
 
                     return dto;
                 })
@@ -297,5 +302,28 @@ public class RecruitBoardService {
         if (result.isEmpty()) return null;
         else return result.get().isApproved();
     }
+
+    /**
+     * 이미지 추출
+     */
+    private List<ImageDto> extractImagesFromContent(String content) {
+        List<ImageDto> images = new ArrayList<>();
+
+        // 정규표현식 패턴
+        String patternString = "<img\\s+[^>]*src\\s*=\\s*\"([^\"]*)\"[^>]*>";
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(content);
+
+        // 매칭된 이미지 URL 추출
+        while (matcher.find()) {
+            String imageUrl = matcher.group(1);
+            ImageDto imageDto = new ImageDto();
+            imageDto.setImageUrl(imageUrl);
+            images.add(imageDto);
+        }
+
+        return images;
+    }
+
 
 }
