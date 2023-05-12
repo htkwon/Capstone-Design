@@ -7,11 +7,9 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 
-public interface SummaryRepository extends JpaRepository<Summary,Long> ,
+public interface SummaryRepository extends JpaRepository<Summary, Long>,
         QuerydslPredicateExecutor<User> {
 
-
     List<Summary> findAllByUser(User user);
-
 
 }

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -16,27 +15,21 @@ public class Summary extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
     private User user;
 
     private String content;
 
-    public Summary(Long summaryId, String content, User user) {
+    public Summary(Long summaryId, String content) {
         this.id = summaryId;
         this.content = content;
-        this.user = null;
-
     }
 
-
-
-    public static Summary of(UserSummaryDto dto){
+    public static Summary of(UserSummaryDto dto) {
         return new Summary(
                 dto.getSummaryId(),
-                dto.getContent(),
-                null
-
+                dto.getContent()
         );
     }
 
@@ -44,7 +37,8 @@ public class Summary extends AuditingFields {
         this.user = user;
     }
 
-    public void updateContent(String content){
+    public void updateContent(String content) {
         this.content = content;
     }
+
 }
