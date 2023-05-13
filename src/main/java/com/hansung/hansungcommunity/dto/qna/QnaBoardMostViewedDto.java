@@ -13,14 +13,12 @@ public class QnaBoardMostViewedDto {
     private String title;
     private String writer;
     private String language;
-    private int point;
 
-    private QnaBoardMostViewedDto(Long id, String nickname, String title, String language, int point) {
+    private QnaBoardMostViewedDto(Long id, String nickname, String title, String language) {
         this.id = id;
         this.writer = nickname;
         this.title = title;
         this.language = language;
-        this.point = point;
     }
 
     public static QnaBoardMostViewedDto of(QnaBoard board) {
@@ -28,8 +26,7 @@ public class QnaBoardMostViewedDto {
                 board.getId(),
                 board.getUser().getNickname(),
                 board.getTitle(),
-                board.getLanguage(),
-                board.getPoint()
+                board.getLanguage()
         );
     }
 

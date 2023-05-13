@@ -10,22 +10,20 @@ public class UserBookmarkDto {
 
     private Long id;
     private String name;
-    private int point;
     private String nickname;
     //TODO: 현재 User entity Auditing 미적용
     //private LocalDateTime createdAt;
     //private LocalDateTime modifiedAt;
 
     //Testcode 및 생성의 편의를 위한 Factory method
-    public static UserBookmarkDto of(Long id, String name, int point, String nickname){
-        return new UserBookmarkDto(id,name,point,nickname);
+    public static UserBookmarkDto of(Long id, String name, String nickname) {
+        return new UserBookmarkDto(id, name, nickname);
     }
 
-    public static UserBookmarkDto from(User entity){
+    public static UserBookmarkDto from(User entity) {
         return new UserBookmarkDto(
                 entity.getId(),
                 entity.getName(),
-                entity.getPoint(),
                 entity.getNickname()
         );
     }
@@ -34,7 +32,6 @@ public class UserBookmarkDto {
         return new UserBookmarkDto(
                 user.getId(),
                 user.getName(),
-                user.getPoint(),
                 user.getNickname()
         );
     }

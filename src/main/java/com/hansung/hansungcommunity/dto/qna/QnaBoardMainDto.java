@@ -17,8 +17,6 @@ public class QnaBoardMainDto {
     private String language;
     private int bookmark;
     private int reply;
-    private int point;
-
 
     public QnaBoardMainDto(QnaBoard board) {
         this.id = board.getId();
@@ -30,7 +28,6 @@ public class QnaBoardMainDto {
         this.language = board.getLanguage();
         this.bookmark = board.getBookmarks().size();
         this.reply = board.getReplies().size();
-        this.point = board.getPoint();
     }
 
 }

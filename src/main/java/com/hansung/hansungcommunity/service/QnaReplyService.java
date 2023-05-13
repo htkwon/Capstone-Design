@@ -80,11 +80,10 @@ public class QnaReplyService {
         List<QnaReplyDto> result = new ArrayList<>();
 
         replies.forEach(reply -> { // Iterable to List
-            if (reply.getParent() == null){ // 부모 댓글인 경우
+            if (reply.getParent() == null) { // 부모 댓글인 경우
                 QnaReplyDto parent = QnaReplyDto.createParent(reply);
                 result.add(parent);
-            }
-            else { // 자식 댓글인 경우
+            } else { // 자식 댓글인 경우
                 QnaReplyDto children = QnaReplyDto.createChildren(reply);
                 result.add(children);
             }
@@ -93,30 +92,12 @@ public class QnaReplyService {
         return result;
     }
 
-    /**
-     *채택 (해당 댓글 id로 채택값을 true로 바꾸고, 해당 댓글의 유저 포인트 증가)
-     */
-    @Transactional
-    public Boolean adopt(Long replyId,int point,Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 유저가 없습니다."));
-        QnaReply reply = replyRepository.findById(replyId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
-        reply.adopt(true);
-        reply.getUser().setPlustPoint(point);
-        if(user.getPoint()>=point) {
-            user.setMinusPoint(point);
-        }
-        replyRepository.save(reply);
-        return reply.getAdopt();
-    }
-
     @Transactional(readOnly = true)
     public QnaReplyAdoptCheckDto adoptCheck(Long boardId) {
         QnaReply reply = replyRepository.findFirstByBoardIdAndAdoptTrue(boardId);
 
-        if(reply == null){
-            return new QnaReplyAdoptCheckDto(false,null);
+        if (reply == null) {
+            return new QnaReplyAdoptCheckDto(false, null);
         }
         return new QnaReplyAdoptCheckDto(true, reply.getId());
     }
@@ -142,10 +123,10 @@ public class QnaReplyService {
     @Transactional
     public Boolean adopt(Long replyId) {
         QnaReply reply = replyRepository.findById(replyId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다."));
         reply.adopt(true);
         replyRepository.save(reply);
-        adoptRepository.save(Adopt.of(reply.getBoard(),reply.getUser()));
+        adoptRepository.save(Adopt.of(reply.getBoard(), reply.getUser()));
 
         return reply.getAdopt();
     }
@@ -153,11 +134,11 @@ public class QnaReplyService {
     @Transactional
     public Long cancel(Long replyId) {
         QnaReply reply = replyRepository.findById(replyId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다."));
         QnaBoard qnaBoard = boardRepository.findById(reply.getBoard().getId())
-                .orElseThrow(()-> new IllegalArgumentException("해당 게시글이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
         Adopt adopt = adoptRepository.findByQnaBoardId(qnaBoard.getId())
-                .orElseThrow(()-> new IllegalArgumentException("해당 게시글을 채택되지 않았습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글을 채택되지 않았습니다."));
 
         reply.adopt(false);
         replyRepository.save(reply);
@@ -172,16 +153,15 @@ public class QnaReplyService {
         deleteReplyMethod(replyId);
     }
 
-    private void deleteReplyMethod(Long replyId){
+    private void deleteReplyMethod(Long replyId) {
         QnaReply reply = replyRepository.findById(replyId)
-                .orElseThrow(()-> new IllegalArgumentException("해당 댓글이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다."));
         List<QnaReply> children = replyRepository.findAllByParentId(reply.getId());
-        for(QnaReply child : children){
+        for (QnaReply child : children) {
             deleteReplyMethod(child.getId());
         }
         replyRepository.delete(reply);
     }
-
 
 
 }

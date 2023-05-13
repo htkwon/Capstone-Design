@@ -20,7 +20,6 @@ public class QnaBoardDetailsDto {
     private int bookmark;
     private int views;
     private int reply;
-    private int point;
 
     public QnaBoardDetailsDto(QnaBoard board) {
         this.id = board.getId();
@@ -35,7 +34,6 @@ public class QnaBoardDetailsDto {
         this.bookmark = board.getBookmarks().size();
         this.views = board.getViews();
         this.reply = board.getReplies().size();
-        this.point = board.getPoint();
     }
 
 }

@@ -12,7 +12,6 @@ public class SimpleUserInfoDto {
     private Long id;
     private String studentId;
     private String name;
-    private int point;
     private String nickname;
     private String profileImg;
     private String career;
@@ -24,7 +23,6 @@ public class SimpleUserInfoDto {
         this.id = user.getId();
         this.studentId = user.getStudentId();
         this.name = user.getName();
-        this.point = user.getPoint();
         this.nickname = user.getNickname();
         this.profileImg = user.getProfileImg();
         this.career = user.getCareer();

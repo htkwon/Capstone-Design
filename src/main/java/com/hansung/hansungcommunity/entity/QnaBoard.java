@@ -23,7 +23,6 @@ public class QnaBoard extends Board {
     @NotNull
     @Lob
     private String content;  //TODO: length 설정하기
-    private int point;
     @Column
     private String tag;
     @Column
@@ -44,35 +43,32 @@ public class QnaBoard extends Board {
     @JoinColumn(name = "adopt_id")
     private Adopt adopt;
 
-    public QnaBoard(User user, String title, String content, String tag, int point, String language) {
+    public QnaBoard(User user, String title, String content, String tag, String language) {
         super.setUser(user);
         this.title = title;
         this.content = content;
         this.tag = tag;
-        this.point = point;
         this.language = language;
     }
 
-    public QnaBoard(String title, String content, int point, String language) {
+    public QnaBoard(String title, String content, String language) {
         this.title = title;
         this.content = content;
-        this.point = point;
         this.language = language;
     }
 
     //추후 다른 곳에서(EX.. Test)에서 편하게 만들기위해 Factory method 사용
-    public static QnaBoard of(User user, String title, String content, String tag, int point, String language) {
-        return new QnaBoard(user, title, content, tag, point, language);
+    public static QnaBoard of(User user, String title, String content, String tag, String language) {
+        return new QnaBoard(user, title, content, tag, language);
     }
 
-    public static QnaBoard of(String title, String content, int point, String language) {
-        return new QnaBoard(title, content, point, language);
+    public static QnaBoard of(String title, String content, String language) {
+        return new QnaBoard(title, content, language);
     }
 
     public void updateBoard(QnaBoardRequestDto dto) {
         if (dto.getTitle() != null) this.title = dto.getTitle();
         if (dto.getContent() != null) this.content = dto.getContent();
-        this.point = dto.getPoint();
         this.language = dto.getLanguage();
         modified();
     }

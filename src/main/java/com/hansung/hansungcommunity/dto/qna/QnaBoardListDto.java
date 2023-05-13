@@ -23,7 +23,6 @@ public class QnaBoardListDto {
     private String language;
     private int bookmark;
     private int reply;
-    private int point;
     private int views;
     private String stuId;
 
@@ -39,7 +38,6 @@ public class QnaBoardListDto {
         this.profileImg = board.getUser().getProfileImg();
         this.bookmark = board.getBookmarks().size();
         this.reply = board.getReplies().size();
-        this.point = board.getPoint();
         this.views = board.getViews();
         this.stuId = board.getUser().getStudentId();
         this.image = null;

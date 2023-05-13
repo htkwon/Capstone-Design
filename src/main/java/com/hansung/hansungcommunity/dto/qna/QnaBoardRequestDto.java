@@ -14,7 +14,6 @@ public class QnaBoardRequestDto {
     private Long id;
     private String title;
     private String content;
-    private int point;
     private String tag;
     private String language;
 
@@ -25,12 +24,12 @@ public class QnaBoardRequestDto {
     }
 
     //Testcode 및 생성의 편의를 위한 Factory method
-    public static QnaBoardRequestDto of(Long id, String title, String content, int point, String tag, String language){
-        return new QnaBoardRequestDto(id,title,content,point,tag,language);
+    public static QnaBoardRequestDto of(Long id, String title, String content, String tag, String language) {
+        return new QnaBoardRequestDto(id, title, content, tag, language);
     }
 
     //QnaBoardBookmarkDto 에서 사용
-    public static QnaBoardRequestDto of(QnaBoard qnaBoard){
+    public static QnaBoardRequestDto of(QnaBoard qnaBoard) {
         return new QnaBoardRequestDto(
                 qnaBoard.getId(),
                 qnaBoard.getTitle(),
@@ -38,22 +37,20 @@ public class QnaBoardRequestDto {
         );
     }
 
-    public static QnaBoardRequestDto from(QnaBoard entity){
+    public static QnaBoardRequestDto from(QnaBoard entity) {
         return new QnaBoardRequestDto(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getContent(),
-                entity.getPoint(),
                 entity.getTag(),
                 entity.getLanguage()
         );
     }
 
-    public QnaBoard toEntity(){
+    public QnaBoard toEntity() {
         return QnaBoard.of(
                 title,
                 content,
-                point,
                 language
         );
     }

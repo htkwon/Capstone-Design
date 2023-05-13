@@ -26,7 +26,6 @@ public class User {
 
     private String studentId;
     private String name; // 이름
-    private int point; // 포인트
     private String nickname; // 닉네임
     private String career; // 경력
     private String introduce; // 소개글
@@ -100,14 +99,6 @@ public class User {
         user.setSkills(skills);
 
         return user;
-    }
-
-    public void setPlustPoint(int point) {
-        this.point += point;
-    }
-
-    public void setMinusPoint(int point) {
-        this.point -= point;
     }
 
     public void updateIntroduce(String introduce) {
