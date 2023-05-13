@@ -6,7 +6,9 @@ import com.hansung.hansungcommunity.dto.user.UserRankDto;
 import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import com.hansung.hansungcommunity.entity.Skill;
 import com.hansung.hansungcommunity.entity.User;
-import com.hansung.hansungcommunity.repository.*;
+import com.hansung.hansungcommunity.repository.AdoptRepository;
+import com.hansung.hansungcommunity.repository.SkillRepository;
+import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +24,6 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final QnaReplyRepository qnaReplyRepository;
-    private final FreeReplyRepository freeReplyRepository;
-    private final FreeBoardBookmarkRepository freeBoardBookmarkRepository;
-    private final QnaBoardBookmarkRepository qnaBoardBookmarkRepository;
     private final AdoptRepository adoptRepository;
     private final SkillRepository skillRepository;
     private final MyPageService myPageService;
@@ -52,7 +50,6 @@ public class UserService {
         }
     }
 
-
     public boolean checkUser(String stuId) {
         return userRepository.existsUserByStudentId(stuId);
     }
@@ -62,7 +59,7 @@ public class UserService {
     }
 
     public UserInfoDto getUserInfo(Long stuId) {
-       User user = userRepository.findById(stuId).orElseThrow(()->new IllegalArgumentException("유저가 존재하지 않습니다."));
+        User user = userRepository.findById(stuId).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
         UserInfoDto userInfoDto = UserInfoDto.from(user);
         userInfoDto.setReply(myPageService.getReplyList(stuId).size());
         userInfoDto.setBoard(myPageService.getBoardList(stuId).size());
@@ -83,4 +80,5 @@ public class UserService {
         User user = userRepository.findByNickname(dto.getNickname());
         return user != null;
     }
+
 }
