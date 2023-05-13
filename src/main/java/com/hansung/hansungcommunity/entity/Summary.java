@@ -15,15 +15,17 @@ public class Summary extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
+    private String language;
     private boolean isFixed;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
     private User user;
 
-    public Summary(Long summaryId, String content, boolean isFixed) {
+    public Summary(Long summaryId, String content, boolean isFixed, String language) {
         this.id = summaryId;
         this.content = content;
+        this.language = language;
         this.isFixed = isFixed;
     }
 
@@ -31,7 +33,8 @@ public class Summary extends AuditingFields {
         return new Summary(
                 dto.getSummaryId(),
                 dto.getContent(),
-                false
+                false,
+                dto.getLanguage()
         );
     }
 
