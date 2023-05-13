@@ -43,6 +43,11 @@ public class SummaryService {
                 .collect(Collectors.toList());
     }
 
+    public List<UserSummaryDto> getFixedSummary(Long userId) {
+        return summaryRepository.findAllByUserIdAndIsFixedTrueOrderByCreatedAtDesc(userId)
+                .stream().map(UserSummaryDto::of).collect(Collectors.toList());
+    }
+
     @Transactional
     public void deleteSummary(Long summaryId) {
         summaryRepository.deleteById(summaryId);

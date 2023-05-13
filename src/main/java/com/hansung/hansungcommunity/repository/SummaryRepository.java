@@ -12,4 +12,6 @@ public interface SummaryRepository extends JpaRepository<Summary, Long>,
 
     List<Summary> findAllByUser(User user);
 
+    List<Summary> findAllByUserIdAndIsFixedTrueOrderByCreatedAtDesc(Long userId);
+
 }

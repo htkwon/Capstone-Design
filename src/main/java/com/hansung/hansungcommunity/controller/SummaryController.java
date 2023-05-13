@@ -38,6 +38,17 @@ public class SummaryController {
     }
 
     /**
+     * 고정된 오늘의 한줄 요약 조회
+     */
+    @GetMapping("/user/summary/mypage/fixed")
+    public ResponseEntity<List<UserSummaryDto>> getFixedSummary(Authentication authentication) {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        List<UserSummaryDto> dtos = summaryService.getFixedSummary(ca.getUser().getId());
+
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+    }
+
+    /**
      * 오늘의 한줄 요약 삭제
      */
     @DeleteMapping("/user/{summaryId}/summary/mypage")
