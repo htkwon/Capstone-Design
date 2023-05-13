@@ -21,7 +21,7 @@ public class RecruitBoardDetailDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private int bookmark;
-    // private int reply;
+    private int reply;
     private int views;
     private Long stuId;
     // private List<String> imgUrl = new ArrayList<>();
@@ -32,7 +32,7 @@ public class RecruitBoardDetailDto {
     @JsonProperty("isCompleted")
     private boolean isCompleted;
 
-    private RecruitBoardDetailDto(Long id, String title, String content, String writer, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int views, Long stuId, String require, String optional, int party, boolean isCompleted) {
+    private RecruitBoardDetailDto(Long id, String title, String content, String writer, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int reply, int views, Long stuId, String require, String optional, int party, boolean isCompleted) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -41,6 +41,7 @@ public class RecruitBoardDetailDto {
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
         this.bookmark = bookmark;
+        this.reply = reply;
         this.views = views;
         this.stuId = stuId;
         this.require = require;
@@ -59,6 +60,7 @@ public class RecruitBoardDetailDto {
                 recruitBoard.getCreatedAt(),
                 recruitBoard.getModifiedAt(),
                 recruitBoard.getBookmarks().size(),
+                recruitBoard.getReplies().size(),
                 recruitBoard.getViews(),
                 Long.parseLong(recruitBoard.getUser().getStudentId()),
                 recruitBoard.getRequired(),
