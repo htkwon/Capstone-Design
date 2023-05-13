@@ -56,11 +56,11 @@ public class MyPageController {
      * 마이페이지 (접속 유저 자기 소개 및 관심 기술 수정)
      */
     @PutMapping("/user/update")
-    public ResponseEntity<Void> updateUserInfo(@RequestBody UserUpdateDto dto, Authentication authentication) {
+    public ResponseEntity<UserUpdateDto> updateUserInfo(@RequestBody UserUpdateDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         myPageService.updateUserInfo(dto, ca.getUser().getId());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(dto);
     }
 
 }
