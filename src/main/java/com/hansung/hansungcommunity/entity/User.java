@@ -76,7 +76,6 @@ public class User {
     private List<Summary> summaries = new ArrayList<>();
 
 
-
     private User(String studentId, String name, String nickname, String introduce, String track1, String track2, String profileImg) {
         this.studentId = studentId;
         this.name = name;
@@ -109,6 +108,10 @@ public class User {
 
     public void setMinusPoint(int point) {
         this.point -= point;
+    }
+
+    public void updateIntroduce(String introduce) {
+        if (introduce != null) this.introduce = introduce;
     }
 
 }
