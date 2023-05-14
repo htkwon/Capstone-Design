@@ -47,6 +47,9 @@ public class User {
     private List<RecruitBoard> postRecruitBoards = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    private List<NoticeBoard> postNoticeBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
     private List<Party> parties = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
