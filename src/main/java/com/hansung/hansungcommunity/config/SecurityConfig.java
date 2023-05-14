@@ -32,11 +32,12 @@ public class SecurityConfig {
         http.authorizeHttpRequests()
                 .antMatchers("/images/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/join").hasRole("STUDENT")
-                .antMatchers(HttpMethod.GET, "/api/check").hasAnyRole("STUDENT", "USER")
+                .antMatchers(HttpMethod.GET, "/api/check").hasAnyRole("STUDENT", "USER", "ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/free/main").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/questions/main").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/recruit/main").permitAll()
-                .anyRequest().hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/api/notice/post").hasRole("ADMIN")
+                .anyRequest().hasAnyRole("USER","ADMIN")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

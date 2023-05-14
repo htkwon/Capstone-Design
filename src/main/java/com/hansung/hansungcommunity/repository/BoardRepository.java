@@ -2,6 +2,7 @@ package com.hansung.hansungcommunity.repository;
 
 import com.hansung.hansungcommunity.entity.Board;
 import com.hansung.hansungcommunity.entity.QnaReply;
+import com.hansung.hansungcommunity.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Optional<List<Board>> findAllByUserId(Long userId);
 
+    void deleteAllByUser(User user);
 }
