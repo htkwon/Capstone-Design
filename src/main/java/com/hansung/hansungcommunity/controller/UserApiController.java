@@ -36,7 +36,7 @@ public class UserApiController {
      * 유저 검증
      */
     @GetMapping("/api/check")
-    public ResponseEntity<Boolean> checkUser(Authentication authentication){
+    public ResponseEntity<Boolean> checkUser(Authentication authentication) {
         String stuId = authentication.getName();
         boolean check = userService.checkUser(stuId);
 
@@ -47,7 +47,7 @@ public class UserApiController {
      * 유저 정보 반환
      */
     @GetMapping("/api/user-info")
-    public ResponseEntity<UserInfoDto> userInfo(Authentication authentication){
+    public ResponseEntity<UserInfoDto> userInfo(Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         UserInfoDto userInfoDto = userService.getUserInfo(ca.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(userInfoDto);
@@ -67,7 +67,7 @@ public class UserApiController {
      * 현재 접속 유저의 id만 반환 (프론트 댓글, 대댓글에서 사용)
      */
     @GetMapping("/api/user-id")
-    public ResponseEntity<Long> userId(Authentication authentication){
+    public ResponseEntity<Long> userId(Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         return ResponseEntity.status(HttpStatus.OK).body(ca.getUser().getId());
     }
@@ -76,7 +76,7 @@ public class UserApiController {
      * 메인페이지( 유저 채택 순위 TOP5 )
      */
     @GetMapping("/api/user-rank")
-    public ResponseEntity<List<UserRankDto>> userRank(){
+    public ResponseEntity<List<UserRankDto>> userRank() {
         List<UserRankDto> dto = userService.getUserRank();
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
@@ -85,22 +85,11 @@ public class UserApiController {
      * 유저 닉네임 검사 (추가정보 페이지)
      */
     @PostMapping("/api/user/check-nickname")
-    public ResponseEntity<Boolean> checkNickname(@RequestBody UserCheckNicknameDto dto){
+    public ResponseEntity<Boolean> checkNickname(@RequestBody UserCheckNicknameDto dto) {
         Boolean check = userService.checkUserNickname(dto);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
-    /**
-     * 유저가 관리자인지 체크
-     */
-    @GetMapping("/api/admin/check")
-    public ResponseEntity<Void> checkAdmin(Authentication authentication){
-        if(authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))){
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
 
 }
 

@@ -1,6 +1,8 @@
+
 INSERT INTO user (stu_id, name, nickname, student_id, career, introduce)
 VALUES (100, 'USER1', 'NICK1', '181234', '', ''),
-       (101, 'USER2', 'NICK2', '185678', '', '');
+       (101, 'USER2', 'NICK2', '185678', '', ''),
+       (102, 'ADMIN', 'ADMIN', 'ADMIN', '', '');
 
 INSERT INTO board (id, created_at, views, dtype, stu_id)
 VALUES (1, '2023-04-28 18:41:40.000000', 0, 'FreeBoard', 100),

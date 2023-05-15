@@ -35,9 +35,10 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/api/check").hasAnyRole("STUDENT", "USER", "ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/free/main").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/questions/main").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/recruit/main").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/recruit/main").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/notice/post").hasRole("ADMIN")
-                .anyRequest().hasAnyRole("USER","ADMIN")
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
