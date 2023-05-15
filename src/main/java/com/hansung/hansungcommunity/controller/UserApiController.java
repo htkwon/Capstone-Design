@@ -2,6 +2,7 @@ package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.user.*;
+import com.hansung.hansungcommunity.repository.AdoptRepository;
 import com.hansung.hansungcommunity.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserApiController {
     private final UserService userService;
+    private final AdoptRepository adoptRepository;
 
     /**
      * 유저 저장
@@ -88,6 +90,17 @@ public class UserApiController {
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
+    /**
+     * 유저가 관리자인지 체크
+     */
+    @GetMapping("/api/admin/check")
+    public ResponseEntity<Void> checkAdmin(Authentication authentication){
+        if(authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
 
 }
 

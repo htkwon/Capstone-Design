@@ -10,9 +10,11 @@ import com.hansung.hansungcommunity.repository.AdoptRepository;
 import com.hansung.hansungcommunity.repository.SkillRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -51,6 +53,9 @@ public class UserService {
     }
 
     public boolean checkUser(String stuId) {
+        if(stuId.equals("ADMIN")){
+            return true;
+        }
         return userRepository.existsUserByStudentId(stuId);
     }
 
@@ -80,5 +85,6 @@ public class UserService {
         User user = userRepository.findByNickname(dto.getNickname());
         return user != null;
     }
+
 
 }
