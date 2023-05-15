@@ -59,7 +59,7 @@ VALUES (15, '게임 개발 공모전 같이 나가실 분을 구합니다.', '�
 INSERT INTO skill (skill_id, name)
 VALUES (1, 'JavaScript'),
        (2, 'C'),
-       (3, 'JAVA'),
+       (3, 'Java'),
        (4, 'C++'),
        (5, 'Flutter'),
        (6, 'React');
