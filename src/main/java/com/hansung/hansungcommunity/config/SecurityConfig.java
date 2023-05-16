@@ -31,9 +31,10 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests()
                 .antMatchers("/images/**").permitAll()
+                .antMatchers("/api/files").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/join").hasRole("STUDENT")
                 .antMatchers(HttpMethod.GET, "/api/check").hasAnyRole("STUDENT", "USER", "ADMIN")
-                .antMatchers(HttpMethod.GET,"/api/user/check-nickname").hasAnyRole("STUDENT","USER")
+                .antMatchers(HttpMethod.POST,"/api/user/check-nickname").hasAnyRole("STUDENT","USER")
                 .antMatchers(HttpMethod.GET, "/api/free/main").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/questions/main").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/recruit/main").permitAll()
