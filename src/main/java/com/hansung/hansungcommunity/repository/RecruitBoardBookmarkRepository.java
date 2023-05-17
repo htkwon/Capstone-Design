@@ -7,13 +7,13 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import java.util.List;
 import java.util.Optional;
 
-public interface RecruitBoardBookmarkRepository extends JpaRepository<RecruitBoardBookmark,Long>,
+public interface RecruitBoardBookmarkRepository extends JpaRepository<RecruitBoardBookmark, Long>,
         QuerydslPredicateExecutor<RecruitBoardBookmark> {
 
+    List<RecruitBoardBookmark> findAllByUserId(Long userId);
 
-    Optional<List<RecruitBoardBookmark>> findAllByUserId(Long userId);
     Optional<RecruitBoardBookmark> findByRecruitBoardIdAndUserId(Long boardId, Long userId);
 
-    Optional<List<RecruitBoardBookmark>> findAllByRecruitBoardId(Long boardId);
+    List<RecruitBoardBookmark> findAllByRecruitBoardId(Long boardId);
 
 }

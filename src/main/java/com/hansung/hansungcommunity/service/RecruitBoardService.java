@@ -5,6 +5,7 @@ import com.hansung.hansungcommunity.dto.recruit.*;
 import com.hansung.hansungcommunity.entity.Party;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
 import com.hansung.hansungcommunity.entity.User;
+import com.hansung.hansungcommunity.exception.*;
 import com.hansung.hansungcommunity.repository.PartyRepository;
 import com.hansung.hansungcommunity.repository.RecruitBoardRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
@@ -68,7 +69,7 @@ public class RecruitBoardService {
 
     public RecruitBoardDetailDto getDetail(Long boardId) {
         RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 구인 게시글이 없습니다."));
+                .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
         Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId);
 
         RecruitBoardDetailDto dto = RecruitBoardDetailDto.from(recruitBoard);
@@ -83,7 +84,7 @@ public class RecruitBoardService {
     @Transactional
     public void increaseHits(Long boardId) {
         RecruitBoard board = recruitBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("조회수 증가 실패, 해당하는 게시글이 없음"));
+                .orElseThrow(() -> new BoardNotFoundException("조회수 증가 실패, 해당하는 게시글이 없습니다."));
 
         board.increaseHits();
     }
@@ -94,17 +95,17 @@ public class RecruitBoardService {
     @Transactional
     public Long apply(Long boardId, Long userId, RecruitBoardApplyRequestDto dto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("신청 실패, 해당하는 유저가 없음"));
+                .orElseThrow(() -> new UserNotFoundException("신청 실패, 해당하는 유저가 없습니다."));
         RecruitBoard board = recruitBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("신청 실패, 해당하는 게시글이 없음"));
+                .orElseThrow(() -> new BoardNotFoundException("신청 실패, 해당하는 게시글이 없습니다."));
         Optional<Party> check = partyRepository.findByUserIdAndRecruitBoardId(userId, boardId);
 
         if (board.isCompleted()) {
-            throw new IllegalArgumentException("신청 실패, 모집이 마감된 게시글입니다.");
+            throw new RecruitmentCompletedException("신청 실패, 모집이 마감된 게시글입니다.");
         }
 
         if (board.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("신청 실패, 게시글 작성자는 신청이 불가능합니다.");
+            throw new InvalidAccessException("신청 실패, 게시글 작성자는 신청이 불가능합니다.");
         }
 
         if (check.isEmpty()) {
@@ -126,7 +127,7 @@ public class RecruitBoardService {
     @Transactional
     public boolean cancelApplication(Long boardId, Long userId) {
         Party party = partyRepository.findByUserIdAndRecruitBoardId(userId, boardId)
-                .orElseThrow(() -> new IllegalArgumentException("신청 취소 실패, 해당 신청 정보가 없습니다."));
+                .orElseThrow(() -> new PartyNotFoundException("신청 취소 실패, 해당하는 신청 정보가 없습니다."));
         RecruitBoard recruitBoard = party.getRecruitBoard();
 
         if (!party.isApproved() && !recruitBoard.isCompleted()) {
@@ -143,11 +144,11 @@ public class RecruitBoardService {
     @Transactional
     public boolean approve(Long boardId, Long userId, Long targetUserId) {
         RecruitBoard board = recruitBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("신청 승인 실패, 해당하는 게시글이 없음"));
+                .orElseThrow(() -> new BoardNotFoundException("신청 승인 실패, 해당하는 게시글이 없습니다."));
 
         if (board.getUser().getId().equals(userId) && !board.isCompleted()) {
             Party party = partyRepository.findByUserIdAndRecruitBoardId(targetUserId, boardId)
-                    .orElseThrow(() -> new IllegalArgumentException("신청 승인 실패, 해당하는 신청 정보가 없음"));
+                    .orElseThrow(() -> new PartyNotFoundException("신청 승인 실패, 해당하는 신청 정보가 없습니다."));
 
             if (!party.isApproved()) {
                 party.approve();
@@ -158,7 +159,7 @@ public class RecruitBoardService {
 
             return party.isApproved();
         } else {
-            throw new IllegalArgumentException("신청 승인 실패, 게시글을 작성한 유저가 아니거나 팀 구성이 완료된 게시글입니다.");
+            throw new InvalidAccessException("신청 승인 실패, 게시글을 작성한 유저가 아니거나 팀 구성이 완료된 게시글입니다.");
         }
     }
 
@@ -168,11 +169,11 @@ public class RecruitBoardService {
     @Transactional
     public boolean disapprove(Long boardId, Long userId, Long targetUserId) {
         RecruitBoard board = recruitBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("신청 승인 취소 실패, 해당하는 게시글이 없음"));
+                .orElseThrow(() -> new BoardNotFoundException("신청 승인 취소 실패, 해당하는 게시글이 없음"));
 
         if (board.getUser().getId().equals(userId) && !board.isCompleted()) {
             Party party = partyRepository.findByUserIdAndRecruitBoardId(targetUserId, boardId)
-                    .orElseThrow(() -> new IllegalArgumentException("신청 승인 취소 실패, 해당하는 신청 정보가 없음"));
+                    .orElseThrow(() -> new PartyNotFoundException("신청 승인 취소 실패, 해당하는 신청 정보가 없음"));
 
             if (party.isApproved()) {
                 party.disapprove();
@@ -183,7 +184,7 @@ public class RecruitBoardService {
 
             return party.isApproved();
         } else {
-            throw new IllegalArgumentException("신청 승인 취소 실패, 게시글을 작성한 유저가 아닙니다.");
+            throw new InvalidAccessException("신청 승인 취소 실패, 게시글을 작성한 유저가 아닙니다.");
         }
     }
 
@@ -192,7 +193,7 @@ public class RecruitBoardService {
      */
     public RecruitBoardUpdateDto getDetailForUpdate(Long boardId) {
         RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 구인 게시글이 없습니다."));
+                .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
         Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId);
 
         RecruitBoardUpdateDto dto = new RecruitBoardUpdateDto(recruitBoard);
@@ -207,7 +208,7 @@ public class RecruitBoardService {
     @Transactional
     public Long update(Long boardId, RecruitBoardRequestDto dto) {
         RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 수정 실패, 해당하는 구인 게시글이 없습니다."));
+                .orElseThrow(() -> new BoardNotFoundException("게시글 수정 실패, 해당하는 게시글이 없습니다."));
 
         recruitBoard.patch(dto);
 
@@ -234,6 +235,7 @@ public class RecruitBoardService {
      */
     public List<RecruitBoardMainDto> getMainList() {
         Pageable pageable = PageRequest.of(0, 4, Sort.Direction.DESC, "createdAt");
+
         return recruitBoardRepository.findAll(pageable).getContent()
                 .stream()
                 .map(RecruitBoardMainDto::new)
@@ -246,7 +248,7 @@ public class RecruitBoardService {
     @Transactional
     public void complete(Long boardId, Long userId) {
         RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("모집 완료 처리 실패, 해당 게시글이 없습니다."));
+                .orElseThrow(() -> new BoardNotFoundException("모집 완료 처리 실패, 해당하는 게시글이 없습니다."));
 
         if (recruitBoard.getUser().getId().equals(userId) && !recruitBoard.isCompleted()) {
             recruitBoard.complete();
@@ -258,7 +260,7 @@ public class RecruitBoardService {
      */
     public List<ApplicantDto> getApplicants(Long boardId, Long userId) {
         RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("신청자 목록 조회 실패, 해당 게시글이 없습니다."));
+                .orElseThrow(() -> new BoardNotFoundException("신청자 목록 조회 실패, 해당하는 게시글이 없습니다."));
         List<Party> parties = partyRepository.findByRecruitBoardId(boardId);
 
         if (recruitBoard.getUser().getId().equals(userId)) {
@@ -275,7 +277,7 @@ public class RecruitBoardService {
                 return dto;
             }).collect(Collectors.toList());
         } else {
-            throw new IllegalArgumentException("신청자 목록 조회 실패, 해당 게시글을 작성한 유저가 아닙니다.");
+            throw new InvalidAccessException("신청자 목록 조회 실패, 해당 게시글을 작성한 유저가 아닙니다.");
         }
     }
 

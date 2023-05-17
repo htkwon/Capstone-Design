@@ -6,8 +6,9 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import java.util.List;
 
-public interface NoticeRepository extends JpaRepository<NoticeBoard,Long>,
+public interface NoticeRepository extends JpaRepository<NoticeBoard, Long>,
         QuerydslPredicateExecutor<NoticeBoard> {
 
     List<NoticeBoard> findAllById(Long id);
+
 }
