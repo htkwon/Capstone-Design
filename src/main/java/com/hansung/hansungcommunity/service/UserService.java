@@ -6,15 +6,16 @@ import com.hansung.hansungcommunity.dto.user.UserRankDto;
 import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import com.hansung.hansungcommunity.entity.Skill;
 import com.hansung.hansungcommunity.entity.User;
+import com.hansung.hansungcommunity.exception.DuplicateStudentException;
+import com.hansung.hansungcommunity.exception.SkillNotFoundException;
+import com.hansung.hansungcommunity.exception.UserNotFoundException;
 import com.hansung.hansungcommunity.repository.AdoptRepository;
 import com.hansung.hansungcommunity.repository.SkillRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -30,7 +31,6 @@ public class UserService {
     private final SkillRepository skillRepository;
     private final MyPageService myPageService;
 
-
     /**
      * 회원가입
      */
@@ -38,7 +38,7 @@ public class UserService {
     public Long join(UserRequestDto dto) {
         validateDuplicateUser(dto);
         Set<Skill> skills = dto.getSkills().stream().map(s -> skillRepository.findByName(s)
-                        .orElseThrow(() -> new IllegalArgumentException("관심 기술 등록 실패, 해당하는 기술이 없습니다.")))
+                        .orElseThrow(() -> new SkillNotFoundException("회원가입 실패, 해당하는 기술이 없습니다.")))
                 .collect(Collectors.toSet());
 
         User user = userRepository.save(User.from(dto, skills));
@@ -48,14 +48,15 @@ public class UserService {
 
     private void validateDuplicateUser(UserRequestDto dto) {
         if (checkUser(dto.getStudentId())) {
-            throw new IllegalStateException("이미 존재하는 학생입니다.");
+            throw new DuplicateStudentException("이미 존재하는 학생입니다.");
         }
     }
 
     public boolean checkUser(String stuId) {
-        if(stuId.equals("ADMIN")){
+        if (stuId.equals("ADMIN")) {
             return true;
         }
+
         return userRepository.existsUserByStudentId(stuId);
     }
 
@@ -64,27 +65,27 @@ public class UserService {
     }
 
     public UserInfoDto getUserInfo(Long stuId) {
-        User user = userRepository.findById(stuId).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+        User user = userRepository.findById(stuId).orElseThrow(() -> new UserNotFoundException("유저 정보 조회 실패, 해당하는 유저가 없습니다."));
         UserInfoDto userInfoDto = UserInfoDto.from(user);
         userInfoDto.setReply(myPageService.getReplyList(stuId).size());
         userInfoDto.setBoard(myPageService.getBoardList(stuId).size());
         userInfoDto.setBookmark(myPageService.getBookmarkList(stuId).size());
+
         return userInfoDto;
     }
 
     public List<UserRankDto> getUserRank() {
-        List<UserRankDto> list = adoptRepository.findTop5UsersByAdoptCount()
+        return adoptRepository.findTop5UsersByAdoptCount()
                 .stream()
                 .map(UserRankDto::of)
                 .limit(5)
                 .collect(Collectors.toList());
-        return list;
     }
 
     public Boolean checkUserNickname(UserCheckNicknameDto dto) {
         User user = userRepository.findByNickname(dto.getNickname());
+
         return user != null;
     }
-
 
 }

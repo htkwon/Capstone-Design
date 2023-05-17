@@ -3,6 +3,9 @@ package com.hansung.hansungcommunity.service;
 import com.hansung.hansungcommunity.dto.user.UserActivityDto;
 import com.hansung.hansungcommunity.dto.user.UserUpdateDto;
 import com.hansung.hansungcommunity.entity.*;
+import com.hansung.hansungcommunity.exception.BoardNotFoundException;
+import com.hansung.hansungcommunity.exception.SkillNotFoundException;
+import com.hansung.hansungcommunity.exception.UserNotFoundException;
 import com.hansung.hansungcommunity.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MyPageService {
+
     private final FreeReplyRepository freeReplyRepository;
     private final QnaReplyRepository qnaReplyRepository;
     private final RecruitReplyRepository recruitReplyRepository;
@@ -55,20 +59,19 @@ public class MyPageService {
      */
     public List<UserActivityDto> getBoardList(Long userId) {
         List<UserActivityDto> userActivityDtos = boardRepository.findAllByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Mypage - Board 에러"))
                 .stream()
                 .map(board -> {
                     if (board.getBoardType().equals("FreeBoard")) {
                         FreeBoard freeBoard = freeBoardRepository.findById(board.getId())
-                                .orElseThrow(() -> new IllegalArgumentException("Mypage - FreeBoard 에러"));
+                                .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
                         return UserActivityDto.of(freeBoard);
                     } else if (board.getBoardType().equals("QnaBoard")) {
                         QnaBoard qnaBoard = qnaBoardRepository.findById(board.getId())
-                                .orElseThrow(() -> new IllegalArgumentException("Mypage - QnaBoard 에러"));
+                                .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
                         return UserActivityDto.of(qnaBoard);
                     } else {
                         RecruitBoard recruitBoard = recruitBoardRepository.findById(board.getId())
-                                .orElseThrow(() -> new IllegalArgumentException("Mypage - Recruit 에러"));
+                                .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
                         return UserActivityDto.of(recruitBoard);
                     }
                 })
@@ -90,21 +93,21 @@ public class MyPageService {
                                 .orElse(null);
                         if (freeBoardBookmark != null && freeBoardBookmark.getUser().getId().equals(userId)) {
                             return UserActivityDto.of(freeBoardRepository.findById(freeBoardBookmark.getFreeBoard().getId())
-                                    .orElseThrow(() -> new IllegalArgumentException("Mypage - 에러")));
+                                    .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다.")));
                         }
                     } else if (board.getBoardType().equals("QnaBoard")) {
                         QnaBoardBookmark qnaBoardBookmark = qnaBoardBookmarkRepository.findByQnaBoardIdAndUserId(board.getId(), userId)
                                 .orElse(null);
                         if (qnaBoardBookmark != null && qnaBoardBookmark.getUser().getId().equals(userId)) {
                             return UserActivityDto.of(qnaBoardRepository.findById(qnaBoardBookmark.getQnaBoard().getId())
-                                    .orElseThrow(() -> new IllegalArgumentException("Mypage - 에러")));
+                                    .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다.")));
                         }
                     } else {
                         RecruitBoardBookmark recruitBoardBookmark = recruitBoardBookmarkRepository.findByRecruitBoardIdAndUserId(board.getId(), userId)
                                 .orElse(null);
                         if (recruitBoardBookmark != null && recruitBoardBookmark.getUser().getId().equals(userId)) {
                             return UserActivityDto.of(recruitBoardRepository.findById(recruitBoardBookmark.getRecruitBoard().getId())
-                                    .orElseThrow(() -> new IllegalArgumentException("Mypage - 에러")));
+                                    .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다.")));
                         }
                     }
                     return null;
@@ -112,6 +115,7 @@ public class MyPageService {
                 .filter(Objects::nonNull)
                 .sorted(Comparator.comparing(UserActivityDto::getCreatedDate).reversed())
                 .collect(Collectors.toList());
+
         return userActivityDtos;
     }
 
@@ -121,9 +125,9 @@ public class MyPageService {
     @Transactional
     public void updateUserInfo(UserUpdateDto dto, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유저 정보 수정 실패, 해당 유저가 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException("유저 정보 수정 실패, 해당 유저가 없습니다."));
         Set<Skill> skills = dto.getSkills().stream().map(s -> skillRepository.findByName(s)
-                        .orElseThrow(() -> new IllegalArgumentException("관심 기술 등록 실패, 해당하는 기술이 없습니다.")))
+                        .orElseThrow(() -> new SkillNotFoundException("관심 기술 수정 실패, 해당하는 기술이 없습니다.")))
                 .collect(Collectors.toSet());
 
         user.updateIntroduce(dto.getIntroduce());

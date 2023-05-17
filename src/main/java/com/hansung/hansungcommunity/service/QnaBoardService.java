@@ -5,6 +5,7 @@ import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.dto.qna.*;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.User;
+import com.hansung.hansungcommunity.exception.BoardNotFoundException;
 import com.hansung.hansungcommunity.repository.QnaBoardRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class QnaBoardService {
      */
     public QnaBoardDetailsDto findOne(Long boardId) {
         QnaBoard board = qnaBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패, 해당하는 게시글이 없음"));
+                .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
 
         return new QnaBoardDetailsDto(board);
     }
@@ -47,6 +48,7 @@ public class QnaBoardService {
      */
     public List<QnaBoardMainDto> findAll() {
         Pageable pageable = PageRequest.of(0, 4, Sort.Direction.DESC, "createdAt");
+
         return qnaBoardRepository.findAll(pageable).getContent()
                 .stream()
                 .map(QnaBoardMainDto::new)
@@ -72,11 +74,11 @@ public class QnaBoardService {
     @Transactional
     public Long post(Long userId, QnaBoardRequestDto dto) {
         User user = userRepository.getReferenceById(userId);
-
         QnaBoard board = dto.toEntity();
         board.setUser(user);
 
         QnaBoard savedBoard = qnaBoardRepository.save(board);
+
         return savedBoard.getId();
     }
 
@@ -96,7 +98,7 @@ public class QnaBoardService {
     @Transactional
     public Long update(Long boardId, QnaBoardRequestDto dto) {
         QnaBoard target = qnaBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 수정 실패, 해당하는 게시글이 없음"));
+                .orElseThrow(() -> new BoardNotFoundException("게시글 수정 실패, 해당하는 게시글이 없습니다."));
 
         target.updateBoard(dto);
 
@@ -118,7 +120,7 @@ public class QnaBoardService {
     @Transactional
     public void increaseHits(Long boardId) {
         QnaBoard board = qnaBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("조회수 증가 실패, 해당하는 게시글이 없음"));
+                .orElseThrow(() -> new BoardNotFoundException("조회수 증가 실패, 해당하는 게시글이 없습니다."));
 
         board.increaseHits();
     }
@@ -147,9 +149,11 @@ public class QnaBoardService {
                 .collect(Collectors.toList());
     }
 
+    // TODO 해당 메소드, 해당 메소드를 호출하는 핸들러 메소드의 필요성 논의 필요
     public Long getUserId(Long boardId) {
         QnaBoard qnaBoard = qnaBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+                .orElseThrow(() -> new BoardNotFoundException("해당하는 게시글이 없습니다."));
+
         return qnaBoard.getUser().getId();
     }
 
@@ -158,7 +162,7 @@ public class QnaBoardService {
      */
     public QnaBoardUpdateDto findOneForUpdate(Long boardId) {
         QnaBoard board = qnaBoardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("게시글 조회 실패, 해당하는 게시글이 없음"));
+                .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없음"));
 
         return new QnaBoardUpdateDto(board);
     }
@@ -169,7 +173,6 @@ public class QnaBoardService {
     public long getTotal() {
         return qnaBoardRepository.count();
     }
-
 
     /**
      * 이미지 추출

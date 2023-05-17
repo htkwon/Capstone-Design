@@ -2,21 +2,25 @@ package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.user.*;
+import com.hansung.hansungcommunity.exception.InvalidAccessException;
 import com.hansung.hansungcommunity.repository.AdoptRepository;
 import com.hansung.hansungcommunity.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class UserApiController {
+
     private final UserService userService;
-    private final AdoptRepository adoptRepository;
 
     /**
      * 유저 저장
@@ -24,7 +28,7 @@ public class UserApiController {
     @PostMapping("/api/join")
     public ResponseEntity<Long> saveUser(Authentication authentication, @RequestBody UserRequestDto dto) { // api 통신 시, Entity 가 아닌 DTO 로 주고받기 !!!
         if (!dto.getStudentId().equals(authentication.getName())) {
-            throw new IllegalArgumentException("인가 서버와의 학번이 동일하지 않습니다.");
+            throw new InvalidAccessException("인가 서버와의 학번이 동일하지 않습니다.");
         }
 
         Long userId = userService.join(dto);
@@ -89,7 +93,6 @@ public class UserApiController {
         Boolean check = userService.checkUserNickname(dto);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
-
 
 }
 
