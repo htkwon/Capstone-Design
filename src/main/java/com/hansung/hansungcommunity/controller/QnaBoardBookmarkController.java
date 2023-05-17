@@ -3,7 +3,6 @@ package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.qna.QnaBoardBookmarkDto;
-import com.hansung.hansungcommunity.entity.QnaBoardBookmark;
 import com.hansung.hansungcommunity.service.QnaBoardBookmarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,7 +46,7 @@ public class QnaBoardBookmarkController {
     @DeleteMapping("/questions/{boardId}/bookmark")
     public ResponseEntity<Void> cancle(@PathVariable("boardId") Long boardId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        qnaBoardBookmarkService.cancle(boardId, ca.getUser().getId());
+        qnaBoardBookmarkService.cancel(boardId, ca.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
