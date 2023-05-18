@@ -1,7 +1,15 @@
 package com.hansung.hansungcommunity.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.rpc.context.AttributeContext;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
+import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.free.*;
+import com.hansung.hansungcommunity.entity.FreeBoard;
+import com.hansung.hansungcommunity.service.FileService;
+import com.hansung.hansungcommunity.service.FireBaseService;
 import com.hansung.hansungcommunity.service.FreeBoardService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +19,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,6 +33,8 @@ import java.util.List;
 public class FreeBoardApiController {
 
     private final FreeBoardService freeBoardService;
+    private final FileService fileService;
+    private final FireBaseService fireBaseService;
 
     /**
      * 모든 게시글 조회 (게시글 4개반환)
@@ -74,7 +86,7 @@ public class FreeBoardApiController {
     /**
      * 게시글 저장
      */
-    @PostMapping("/free")
+    @PostMapping("/free/no-file")
     public ResponseEntity<Long> create(
             @RequestBody FreeBoardRequestDto dto,
             Authentication authentication
@@ -86,6 +98,33 @@ public class FreeBoardApiController {
         // ResponseEntity 의 body 에 담아 반환
         return ResponseEntity.status(HttpStatus.OK).body(savedId);
     }
+
+    /**
+     * 게시글 저장 (업로드 파일 있을 때)
+     */
+    @PostMapping("free")
+    public ResponseEntity<Long> create(
+            @RequestParam("file")MultipartFile[] file,
+            String stringFree,
+            Authentication authentication
+            ) throws IOException, FirebaseAuthException {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        FreeBoard freeBoard = new ObjectMapper().readValue(stringFree,FreeBoard.class);
+        Long boardId = freeBoardService.mappingUser(ca.getUser().getId(),freeBoard);
+
+        for(MultipartFile f : file){
+            String fileName = f.getOriginalFilename();
+            FileDto dto = FileDto.of(freeBoard,fileName);
+            fileService.save(dto);
+            fireBaseService.uploadFiles(f,fileName);
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(boardId);
+
+    }
+
+
+
 
     /**
      * 게시글 수정
