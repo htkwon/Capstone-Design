@@ -16,8 +16,8 @@ public class FileService {
     private final FileRepository fileRepository;
 
     @Transactional
-    public FileDto save(FileDto dto) {
-        FileEntity fileEntity = FileEntity.of(dto.getQnaBoard(), dto.getOriginalName(), dto.getName(), dto.getPath());
+    public FileDto save(FileDto dto){
+        FileEntity fileEntity = FileEntity.of(dto.getQnaBoard(),dto.getFreeBoard(),dto.getRecruitBoard(),dto.getOriginalName());
         FileEntity res = fileRepository.save(fileEntity);
 
         return FileDto.from(res);

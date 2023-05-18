@@ -168,5 +168,12 @@ public class FreeBoardService {
         return images;
     }
 
+    @Transactional
+    public Long mappingUser(Long id, FreeBoard freeBoard) {
+        User user = userRepository.getReferenceById(id);
+        freeBoard.setUser(user);
+        freeBoardRepository.save(freeBoard);
+        return freeBoard.getId();
+    }
 }
 

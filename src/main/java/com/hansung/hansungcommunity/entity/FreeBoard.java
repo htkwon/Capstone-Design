@@ -24,6 +24,9 @@ public class FreeBoard extends Board {
     @NotNull
     private String content; // 내용
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<FileEntity> fileEntity = new ArrayList<>();
+
     @OneToMany(mappedBy = "freeBoard")
     private Set<FreeBoardBookmark> bookmarks = new HashSet<>();
     @OneToMany(mappedBy = "freeBoard")

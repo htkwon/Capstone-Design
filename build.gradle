@@ -43,6 +43,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	//파이어베이스
+	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
 
 }
 

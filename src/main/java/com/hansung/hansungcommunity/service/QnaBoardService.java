@@ -84,12 +84,16 @@ public class QnaBoardService {
 
     /**
      * user 컬럼만 비어있는 qnaBoard 엔티티에 유저 매핑
+     *
+     * @return
      */
     @Transactional
-    public void mappingUser(Long userId, QnaBoard entity) {
+    public Long mappingUser(Long userId, QnaBoard entity) {
         User user = userRepository.getReferenceById(userId);
 
         entity.setUser(user);
+        qnaBoardRepository.save(entity);
+        return entity.getId();
     }
 
     /**

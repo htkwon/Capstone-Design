@@ -1,7 +1,14 @@
 package com.hansung.hansungcommunity.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
+import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.recruit.*;
+import com.hansung.hansungcommunity.entity.RecruitBoard;
+import com.hansung.hansungcommunity.service.FileService;
+import com.hansung.hansungcommunity.service.FireBaseService;
 import com.hansung.hansungcommunity.service.RecruitBoardService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +18,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,7 +32,8 @@ import java.util.List;
 public class RecruitBoardController {
 
     private final RecruitBoardService recruitBoardService;
-
+    private final FileService fileService;
+    private final FireBaseService fireBaseService;
     /**
      * 메인페이지 리스트 조회
      */
@@ -34,15 +44,39 @@ public class RecruitBoardController {
     }
 
     /**
-     * 게시글 생성
+     * 게시글 생성 (업로드 파일 없을 때)
      */
-    @PostMapping("/recruit")
+    @PostMapping("/recruit/no-file")
     public ResponseEntity<Long> create(@RequestBody RecruitBoardRequestDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long savedId = recruitBoardService.post(ca.getUser().getId(), dto);
 
         return ResponseEntity.ok(savedId);
     }
+
+    /**
+     * 게시글 생성 (업로드 파일 있을 때)
+     */
+    @PostMapping("/recruit")
+    public ResponseEntity<Long> create(
+            @RequestParam("file")MultipartFile[] file,
+            String stringRecruit,
+            Authentication authentication
+            ) throws IOException, FirebaseAuthException {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        RecruitBoard recruitBoard = new ObjectMapper().readValue(stringRecruit,RecruitBoard.class);
+        Long id = recruitBoardService.mappingUser(ca.getUser().getId(),recruitBoard);
+
+        for(MultipartFile f: file){
+            String fileName = f.getOriginalFilename();
+            FileDto dto = FileDto.of(recruitBoard,fileName);
+            fileService.save(dto);
+            fireBaseService.uploadFiles(f,fileName);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(id);
+    }
+
+
 
     /**
      * 게시글 수정

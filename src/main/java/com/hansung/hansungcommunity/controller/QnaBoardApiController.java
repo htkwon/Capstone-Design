@@ -1,11 +1,14 @@
 package com.hansung.hansungcommunity.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.qna.*;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.service.FileService;
+import com.hansung.hansungcommunity.service.FireBaseService;
 import com.hansung.hansungcommunity.service.QnaBoardService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.plaf.multi.MultiOptionPaneUI;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -33,6 +37,7 @@ public class QnaBoardApiController {
 
     private final QnaBoardService qnaBoardService;
     private final FileService fileService;
+    private final FireBaseService fireBaseService;
 
     /**
      * 게시글 리스트 조회 - 홈 View 전용 (게시글 4개 반환)
@@ -101,39 +106,28 @@ public class QnaBoardApiController {
     }
 
     /**
+     *
      * 게시글 저장 (업로드 파일 있을 때)
      */
+
     @PostMapping("/questions")
-    public ResponseEntity<Object> create(
-            MultipartFile[] multipartFiles,
+    public ResponseEntity<Long> create(
+            @RequestParam("file") MultipartFile[] file,
             String stringQna,
             Authentication authentication
-    ) {
+    ) throws IOException, FirebaseAuthException {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        try {
-            QnaBoard qnaBoard = new ObjectMapper().readValue(stringQna, QnaBoard.class);
-            //objectMapper() 사용으로인해 자동으로 db에 등록되어, user 컬럼이 비어 있어 user 컬럼만 따로 매핑해주는 mappingUser사용
-            qnaBoardService.mappingUser(ca.getUser().getId(), qnaBoard);
+        QnaBoard board = new ObjectMapper().readValue(stringQna, QnaBoard.class);
+        Long id = qnaBoardService.mappingUser(ca.getUser().getId(),board);
 
-            for (MultipartFile file : multipartFiles) {
-                String name = (new Date().getTime()) + "" + (new Random().ints(1000, 9999).findAny().getAsInt());
-                String originalName = file.getOriginalFilename();
-                String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-
-                assert originalName != null;
-                String extension = getFilename(originalName, path);
-                File save = new File(path, name + "." + extension);
-                file.transferTo(save);
-
-                FileDto dto = FileDto.of(qnaBoard, originalName, name, path);
+        for(MultipartFile f : file){
+                String fileName = f.getOriginalFilename();
+                FileDto dto = FileDto.of(board,fileName);
                 fileService.save(dto);
-
-
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+                fireBaseService.uploadFiles(f,fileName);
         }
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(id);
+
     }
 
     /**

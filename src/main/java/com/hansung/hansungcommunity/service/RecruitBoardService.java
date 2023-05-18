@@ -328,4 +328,11 @@ public class RecruitBoardService {
     }
 
 
+    @Transactional
+    public Long mappingUser(Long id, RecruitBoard recruitBoard) {
+        User user = userRepository.getReferenceById(id);
+        recruitBoard.setUser(user);
+        recruitBoardRepository.save(recruitBoard);
+        return recruitBoard.getId();
+    }
 }
