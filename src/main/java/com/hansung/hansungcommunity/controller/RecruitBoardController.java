@@ -1,6 +1,5 @@
 package com.hansung.hansungcommunity.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
@@ -34,6 +33,7 @@ public class RecruitBoardController {
     private final RecruitBoardService recruitBoardService;
     private final FileService fileService;
     private final FireBaseService fireBaseService;
+
     /**
      * 메인페이지 리스트 조회
      */
@@ -59,24 +59,22 @@ public class RecruitBoardController {
      */
     @PostMapping("/recruit")
     public ResponseEntity<Long> create(
-            @RequestParam("file")MultipartFile[] file,
+            @RequestParam("file") MultipartFile[] file,
             String stringRecruit,
             Authentication authentication
-            ) throws IOException, FirebaseAuthException {
+    ) throws IOException, FirebaseAuthException {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        RecruitBoard recruitBoard = new ObjectMapper().readValue(stringRecruit,RecruitBoard.class);
-        Long id = recruitBoardService.mappingUser(ca.getUser().getId(),recruitBoard);
+        RecruitBoard recruitBoard = new ObjectMapper().readValue(stringRecruit, RecruitBoard.class);
+        Long id = recruitBoardService.mappingUser(ca.getUser().getId(), recruitBoard);
 
-        for(MultipartFile f: file){
+        for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
-            FileDto dto = FileDto.of(recruitBoard,fileName);
+            FileDto dto = FileDto.of(recruitBoard, fileName);
             fileService.save(dto);
-            fireBaseService.uploadFiles(f,fileName);
+            fireBaseService.uploadFiles(f, fileName);
         }
         return ResponseEntity.status(HttpStatus.OK).body(id);
     }
-
-
 
     /**
      * 게시글 수정
