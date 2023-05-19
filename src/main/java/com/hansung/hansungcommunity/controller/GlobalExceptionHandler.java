@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
-    @ExceptionHandler({DuplicateStudentException.class, InvalidAccessException.class, ParentReplyMismatchException.class, RecruitmentCompletedException.class})
+    @ExceptionHandler({DuplicateStudentException.class, InvalidAccessException.class, ParentReplyMismatchException.class, RecruitmentCompletedException.class, DuplicateNicknameException.class})
     public ResponseEntity<ErrorResponse> handleDuplicateStudentException(RuntimeException ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
 

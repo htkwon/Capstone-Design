@@ -4,6 +4,7 @@ import com.hansung.hansungcommunity.dto.user.UserActivityDto;
 import com.hansung.hansungcommunity.dto.user.UserUpdateDto;
 import com.hansung.hansungcommunity.entity.*;
 import com.hansung.hansungcommunity.exception.BoardNotFoundException;
+import com.hansung.hansungcommunity.exception.DuplicateNicknameException;
 import com.hansung.hansungcommunity.exception.SkillNotFoundException;
 import com.hansung.hansungcommunity.exception.UserNotFoundException;
 import com.hansung.hansungcommunity.repository.*;
@@ -126,12 +127,19 @@ public class MyPageService {
     public void updateUserInfo(UserUpdateDto dto, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("유저 정보 수정 실패, 해당 유저가 없습니다."));
+
+        if (!user.getNickname().equals(dto.getNickname())) validateDuplicateNickname(dto.getNickname());
+
         Set<Skill> skills = dto.getSkills().stream().map(s -> skillRepository.findByName(s)
                         .orElseThrow(() -> new SkillNotFoundException("관심 기술 수정 실패, 해당하는 기술이 없습니다.")))
                 .collect(Collectors.toSet());
 
-        user.updateIntroduce(dto.getIntroduce());
+        user.updateUserInfo(dto);
         user.setSkills(skills);
+    }
+
+    private void validateDuplicateNickname(String nickname) {
+        if (userRepository.existsUserByNickname(nickname)) throw new DuplicateNicknameException("이미 사용 중인 닉네임입니다.");
     }
 
 }

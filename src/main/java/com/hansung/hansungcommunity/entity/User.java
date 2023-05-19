@@ -2,6 +2,7 @@ package com.hansung.hansungcommunity.entity;
 
 
 import com.hansung.hansungcommunity.dto.user.UserRequestDto;
+import com.hansung.hansungcommunity.dto.user.UserUpdateDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -104,8 +105,9 @@ public class User {
         return user;
     }
 
-    public void updateIntroduce(String introduce) {
-        if (introduce != null) this.introduce = introduce;
+    public void updateUserInfo(UserUpdateDto dto) {
+        if (dto.getNickname() != null) this.nickname = dto.getNickname();
+        if (dto.getIntroduce() != null) this.introduce = dto.getIntroduce();
     }
 
 }
