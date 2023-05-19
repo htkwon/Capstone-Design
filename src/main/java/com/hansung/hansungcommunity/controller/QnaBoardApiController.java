@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
+import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.dto.qna.*;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.service.FileService;
@@ -127,6 +128,27 @@ public class QnaBoardApiController {
     }
 
     /**
+     * 해당 Q&A게시판 게시글에서 첨부 파일이 있는지 체크
+     */
+    @GetMapping("/questions/{boardId}/file-check")
+    public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
+        String boardType = "questions";
+        Boolean check = fileService.check(boardId, boardType);
+        return ResponseEntity.status(HttpStatus.OK).body(check);
+    }
+
+    /**
+     * 해당 게시글에 첨부파일이 있음을 check 후, 해당 파일의 이름들 전송
+     */
+    @GetMapping("/questions/{boardId}/file-list")
+    public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId) {
+        String boardType = "questions";
+        List<FileRequestDto> dtos = fileService.list(boardId, boardType);
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+    }
+
+
+    /**
      * 게시글 수정
      */
     @PutMapping("/questions/update/{boardId}")
@@ -157,26 +179,6 @@ public class QnaBoardApiController {
         return ResponseEntity.ok(qnaBoardService.getTotal());
     }
 
-    /**
-     * 사진 url 전송 API
-     */
-    @PostMapping("/questions/image")
-    public String create2(MultipartFile[] multipartFiles) throws IOException {
-
-        MultipartFile image = multipartFiles[0];
-
-        String name = (new Date().getTime()) + "" + (new Random().ints(1000, 9999).findAny().getAsInt());
-        String originalName = image.getOriginalFilename();
-        String path = "C:\\images";
-
-        assert originalName != null;
-        String extension = getFilename(originalName, path);
-
-
-        File save = new File(path, name + "." + extension);
-        image.transferTo(save);
-        return "/images/" + name + "." + extension;
-    }
 
     @GetMapping("/questions/return/user-id/{boardId}")
     public ResponseEntity<Long> getUserId(@PathVariable("boardId") Long boardId) {
