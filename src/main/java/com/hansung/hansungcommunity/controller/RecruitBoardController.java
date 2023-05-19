@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
+import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.dto.recruit.*;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
 import com.hansung.hansungcommunity.service.FileService;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -75,6 +77,28 @@ public class RecruitBoardController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(id);
     }
+
+
+    /**
+     * 해당 구인게시판 게시글에서 첨부 파일이 있는지 체크
+     */
+    @GetMapping("/recruit/{boardId}/file-check")
+    public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
+        String boardType = "recruit";
+        Boolean check = fileService.check(boardId, boardType);
+        return ResponseEntity.status(HttpStatus.OK).body(check);
+    }
+
+    /**
+     * 해당 게시글에 첨부파일이 있음을 check 후, 해당 파일의 이름들 전송
+     */
+    @GetMapping("/recruit/{boardId}/file-list")
+    public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId) {
+        String boardType = "recruit";
+        List<FileRequestDto> dtos = fileService.list(boardId, boardType);
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+    }
+
 
     /**
      * 게시글 수정

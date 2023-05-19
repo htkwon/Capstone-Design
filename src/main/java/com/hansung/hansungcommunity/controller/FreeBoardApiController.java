@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
+import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.dto.free.*;
+import com.hansung.hansungcommunity.entity.Board;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.service.FileService;
 import com.hansung.hansungcommunity.service.FireBaseService;
@@ -121,6 +123,28 @@ public class FreeBoardApiController {
 
         return ResponseEntity.status(HttpStatus.OK).body(boardId);
     }
+
+
+    /**
+     * 해당 자유게시판 게시글에서 첨부 파일이 있는지 체크
+     */
+    @GetMapping("/free/{boardId}/file-check")
+    public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
+        String boardType = "free";
+        Boolean check = fileService.check(boardId, boardType);
+        return ResponseEntity.status(HttpStatus.OK).body(check);
+    }
+
+    /**
+     * 해당 게시글에 첨부파일이 있음을 check 후, 해당 파일의 이름들 전송
+     */
+    @GetMapping("/free/{boardId}/file-list")
+    public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId) {
+        String boardType = "free";
+        List<FileRequestDto> dtos = fileService.list(boardId, boardType);
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+    }
+
 
     /**
      * 게시글 수정
