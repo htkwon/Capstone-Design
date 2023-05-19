@@ -25,4 +25,17 @@ public interface QnaBoardRepository extends
     @Query("SELECT q FROM QnaBoard q WHERE q.title LIKE %:search% OR q.content LIKE %:search%")
     Page<QnaBoard> findAllWithSearchParam(@Param("search") String search, Pageable pageable);
 
+    @Query("SELECT q " +
+            "FROM QnaBoard q LEFT OUTER JOIN q.bookmarks qb " +
+            "GROUP BY q.id " +
+            "ORDER BY COUNT(qb) DESC")
+    Page<QnaBoard> findAllSortByBookmarks(Pageable setPage);
+
+    @Query("SELECT q " +
+            "FROM QnaBoard q LEFT OUTER JOIN q.bookmarks qb " +
+            "WHERE q.title LIKE %:search% OR q.content LIKE %:search% " +
+            "GROUP BY q.id " +
+            "ORDER BY COUNT(qb) DESC")
+    Page<QnaBoard> findAllSortByBookmarksWithSearchParam(String search, Pageable setPage);
+
 }
