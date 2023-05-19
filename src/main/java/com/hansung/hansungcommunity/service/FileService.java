@@ -4,11 +4,8 @@ package com.hansung.hansungcommunity.service;
 import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.entity.FileEntity;
-import com.hansung.hansungcommunity.entity.RecruitBoard;
-import com.hansung.hansungcommunity.repository.FileRepository;
-import com.hansung.hansungcommunity.repository.FreeBoardRepository;
-import com.hansung.hansungcommunity.repository.QnaBoardRepository;
-import com.hansung.hansungcommunity.repository.RecruitBoardRepository;
+import com.hansung.hansungcommunity.exception.BoardNotFoundException;
+import com.hansung.hansungcommunity.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +23,12 @@ public class FileService {
     private final QnaBoardRepository qnaBoardRepository;
     private final RecruitBoardRepository recruitBoardRepository;
 
+    private final NoticeRepository noticeRepository;
+    private final BoardRepository boardRepository;
+
     @Transactional
     public FileDto save(FileDto dto) {
-        FileEntity fileEntity = FileEntity.of(dto.getQnaBoard(), dto.getFreeBoard(), dto.getRecruitBoard(), dto.getOriginalName());
+        FileEntity fileEntity = FileEntity.of(dto.getQnaBoard(), dto.getFreeBoard(), dto.getRecruitBoard(),dto.getNoticeBoard(), dto.getOriginalName());
         FileEntity res = fileRepository.save(fileEntity);
 
         return FileDto.from(res);
@@ -37,19 +37,24 @@ public class FileService {
     public Boolean check(Long boardId, String boardTpye) {
         if (boardTpye.equals("free")) {
             return fileRepository.findAllByFreeBoard(freeBoardRepository.findById(boardId)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 자유게시글이 없습니다.")))
+                            .orElseThrow(() -> new BoardNotFoundException("해당 자유게시글이 없습니다.")))
                     .stream()
                     .anyMatch(file -> file != null);
         } else if (boardTpye.equals("questions")) {
             return fileRepository.findAllByQnaBoard(qnaBoardRepository.findById(boardId)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 qna게시글이 없습니다.")))
+                            .orElseThrow(() -> new BoardNotFoundException("해당 qna게시글이 없습니다.")))
                     .stream()
                     .anyMatch(file -> file != null);
-        } else {
+        } else if(boardTpye.equals("notice")) {
             return fileRepository.findAllByRecruitBoard(recruitBoardRepository.findById(boardId)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 구인게시글이 없습니다.")))
+                            .orElseThrow(() -> new BoardNotFoundException("해당 구인게시글이 없습니다.")))
                     .stream()
                     .anyMatch(file -> file != null);
+        }else {
+            return fileRepository.findAllByNoticeBoard(noticeRepository.findById(boardId)
+                    .orElseThrow(()-> new BoardNotFoundException("해당 공지게시글이 없습니다.")))
+                    .stream()
+                    .anyMatch(file -> file!=null);
         }
 
     }
@@ -57,19 +62,25 @@ public class FileService {
     public List<FileRequestDto> list(Long boardId, String boardType) {
         if (boardType.equals("free")) {
             return fileRepository.findAllByFreeBoard(freeBoardRepository.findById(boardId)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 자유게시글이 없습니다.")))
+                            .orElseThrow(() -> new BoardNotFoundException("해당 자유게시글이 없습니다.")))
                     .stream()
                     .map(FileRequestDto::of)
                     .collect(Collectors.toList());
         } else if (boardType.equals("questions")) {
             return fileRepository.findAllByQnaBoard(qnaBoardRepository.findById(boardId)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 qna게시글이 없습니다.")))
+                            .orElseThrow(() -> new BoardNotFoundException("해당 qna게시글이 없습니다.")))
                     .stream()
                     .map(FileRequestDto::of)
                     .collect(Collectors.toList());
-        } else {
+        } else if(boardType.equals("notice")){
             return fileRepository.findAllByRecruitBoard(recruitBoardRepository.findById(boardId)
-                            .orElseThrow(() -> new IllegalArgumentException("해당 구인게시글이 없습니다.")))
+                            .orElseThrow(() -> new BoardNotFoundException("해당 구인게시글이 없습니다.")))
+                    .stream()
+                    .map(FileRequestDto::of)
+                    .collect(Collectors.toList());
+        }else{
+            return fileRepository.findAllByNoticeBoard(noticeRepository.findById(boardId)
+                    .orElseThrow(()-> new BoardNotFoundException("해당 공지게시글이 없습니다.")))
                     .stream()
                     .map(FileRequestDto::of)
                     .collect(Collectors.toList());

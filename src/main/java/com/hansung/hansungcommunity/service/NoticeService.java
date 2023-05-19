@@ -39,11 +39,11 @@ public class NoticeService {
 
 
     @Transactional
-    public NoticeBoardDto post(NoticeBoardDto dto, Long id) {
+    public Long post(NoticeBoardDto dto, Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("공지사항 작성 실패, 해당하는 관리자가 없습니다."));
 
-        return NoticeBoardDto.of(noticeRepository.save(NoticeBoard.of(dto, user)));
+        return noticeRepository.save(NoticeBoard.of(dto, user)).getId();
     }
 
     @Transactional
@@ -62,4 +62,11 @@ public class NoticeService {
         return NoticeBoardDto.of(noticeRepository.save(noticeBoard));
     }
 
+    @Transactional
+    public Long mappingUser(Long id, NoticeBoard noticeBoard) {
+        User user = userRepository.getReferenceById(id);
+        noticeBoard.setUser(user);
+        noticeRepository.save(noticeBoard);
+        return noticeBoard.getId();
+    }
 }

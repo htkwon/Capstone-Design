@@ -1,9 +1,6 @@
 package com.hansung.hansungcommunity.dto;
 
-import com.hansung.hansungcommunity.entity.FileEntity;
-import com.hansung.hansungcommunity.entity.FreeBoard;
-import com.hansung.hansungcommunity.entity.QnaBoard;
-import com.hansung.hansungcommunity.entity.RecruitBoard;
+import com.hansung.hansungcommunity.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +15,8 @@ public class FileDto {
     private FreeBoard freeBoard;
 
     private RecruitBoard recruitBoard;
+
+    private NoticeBoard noticeBoard;
     private String originalName;
 
     public FileDto(QnaBoard qnaBoard, String originalName) {
@@ -35,6 +34,11 @@ public class FileDto {
         this.originalName = originalName;
     }
 
+    public FileDto(NoticeBoard noticeBoard,String originalName){
+        this.noticeBoard = noticeBoard;
+        this.originalName = originalName;
+    }
+
 
     public static FileDto of(QnaBoard qnaBoard, String originalName) {
         return new FileDto(qnaBoard, originalName);
@@ -48,11 +52,14 @@ public class FileDto {
         return new FileDto(recruitBoard, originalName);
     }
 
+    public static FileDto of(NoticeBoard noticeBoard,String originalName){return new FileDto(noticeBoard,originalName);}
+
     public static FileDto from(FileEntity entity) {
         return new FileDto(
                 entity.getQnaBoard(),
                 entity.getFreeBoard(),
                 entity.getRecruitBoard(),
+                entity.getNoticeBoard(),
                 entity.getOriginalName()
         );
     }
