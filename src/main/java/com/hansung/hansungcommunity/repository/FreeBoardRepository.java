@@ -12,4 +12,17 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
     @Query("SELECT f FROM FreeBoard f WHERE f.title LIKE %:search% OR f.content LIKE %:search%")
     Page<FreeBoard> findAllWithSearchParam(@Param("search") String search, Pageable pageable);
 
+    @Query("SELECT f " +
+            "FROM FreeBoard f LEFT OUTER JOIN f.bookmarks fb " +
+            "GROUP BY f.id " +
+            "ORDER BY COUNT(fb) DESC")
+    Page<FreeBoard> findAllSortByBookmarks(Pageable pageable);
+
+    @Query("SELECT f " +
+            "FROM FreeBoard f LEFT OUTER JOIN f.bookmarks fb " +
+            "WHERE f.title LIKE %:search% OR f.content LIKE %:search% " +
+            "GROUP BY f.id " +
+            "ORDER BY COUNT(fb) DESC")
+    Page<FreeBoard> findAllSortByBookmarksWithSearchParam(@Param("search") String search, Pageable pageable);
+
 }

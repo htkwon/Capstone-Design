@@ -110,17 +110,28 @@ public class FreeBoardService {
      * 프론트에서 요청한 페이지 정보에 맞게 게시글 반환
      */
     public List<FreeBoardListDto> findByPage(Pageable pageable, String search) {
-        Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createdAt");
+        Sort fallbackSort = Sort.by(Sort.Direction.DESC, "createdAt");
         Page<FreeBoard> page;
 
-        if (search == null) {
-            page = freeBoardRepository.findAll(setPage);
+        if (pageable.getSort().stream().anyMatch(order -> order.getProperty().equals("bookmarks"))) {
+            Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+
+            if (search == null) {
+                page = freeBoardRepository.findAllSortByBookmarks(setPage);
+            } else {
+                page = freeBoardRepository.findAllSortByBookmarksWithSearchParam(search, setPage);
+            }
         } else {
-            page = freeBoardRepository.findAllWithSearchParam(search, setPage);
+            Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(fallbackSort));
+
+            if (search == null) {
+                page = freeBoardRepository.findAll(setPage);
+            } else {
+                page = freeBoardRepository.findAllWithSearchParam(search, setPage);
+            }
         }
 
-        return page.getContent()
-                .stream()
+        return page.getContent().stream()
                 .map(board -> {
                     FreeBoardListDto dto = new FreeBoardListDto(board);
                     dto.setImage(extractImagesFromContent(board.getContent()));
@@ -175,5 +186,6 @@ public class FreeBoardService {
         freeBoardRepository.save(freeBoard);
         return freeBoard.getId();
     }
+
 }
 
