@@ -3,7 +3,6 @@ package com.hansung.hansungcommunity.controller;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.user.*;
 import com.hansung.hansungcommunity.exception.InvalidAccessException;
-import com.hansung.hansungcommunity.repository.AdoptRepository;
 import com.hansung.hansungcommunity.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

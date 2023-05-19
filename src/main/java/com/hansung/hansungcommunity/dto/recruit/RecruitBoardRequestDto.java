@@ -18,19 +18,16 @@ public class RecruitBoardRequestDto {
     private int party;
     private int gathered;
 
-    public RecruitBoardRequestDto( String title, String content) {
+    public RecruitBoardRequestDto(String title, String content) {
         this.title = title;
         this.content = content;
     }
 
-
-    public static RecruitBoardRequestDto of(RecruitBoard recruitBoard){
+    public static RecruitBoardRequestDto of(RecruitBoard recruitBoard) {
         return new RecruitBoardRequestDto(
                 recruitBoard.getTitle(),
                 recruitBoard.getContent()
         );
     }
-
-
 
 }

@@ -339,7 +339,6 @@ public class RecruitBoardService {
         return images;
     }
 
-
     @Transactional
     public Long mappingUser(Long id, RecruitBoard recruitBoard) {
         User user = userRepository.getReferenceById(id);
@@ -347,4 +346,5 @@ public class RecruitBoardService {
         recruitBoardRepository.save(recruitBoard);
         return recruitBoard.getId();
     }
+
 }

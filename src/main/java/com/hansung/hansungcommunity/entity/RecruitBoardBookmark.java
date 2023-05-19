@@ -15,18 +15,19 @@ public class RecruitBoardBookmark {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name ="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="recruit_board_id")
+    @JoinColumn(name = "recruit_board_id")
     private RecruitBoard recruitBoard;
 
-    public RecruitBoardBookmark(User user, RecruitBoard recruitBoard){
+    public RecruitBoardBookmark(User user, RecruitBoard recruitBoard) {
         this.user = user;
         this.recruitBoard = recruitBoard;
     }
-    public static RecruitBoardBookmark of(User user, RecruitBoard recruitBoard){
+
+    public static RecruitBoardBookmark of(User user, RecruitBoard recruitBoard) {
         return new RecruitBoardBookmark(
                 user,
                 recruitBoard

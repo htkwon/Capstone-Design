@@ -18,7 +18,6 @@ public class RecruitBoardMainDto {
     private int bookmark;
     private int reply;
 
-
     public RecruitBoardMainDto(RecruitBoard board) {
         this.id = board.getId();
         this.title = board.getTitle();

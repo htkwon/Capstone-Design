@@ -18,8 +18,6 @@ public abstract class Board extends ModifiedEntity {
     @JoinColumn(name = "stu_id")
     private User user;
 
-
-
     public void increaseViews() {
         this.views++;
     }
@@ -37,4 +35,5 @@ public abstract class Board extends ModifiedEntity {
     public void setUser(User user) {
         this.user = user;
     }
+
 }

@@ -23,7 +23,7 @@ public class RecruitReplyController {
             @PathVariable("boardId") Long boardId,
             @RequestBody @Valid RecruitReplyDto replyDto,
             Authentication authentication
-    ){
+    ) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long userId = ca.getUser().getId();
 
@@ -32,23 +32,21 @@ public class RecruitReplyController {
     }
 
     @GetMapping("/recruit/{boardId}/replies")
-    public ResponseEntity<List<RecruitReplyDto>> list(@PathVariable("boardId") Long boardId){
+    public ResponseEntity<List<RecruitReplyDto>> list(@PathVariable("boardId") Long boardId) {
         List<RecruitReplyDto> list = recruitReplyService.getReplyList(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @PutMapping("/recruit/update/replies")
-    public ResponseEntity<RecruitReplyDto> update(@RequestBody RecruitReplyDto replyDto){
+    public ResponseEntity<RecruitReplyDto> update(@RequestBody RecruitReplyDto replyDto) {
         RecruitReplyDto dto = recruitReplyService.update(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     @DeleteMapping("/recruit/delete/{replyId}/replies")
-    public ResponseEntity<String> delete(@PathVariable("replyId") Long replyId){
+    public ResponseEntity<String> delete(@PathVariable("replyId") Long replyId) {
         recruitReplyService.delete(replyId);
         return ResponseEntity.status(HttpStatus.OK).body("삭제 완료");
     }
-
-
 
 }

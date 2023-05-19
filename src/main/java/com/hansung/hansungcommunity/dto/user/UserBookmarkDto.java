@@ -35,4 +35,5 @@ public class UserBookmarkDto {
                 user.getNickname()
         );
     }
+
 }

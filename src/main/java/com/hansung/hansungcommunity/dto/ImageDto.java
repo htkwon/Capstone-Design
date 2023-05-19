@@ -7,7 +7,7 @@ import lombok.Setter;
 @Data
 public class ImageDto {
 
-    private String imageUrl ;
+    private String imageUrl;
 
 
 }

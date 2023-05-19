@@ -10,15 +10,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class FreeBoardBookmark {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name ="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name ="free_board_id")
+    @JoinColumn(name = "free_board_id")
     private FreeBoard freeBoard;
 
     public FreeBoardBookmark(User user, FreeBoard freeBoard) {
@@ -26,13 +27,11 @@ public class FreeBoardBookmark {
         this.freeBoard = freeBoard;
     }
 
-    public static FreeBoardBookmark of(User user, FreeBoard freeBoard){
+    public static FreeBoardBookmark of(User user, FreeBoard freeBoard) {
         return new FreeBoardBookmark(
                 user,
                 freeBoard
         );
     }
-
-
 
 }

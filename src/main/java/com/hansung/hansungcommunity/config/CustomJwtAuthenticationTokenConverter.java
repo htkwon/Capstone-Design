@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class CustomJwtAuthenticationTokenConverter implements Converter<Jwt , AbstractAuthenticationToken> {
+public class CustomJwtAuthenticationTokenConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
     private final UserService userService;
 
@@ -29,7 +29,7 @@ public class CustomJwtAuthenticationTokenConverter implements Converter<Jwt , Ab
         // 유저가 있다면 커스텀한 Authentication 반환, ROLE_USER 권한 부여
         // 유저가 없는 경우 권한 부여 X
         if (user.isPresent()) {
-            if ((((List<String>) jwt.getClaims().get("authorities")).get(0).equals("ROLE_ADMIN"))){
+            if ((((List<String>) jwt.getClaims().get("authorities")).get(0).equals("ROLE_ADMIN"))) {
                 return new CustomAuthentication(user.get(), jwt, authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
             }
             return new CustomAuthentication(user.get(), jwt, Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));

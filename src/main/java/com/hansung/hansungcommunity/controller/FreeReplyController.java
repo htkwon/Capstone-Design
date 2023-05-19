@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/api")
 public class FreeReplyController {
 
-
     private final FreeReplyService freeReplyService;
 
     @PostMapping("/free/{boardId}/replies")
@@ -25,31 +24,30 @@ public class FreeReplyController {
             @PathVariable("boardId") Long boardId,
             @RequestBody @Valid FreeReplyDto replyDto,
             Authentication authentication
-            ){
+    ) {
 
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long userId = ca.getUser().getId();
 
         FreeReplyDto reply = freeReplyService.create(userId, boardId, replyDto);
+
         return ResponseEntity.status(HttpStatus.OK).body(reply);
-
-
     }
 
     @GetMapping("/free/{boardId}/replies")
-    public ResponseEntity<List<FreeReplyDto>> list(@PathVariable("boardId") Long boardId ){
+    public ResponseEntity<List<FreeReplyDto>> list(@PathVariable("boardId") Long boardId) {
         List<FreeReplyDto> list = freeReplyService.getReplyList(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @PutMapping("/free/update/replies")
-    public ResponseEntity<FreeReplyDto> update(@RequestBody  FreeReplyDto replyDto){
+    public ResponseEntity<FreeReplyDto> update(@RequestBody FreeReplyDto replyDto) {
         FreeReplyDto dto = freeReplyService.update(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     @DeleteMapping("/free/delete/{replyId}/replies")
-    public ResponseEntity<String> delete(@PathVariable("replyId") Long replyId){
+    public ResponseEntity<String> delete(@PathVariable("replyId") Long replyId) {
         freeReplyService.delete(replyId);
         return ResponseEntity.status(HttpStatus.OK).body("삭제 완료");
     }

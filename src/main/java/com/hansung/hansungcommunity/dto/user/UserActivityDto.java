@@ -17,13 +17,9 @@ public class UserActivityDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private String writer;
-
     private String language;
-
     private int bookmark;
-
     private int reply;
-
     private String boardType;
 
     public UserActivityDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String writer, int bookmark, int reply, String boardType) {
@@ -50,7 +46,6 @@ public class UserActivityDto {
         this.reply = reply;
         this.boardType = boardType;
     }
-
 
     public static UserActivityDto of(FreeBoard freeBoard) {
         return new UserActivityDto(

@@ -8,9 +8,7 @@ public class QnaReplyAdoptCheckDto {
     private Boolean check;
     private Long id;
 
-
-
-    public QnaReplyAdoptCheckDto(Boolean check, Long id){
+    public QnaReplyAdoptCheckDto(Boolean check, Long id) {
         this.check = check;
         this.id = id;
     }

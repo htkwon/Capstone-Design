@@ -7,5 +7,4 @@ public class UserCheckNicknameDto {
 
     private String nickname;
 
-
 }

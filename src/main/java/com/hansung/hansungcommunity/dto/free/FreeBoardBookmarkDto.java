@@ -15,7 +15,7 @@ public class FreeBoardBookmarkDto {
     }
 
 
-    public static FreeBoardBookmarkDto of(FreeBoardBookmark freeBoardBookmark){
+    public static FreeBoardBookmarkDto of(FreeBoardBookmark freeBoardBookmark) {
         return new FreeBoardBookmarkDto(
                 UserBookmarkDto.of(freeBoardBookmark.getUser()),
                 FreeBoardRequestDto.of(freeBoardBookmark.getFreeBoard())

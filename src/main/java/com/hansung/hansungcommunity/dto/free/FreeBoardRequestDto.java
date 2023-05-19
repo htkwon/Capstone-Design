@@ -21,7 +21,7 @@ public class FreeBoardRequestDto {
     public FreeBoardRequestDto(Long id, String title, String content) {
         this.id = id;
         this.title = title;
-        this.content =  content;
+        this.content = content;
     }
 
     public static FreeBoardRequestDto of(FreeBoard freeBoard) {
@@ -31,4 +31,5 @@ public class FreeBoardRequestDto {
                 freeBoard.getContent()
         );
     }
+
 }

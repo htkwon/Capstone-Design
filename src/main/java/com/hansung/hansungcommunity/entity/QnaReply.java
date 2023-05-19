@@ -17,6 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QnaReply extends AuditingFields {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_reply_id")
@@ -61,7 +62,12 @@ public class QnaReply extends AuditingFields {
         this.parent = parent;
     }
 
-    public void adopt(Boolean adopt){this.adopt = adopt;}
+    public void adopt(Boolean adopt) {
+        this.adopt = adopt;
+    }
 
-    public void update(String article) {this.article = article;}
+    public void update(String article) {
+        this.article = article;
+    }
+    
 }

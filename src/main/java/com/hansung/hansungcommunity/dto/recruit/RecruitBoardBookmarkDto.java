@@ -11,17 +11,16 @@ public class RecruitBoardBookmarkDto {
     private UserBookmarkDto user;
     private RecruitBoardRequestDto recruitBoard;
 
-    public RecruitBoardBookmarkDto(UserBookmarkDto user, RecruitBoardRequestDto recruitBoard){
+    public RecruitBoardBookmarkDto(UserBookmarkDto user, RecruitBoardRequestDto recruitBoard) {
         this.user = user;
         this.recruitBoard = recruitBoard;
     }
 
-    public static RecruitBoardBookmarkDto of(RecruitBoardBookmark recruitBoardBookmark){
+    public static RecruitBoardBookmarkDto of(RecruitBoardBookmark recruitBoardBookmark) {
         return new RecruitBoardBookmarkDto(
                 UserBookmarkDto.of(recruitBoardBookmark.getUser()),
                 RecruitBoardRequestDto.of(recruitBoardBookmark.getRecruitBoard())
         );
     }
-
 
 }

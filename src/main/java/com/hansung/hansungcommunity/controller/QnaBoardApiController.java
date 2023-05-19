@@ -25,9 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -147,7 +145,6 @@ public class QnaBoardApiController {
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 
-
     /**
      * 게시글 수정
      */
@@ -230,7 +227,6 @@ public class QnaBoardApiController {
         return extension;
 
     }
-
 
     @Data
     @AllArgsConstructor

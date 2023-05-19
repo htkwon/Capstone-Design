@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({AdoptNotFoundException.class, BoardNotFoundException.class, BookmarkNotFoundException.class, PartyNotFoundException.class, ReplyNotFoundException.class, SkillNotFoundException.class, SummaryNotFoundException.class, UserNotFoundException.class})
+    @ExceptionHandler({AdoptNotFoundException.class, BoardNotFoundException.class, BookmarkNotFoundException.class, PartyNotFoundException.class, ReplyNotFoundException.class, SkillNotFoundException.class, SummaryNotFoundException.class, UserNotFoundException.class, AttachedFileNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFoundException(RuntimeException ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
 

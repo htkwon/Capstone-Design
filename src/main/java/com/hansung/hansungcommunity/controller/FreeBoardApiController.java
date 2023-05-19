@@ -6,7 +6,6 @@ import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.dto.free.*;
-import com.hansung.hansungcommunity.entity.Board;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.service.FileService;
 import com.hansung.hansungcommunity.service.FireBaseService;
@@ -15,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -124,7 +122,6 @@ public class FreeBoardApiController {
         return ResponseEntity.status(HttpStatus.OK).body(boardId);
     }
 
-
     /**
      * 해당 자유게시판 게시글에서 첨부 파일이 있는지 체크
      */
@@ -144,7 +141,6 @@ public class FreeBoardApiController {
         List<FileRequestDto> dtos = fileService.list(boardId, boardType);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
-
 
     /**
      * 게시글 수정

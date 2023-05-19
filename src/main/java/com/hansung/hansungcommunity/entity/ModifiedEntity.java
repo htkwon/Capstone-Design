@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class ModifiedEntity extends AuditingFields {
 
     // 수정 일자
-    @DateTimeFormat(iso= DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @Column
     private LocalDateTime modifiedAt;
 

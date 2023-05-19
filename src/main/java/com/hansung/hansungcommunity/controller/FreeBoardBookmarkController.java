@@ -68,5 +68,4 @@ public class FreeBoardBookmarkController {
         return ResponseEntity.status(HttpStatus.OK).body(count);
     }
 
-
 }

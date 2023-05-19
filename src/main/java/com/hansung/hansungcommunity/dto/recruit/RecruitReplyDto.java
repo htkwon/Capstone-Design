@@ -1,7 +1,6 @@
 package com.hansung.hansungcommunity.dto.recruit;
 
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
-import com.hansung.hansungcommunity.entity.FreeReply;
 import com.hansung.hansungcommunity.entity.RecruitReply;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,24 +17,14 @@ import java.util.stream.Collectors;
 public class RecruitReplyDto {
 
     private Long id;
-
     @NotNull
     private String article;
-
     private Long parentId;
     private UserReplyDto user;
     private LocalDateTime createdAt;
 
-    private RecruitReplyDto(Long id,Long parentId, String article,UserReplyDto dto,LocalDateTime createdAt){
-        this.id = id;
-        this.parentId = parentId;
-        this.article = article;
-        this.user = dto;
-        this.createdAt = createdAt;
-    }
-
     public RecruitReplyDto(Long id, String article, UserReplyDto userReplyDto, LocalDateTime createdAt) {
-        this.id= id;
+        this.id = id;
         this.article = article;
         this.user = userReplyDto;
         this.createdAt = createdAt;
@@ -44,16 +33,14 @@ public class RecruitReplyDto {
     public RecruitReplyDto(RecruitReply recruitReply) {
         this.id = recruitReply.getId();
         this.article = recruitReply.getArticle();
-        this.parentId = (recruitReply.getParent()!=null)? recruitReply.getParent().getId() : null;
+        this.parentId = (recruitReply.getParent() != null) ? recruitReply.getParent().getId() : null;
         this.user = new UserReplyDto(recruitReply.getUser());
         this.createdAt = recruitReply.getCreatedAt();
 
     }
 
-
-
-    public static RecruitReplyDto from (RecruitReply recruitReply, UserReplyDto dto){
-        Long parentId  = recruitReply.getParent() != null ? recruitReply.getParent().getId() : null;
+    public static RecruitReplyDto from(RecruitReply recruitReply, UserReplyDto dto) {
+        Long parentId = recruitReply.getParent() != null ? recruitReply.getParent().getId() : null;
         return new RecruitReplyDto(
                 recruitReply.getId(),
                 recruitReply.getArticle(),
@@ -63,7 +50,7 @@ public class RecruitReplyDto {
         );
     }
 
-    public static RecruitReplyDto createParent(RecruitReply recruitReply){
+    public static RecruitReplyDto createParent(RecruitReply recruitReply) {
         return new RecruitReplyDto(
                 recruitReply.getId(),
                 recruitReply.getArticle(),
@@ -72,7 +59,7 @@ public class RecruitReplyDto {
         );
     }
 
-    public static RecruitReplyDto createChildren(RecruitReply recruitReply){
+    public static RecruitReplyDto createChildren(RecruitReply recruitReply) {
         return new RecruitReplyDto(
                 recruitReply.getId(),
                 recruitReply.getArticle(),
@@ -82,11 +69,10 @@ public class RecruitReplyDto {
         );
     }
 
-    public static List<RecruitReplyDto> listOf(List<RecruitReply> replies){
+    public static List<RecruitReplyDto> listOf(List<RecruitReply> replies) {
         return replies.stream()
-                .map(RecruitReplyDto :: new)
+                .map(RecruitReplyDto::new)
                 .collect(Collectors.toList());
     }
-
 
 }

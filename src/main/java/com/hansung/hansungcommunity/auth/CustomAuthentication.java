@@ -11,7 +11,6 @@ import java.util.Collection;
 /**
  * User 를 포함하는 Custom Authentication
  */
-
 @Getter
 public class CustomAuthentication extends AbstractAuthenticationToken {
 

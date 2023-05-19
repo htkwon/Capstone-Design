@@ -1,10 +1,8 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyAdoptCheckDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
-import com.hansung.hansungcommunity.repository.QnaReplyRepository;
 import com.hansung.hansungcommunity.service.QnaReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,23 +53,22 @@ public class QnaReplyController {
      * 수정, 삭제
      */
     @PutMapping("/questions/update/replies")
-    public ResponseEntity<QnaReplyDto> update(@RequestBody QnaReplyDto replyDto){
+    public ResponseEntity<QnaReplyDto> update(@RequestBody QnaReplyDto replyDto) {
         QnaReplyDto dto = replyService.update(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     @DeleteMapping("/questions/delete/{replyId}/replies")
-    public ResponseEntity<Void> delete(@PathVariable("replyId") Long replyId){
+    public ResponseEntity<Void> delete(@PathVariable("replyId") Long replyId) {
         replyService.delete(replyId);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
-
 
     /**
      * 채택
      */
     @PostMapping("/questions/{replyId}/adopt-replies")
-    public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId, Authentication authentication){
+    public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId, Authentication authentication) {
         Boolean adopt = replyService.adopt(replyId);
         return ResponseEntity.status(HttpStatus.OK).body(adopt);
     }
@@ -80,7 +77,7 @@ public class QnaReplyController {
      * 채택 취소
      */
     @PutMapping("/questions/{replyId}/adopt-cancel")
-    public ResponseEntity<Long> cancel(@PathVariable("replyId") Long replyId){
+    public ResponseEntity<Long> cancel(@PathVariable("replyId") Long replyId) {
         Long id = replyService.cancel(replyId);
         return ResponseEntity.status(HttpStatus.OK).body(id);
     }
