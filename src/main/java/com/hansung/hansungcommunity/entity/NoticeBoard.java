@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @ToString(callSuper = true)
@@ -26,6 +26,10 @@ public class NoticeBoard extends Board {
     @NotNull
     @Lob
     private String content;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<FileEntity> fileEntity = new ArrayList<>();
+
 
     public NoticeBoard(Long id, String title, String content,User user) {
         this.id = id;

@@ -1,15 +1,18 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
+import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.dto.NoticeBoardDto;
 import com.hansung.hansungcommunity.entity.NoticeBoard;
+import com.hansung.hansungcommunity.repository.AdoptRepository;
+import com.hansung.hansungcommunity.repository.FileRepository;
 import com.hansung.hansungcommunity.service.FileService;
+import com.hansung.hansungcommunity.service.FireBaseService;
 import com.hansung.hansungcommunity.service.NoticeService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +20,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
-import static org.springframework.util.StringUtils.getFilename;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,11 +32,14 @@ public class NoticeController {
     private final NoticeService noticeService;
     private final FileService fileService;
 
+    private final FireBaseService fireBaseService;
+    private final FileRepository fileRepository;
+
     /**
      * 전체 글 조회
      */
     @GetMapping("/notice")
-    public ResponseEntity<List<NoticeBoardDto>> getList(Authentication authentication){
+    public ResponseEntity<List<NoticeBoardDto>> getList(Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         List<NoticeBoardDto> dtos = noticeService.getList(ca.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
@@ -47,7 +49,7 @@ public class NoticeController {
      * 글 상세보기
      */
     @GetMapping("/notice/{boardId}/detail")
-    public ResponseEntity<NoticeBoardDto> detail(@PathVariable("boardId") Long boardId){
+    public ResponseEntity<NoticeBoardDto> detail(@PathVariable("boardId") Long boardId) {
         NoticeBoardDto dto = noticeService.detail(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
@@ -55,58 +57,55 @@ public class NoticeController {
     /**
      * 글 작성 (업로드 파일 없을 때)
      */
-    @PostMapping("/notice")
-    public ResponseEntity<NoticeBoardDto> post(@RequestBody NoticeBoardDto dto, Authentication authentication){
+    @PostMapping("/notice/no-file")
+    public ResponseEntity<Long> post(@RequestBody NoticeBoardDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        NoticeBoardDto noticeBoardDto = noticeService.post(dto,ca.getUser().getId());
-        return ResponseEntity.status(HttpStatus.OK).body(noticeBoardDto);
+        Long id = noticeService.post(dto, ca.getUser().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(id);
 
     }
+
     /**
      * 글 작성(업로드 파일 있을 때)
      */
-//    @PostMapping("/notice/file")
-//    public ResponseEntity<Object> create(
-//            MultipartFile[] multipartFiles,
-//            String stringNotice,
-//            Authentication authentication
-//    ){
-//        CustomAuthentication ca = (CustomAuthentication) authentication;
-//        try {
-//            NoticeBoard noticeBoard = new ObjectMapper().readValue(stringNotice,NoticeBoard.class);
-//            noticeService.mappingUser(ca.getUser().getId(),noticeBoard);
-//
-//            for(MultipartFile file : multipartFiles){
-//                String name = (new Date().getTime()) + "" + (new Random().ints(1000, 9999).findAny().getAsInt());
-//                String originalName = file.getOriginalFilename();
-//                String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-//
-//                assert originalName != null;
-//                String extension = getFilename(originalName, path);
-//                File save = new File(path, name + "." + extension);
-//                file.transferTo(save);
-//
-//                FileDto dto = FileDto.of(noticeBoard,originalName,name,path);
-//                fileService.save(dto);
-//
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return new ResponseEntity<>("Success",HttpStatus.OK);
-//    }
+    @PostMapping("/notice")
+    public ResponseEntity<Long> create(
+            @RequestParam("file") MultipartFile[] file,
+            String stringNotice,
+            Authentication authentication
+    ) throws IOException, FirebaseAuthException {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        NoticeBoard noticeBoard = new ObjectMapper().readValue(stringNotice, NoticeBoard.class);
+        Long boardId = noticeService.mappingUser(ca.getUser().getId(), noticeBoard);
 
-    private String getFilename(String originalName, String path) {
-        String extension = originalName.substring(originalName.lastIndexOf(".") + 1);
-        if (!new File(path).exists()) {
-            try {
-                new File(path).mkdir();
-            } catch (Exception e) {
-                e.getStackTrace();
-            }
+        for (MultipartFile f : file) {
+            String fileName = f.getOriginalFilename();
+            FileDto dto = FileDto.of(noticeBoard, fileName);
+            fileService.save(dto);
+            fireBaseService.uploadFiles(f, fileName);
+
         }
-        return extension;
+        return ResponseEntity.status(HttpStatus.OK).body(boardId);
+    }
 
+    /**
+     * 해당 자유게시판 게시글에서 첨부 파일이 있는지 체크
+     */
+    @GetMapping("/notice/{boardId}/file-check")
+    public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId){
+        String boardType = "notice";
+        Boolean check = fileService.check(boardId,boardType);
+        return ResponseEntity.status(HttpStatus.OK).body(check);
+    }
+
+    /**
+     * 해당 게시글에 첨부파일이 있음을 check 후, 해당 파일의 이름들 전송
+     */
+    @GetMapping("/notice/{boardId}/file-list")
+    public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId){
+        String boardType = "notice";
+        List<FileRequestDto> dtos = fileService.list(boardId,boardType);
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 
 
@@ -115,8 +114,8 @@ public class NoticeController {
      */
 
     @PutMapping("/notice/{boardId}/update")
-    public ResponseEntity<NoticeBoardDto> update(@RequestBody NoticeBoardDto dto, @PathVariable("boardId") Long boardId){
-        NoticeBoardDto noticeBoardDto = noticeService.update(dto,boardId);
+    public ResponseEntity<NoticeBoardDto> update(@RequestBody NoticeBoardDto dto, @PathVariable("boardId") Long boardId) {
+        NoticeBoardDto noticeBoardDto = noticeService.update(dto, boardId);
         return ResponseEntity.status(HttpStatus.OK).body(noticeBoardDto);
     }
 
@@ -125,12 +124,10 @@ public class NoticeController {
      * 글 삭제
      */
     @DeleteMapping("/notice/{boardId}/delete")
-    public ResponseEntity<Void> delete(@PathVariable("boardId") Long boardId){
+    public ResponseEntity<Void> delete(@PathVariable("boardId") Long boardId) {
         noticeService.delete(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
-
-
 
 
 }
