@@ -1,6 +1,5 @@
 package com.hansung.hansungcommunity.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.plaf.multi.MultiOptionPaneUI;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -106,10 +104,8 @@ public class QnaBoardApiController {
     }
 
     /**
-     *
      * 게시글 저장 (업로드 파일 있을 때)
      */
-
     @PostMapping("/questions")
     public ResponseEntity<Long> create(
             @RequestParam("file") MultipartFile[] file,
@@ -118,13 +114,13 @@ public class QnaBoardApiController {
     ) throws IOException, FirebaseAuthException {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         QnaBoard board = new ObjectMapper().readValue(stringQna, QnaBoard.class);
-        Long id = qnaBoardService.mappingUser(ca.getUser().getId(),board);
+        Long id = qnaBoardService.mappingUser(ca.getUser().getId(), board);
 
-        for(MultipartFile f : file){
-                String fileName = f.getOriginalFilename();
-                FileDto dto = FileDto.of(board,fileName);
-                fileService.save(dto);
-                fireBaseService.uploadFiles(f,fileName);
+        for (MultipartFile f : file) {
+            String fileName = f.getOriginalFilename();
+            FileDto dto = FileDto.of(board, fileName);
+            fileService.save(dto);
+            fireBaseService.uploadFiles(f, fileName);
         }
         return ResponseEntity.status(HttpStatus.OK).body(id);
 

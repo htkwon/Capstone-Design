@@ -1,9 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.rpc.context.AttributeContext;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.free.*;
@@ -15,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -102,29 +101,26 @@ public class FreeBoardApiController {
     /**
      * 게시글 저장 (업로드 파일 있을 때)
      */
-    @PostMapping("free")
+    @PostMapping("/free")
     public ResponseEntity<Long> create(
-            @RequestParam("file")MultipartFile[] file,
+            @RequestParam("file") MultipartFile[] file,
             String stringFree,
             Authentication authentication
-            ) throws IOException, FirebaseAuthException {
+    ) throws IOException, FirebaseAuthException {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        FreeBoard freeBoard = new ObjectMapper().readValue(stringFree,FreeBoard.class);
-        Long boardId = freeBoardService.mappingUser(ca.getUser().getId(),freeBoard);
+        FreeBoard freeBoard = new ObjectMapper().readValue(stringFree, FreeBoard.class);
+        Long boardId = freeBoardService.mappingUser(ca.getUser().getId(), freeBoard);
 
-        for(MultipartFile f : file){
+        for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
-            FileDto dto = FileDto.of(freeBoard,fileName);
+            FileDto dto = FileDto.of(freeBoard, fileName);
             fileService.save(dto);
-            fireBaseService.uploadFiles(f,fileName);
+            fireBaseService.uploadFiles(f, fileName);
 
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(boardId);
-
     }
-
-
-
 
     /**
      * 게시글 수정

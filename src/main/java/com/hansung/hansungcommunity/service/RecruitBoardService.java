@@ -45,13 +45,25 @@ public class RecruitBoardService {
     }
 
     public List<RecruitBoardListDto> getList(Pageable pageable, String search) {
-        Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createdAt");
+        Sort fallbackSort = Sort.by(Sort.Direction.DESC, "createdAt");
         Page<RecruitBoard> page;
 
-        if (search == null) {
-            page = recruitBoardRepository.findAll(setPage);
+        if (pageable.getSort().stream().anyMatch(order -> order.getProperty().equals("bookmarks"))) {
+            Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+
+            if (search == null) {
+                page = recruitBoardRepository.findAllSortByBookmarks(setPage);
+            } else {
+                page = recruitBoardRepository.findAllSortByBookmarksWithSearchParam(search, setPage);
+            }
         } else {
-            page = recruitBoardRepository.findAllWithSearchParam(search, setPage);
+            Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(fallbackSort));
+
+            if (search == null) {
+                page = recruitBoardRepository.findAll(setPage);
+            } else {
+                page = recruitBoardRepository.findAllWithSearchParam(search, setPage);
+            }
         }
 
         return page.getContent()

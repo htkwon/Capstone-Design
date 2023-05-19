@@ -134,13 +134,25 @@ public class QnaBoardService {
      * 프론트에서 요청한 페이지 정보에 맞게 게시글 반환
      */
     public List<QnaBoardListDto> findByPage(Pageable pageable, String search) {
-        Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "createdAt");
+        Sort fallbackSort = Sort.by(Sort.Direction.DESC, "createdAt");
         Page<QnaBoard> page;
 
-        if (search == null) {
-            page = qnaBoardRepository.findAll(setPage);
+        if (pageable.getSort().stream().anyMatch(order -> order.getProperty().equals("bookmarks"))) {
+            Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+
+            if (search == null) {
+                page = qnaBoardRepository.findAllSortByBookmarks(setPage);
+            } else {
+                page = qnaBoardRepository.findAllSortByBookmarksWithSearchParam(search, setPage);
+            }
         } else {
-            page = qnaBoardRepository.findAllWithSearchParam(search, setPage);
+            Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(fallbackSort));
+
+            if (search == null) {
+                page = qnaBoardRepository.findAll(setPage);
+            } else {
+                page = qnaBoardRepository.findAllWithSearchParam(search, setPage);
+            }
         }
 
         return page.getContent()
