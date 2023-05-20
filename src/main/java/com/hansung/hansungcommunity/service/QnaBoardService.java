@@ -204,8 +204,9 @@ public class QnaBoardService {
         // 매칭된 이미지 URL 추출
         while (matcher.find()) {
             String imageUrl = matcher.group(1);
+            String resizeUrl = imageUrl+"/resize";
             ImageDto imageDto = new ImageDto();
-            imageDto.setImageUrl(imageUrl);
+            imageDto.setImageUrl(resizeUrl);
             images.add(imageDto);
         }
 

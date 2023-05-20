@@ -59,12 +59,13 @@ public class FirebaseController {
      */
     @GetMapping("/api/files/{imageName}/resize")
     public ResponseEntity<InputStreamResource> resizeImage(@PathVariable String imageName) throws IOException {
-        String formatName = imageName.substring(imageName.lastIndexOf(".") + 1);
-        byte[] image = get(bucketName,imageName).getBody();
-        byte[] compressImage = ImageUtils.compressAndResizeImage(image,800,600,0.8f,"jpg");
+        String contentType = getType(bucketName,imageName);
+        String extension = contentType.replace("image/", "");
+        byte[] image = get(bucketName, imageName).getBody();
+        byte[] compressImage = ImageUtils.compressAndResizeImage(image, 800, 600, 0.8f, extension);
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(compressImage));
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG); // 이미지 타입에 맞게 설정
+        headers.setContentType(MediaType.valueOf(contentType)); // 이미지 타입에 맞게 설정
         return ResponseEntity.ok().headers(headers).body(inputStreamResource);
     }
 
@@ -107,6 +108,19 @@ public class FirebaseController {
         return ResponseEntity.ok().headers(headers).body(content);
     }
 
+    public String getType(String bucketName,String imageName) throws IOException {
+        String serviceAccountKeyFile = "src/main/resources/serviceAccountKey.json";
+        InputStream serviceAccount = new FileInputStream(serviceAccountKeyFile);
+        GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
+
+        // Storage 인스턴스를 생성 후 연결
+        Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
+        Blob blob = storage.get(bucketName, imageName);
+        String contentType = blob.getContentType();
+
+        return contentType;
+    }
+
     /**
      * 해당 다운로드 링크 제공
      */
@@ -126,6 +140,7 @@ public class FirebaseController {
         headers.add("Content-Disposition", "attachment; filename=" + fileName); // 다운로드될 파일 이름 설정
         return ResponseEntity.ok().headers(headers).body(downloadUrl.getBytes());
     }
+
 
     /**
      * 파이어베이스 이미지 삭제

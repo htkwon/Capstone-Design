@@ -63,7 +63,6 @@ public class FreeBoardService {
     public FreeBoardRequestDto delete(Long boardId) {
         FreeBoard target = freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 삭제 실패, 해당하는 게시글이 없습니다."));
-
         // 게시글 삭제
         freeBoardRepository.delete(target);
 
@@ -134,6 +133,7 @@ public class FreeBoardService {
         return page.getContent().stream()
                 .map(board -> {
                     FreeBoardListDto dto = new FreeBoardListDto(board);
+
                     dto.setImage(extractImagesFromContent(board.getContent()));
                     return dto;
                 })
@@ -171,8 +171,9 @@ public class FreeBoardService {
         // 매칭된 이미지 URL 추출
         while (matcher.find()) {
             String imageUrl = matcher.group(1);
+            String resizeUrl = imageUrl+"/resize";
             ImageDto imageDto = new ImageDto();
-            imageDto.setImageUrl(imageUrl);
+            imageDto.setImageUrl(resizeUrl);
             images.add(imageDto);
         }
 
