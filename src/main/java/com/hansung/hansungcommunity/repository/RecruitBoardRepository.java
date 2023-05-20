@@ -25,4 +25,9 @@ public interface RecruitBoardRepository extends JpaRepository<RecruitBoard, Long
             "ORDER BY COUNT(rb) DESC")
     Page<RecruitBoard> findAllSortByBookmarksWithSearchParam(String search, Pageable setPage);
 
+    @Query("SELECT COUNT(r)" +
+            "FROM RecruitBoard r " +
+            "WHERE r.title LIKE %:search% OR r.content LIKE %:search% ")
+    long countWithSearch(String search);
+
 }

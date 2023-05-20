@@ -25,4 +25,9 @@ public interface FreeBoardRepository extends JpaRepository<FreeBoard, Long> {
             "ORDER BY COUNT(fb) DESC")
     Page<FreeBoard> findAllSortByBookmarksWithSearchParam(@Param("search") String search, Pageable pageable);
 
+    @Query("SELECT COUNT(f)" +
+            "FROM FreeBoard f " +
+            "WHERE f.title LIKE %:search% OR f.content LIKE %:search% ")
+    long countWithSearch(@Param("search") String search);
+
 }

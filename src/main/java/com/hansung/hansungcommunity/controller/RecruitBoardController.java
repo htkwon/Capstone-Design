@@ -77,7 +77,6 @@ public class RecruitBoardController {
         return ResponseEntity.status(HttpStatus.OK).body(id);
     }
 
-
     /**
      * 해당 구인게시판 게시글에서 첨부 파일이 있는지 체크
      */
@@ -120,21 +119,14 @@ public class RecruitBoardController {
     }
 
     /**
-     * 전체 게시글 수
-     */
-    @GetMapping("/recruit/total")
-    public ResponseEntity<Long> getTotal() {
-        return ResponseEntity.ok(recruitBoardService.getTotal());
-    }
-
-    /**
      * 게시글 목록 조회
      */
     @GetMapping("/recruit/list")
-    public ResponseEntity<List<RecruitBoardListDto>> list(Pageable pageable, @RequestParam(required = false) String search) {
+    public ResponseEntity<ListResult<List<RecruitBoardListDto>>> list(Pageable pageable, @RequestParam(required = false) String search) {
         List<RecruitBoardListDto> recruitList = recruitBoardService.getList(pageable, search);
+        long count = recruitBoardService.getCount(search);
 
-        return ResponseEntity.ok(recruitList);
+        return ResponseEntity.ok(new ListResult<>(recruitList, count));
     }
 
     /**
@@ -306,11 +298,17 @@ public class RecruitBoardController {
         }
     }
 
-
     @Data
     @AllArgsConstructor
     static class Result<T> {
         private T data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class ListResult<T> {
+        private T data;
+        private long count;
     }
 
 }

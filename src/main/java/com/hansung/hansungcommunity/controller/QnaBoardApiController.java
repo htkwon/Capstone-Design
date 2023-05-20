@@ -76,10 +76,11 @@ public class QnaBoardApiController {
      * 페이지 정보는 프론트에서 전송
      */
     @GetMapping("/questions/list")
-    public ResponseEntity<List<QnaBoardListDto>> listOfPage(Pageable pageable, @RequestParam(required = false) String search) {
+    public ResponseEntity<ListResult<List<QnaBoardListDto>>> listOfPage(Pageable pageable, @RequestParam(required = false) String search) {
         List<QnaBoardListDto> dtoList = qnaBoardService.findByPage(pageable, search);
+        long count = qnaBoardService.getCount(search);
 
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+        return ResponseEntity.status(HttpStatus.OK).body(new ListResult<>(dtoList, count));
     }
 
     /**
@@ -166,15 +167,6 @@ public class QnaBoardApiController {
         return ResponseEntity.ok(boardId);
     }
 
-    /**
-     * 전체 게시글 수
-     */
-    @GetMapping("/questions/total")
-    public ResponseEntity<Long> getTotal() {
-        return ResponseEntity.ok(qnaBoardService.getTotal());
-    }
-
-
     @GetMapping("/questions/return/user-id/{boardId}")
     public ResponseEntity<Long> getUserId(@PathVariable("boardId") Long boardId) {
         Long userId = qnaBoardService.getUserId(boardId);
@@ -230,6 +222,13 @@ public class QnaBoardApiController {
     @AllArgsConstructor
     static class Result<T> {
         private T data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class ListResult<T> {
+        private T data;
+        private long count;
     }
 
 }

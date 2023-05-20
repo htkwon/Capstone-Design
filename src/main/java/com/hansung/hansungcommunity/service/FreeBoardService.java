@@ -151,10 +151,25 @@ public class FreeBoardService {
     }
 
     /**
+     * 게시글 수
+     * 검색어 유무에 따라 다른 메소드 호출
+     */
+    public long getCount(String search) {
+        return search == null ? getTotal() : getTotalWithSearch(search);
+    }
+
+    /**
      * 전체 게시글 수
      */
     public long getTotal() {
         return freeBoardRepository.count();
+    }
+
+    /**
+     * 검색된 게시글 수
+     */
+    private long getTotalWithSearch(String search) {
+        return freeBoardRepository.countWithSearch(search);
     }
 
     /**
@@ -171,7 +186,7 @@ public class FreeBoardService {
         // 매칭된 이미지 URL 추출
         while (matcher.find()) {
             String imageUrl = matcher.group(1);
-            String resizeUrl = imageUrl+"/resize";
+            String resizeUrl = imageUrl + "/resize";
             ImageDto imageDto = new ImageDto();
             imageDto.setImageUrl(resizeUrl);
             images.add(imageDto);

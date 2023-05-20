@@ -38,4 +38,9 @@ public interface QnaBoardRepository extends
             "ORDER BY COUNT(qb) DESC")
     Page<QnaBoard> findAllSortByBookmarksWithSearchParam(String search, Pageable setPage);
 
+    @Query("SELECT COUNT(q)" +
+            "FROM QnaBoard q " +
+            "WHERE q.title LIKE %:search% OR q.content LIKE %:search% ")
+    long countWithSearch(String search);
+
 }

@@ -76,10 +76,11 @@ public class FreeBoardApiController {
      * 페이지 정보는 프론트에서 전송
      */
     @GetMapping("/free/list")
-    public ResponseEntity<List<FreeBoardListDto>> listOfPage(Pageable pageable, @RequestParam(required = false) String search) {
+    public ResponseEntity<ListResult<List<FreeBoardListDto>>> listOfPage(Pageable pageable, @RequestParam(required = false) String search) {
         List<FreeBoardListDto> dtoList = freeBoardService.findByPage(pageable, search);
+        long count = freeBoardService.getCount(search);
 
-        return ResponseEntity.status(HttpStatus.OK).body(dtoList);
+        return ResponseEntity.status(HttpStatus.OK).body(new ListResult<>(dtoList, count));
     }
 
     /**
@@ -166,14 +167,6 @@ public class FreeBoardApiController {
     }
 
     /**
-     * 전체 게시글 수
-     */
-    @GetMapping("/free/total")
-    public ResponseEntity<Long> getTotal() {
-        return ResponseEntity.ok(freeBoardService.getTotal());
-    }
-
-    /**
      * 조회수 증가 로직
      */
     private void increaseHits(Long boardId, HttpServletRequest request, HttpServletResponse response) {
@@ -210,6 +203,13 @@ public class FreeBoardApiController {
     @AllArgsConstructor
     static class Result<T> {
         private T data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class ListResult<T> {
+        private T data;
+        private long count;
     }
 
 }
