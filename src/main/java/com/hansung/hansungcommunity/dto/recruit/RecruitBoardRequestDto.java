@@ -2,6 +2,7 @@ package com.hansung.hansungcommunity.dto.recruit;
 
 import com.hansung.hansungcommunity.entity.RecruitBoard;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 구인 게시글 생성 요청 DTO
@@ -9,6 +10,7 @@ import lombok.Data;
  */
 
 @Data
+@NoArgsConstructor
 public class RecruitBoardRequestDto {
 
     private String title;
