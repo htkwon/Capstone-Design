@@ -27,8 +27,7 @@ public class NoticeBoard extends Board {
     @Lob
     private String content;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<FileEntity> fileEntity = new ArrayList<>();
+
 
 
     public NoticeBoard(Long id, String title, String content,User user) {

@@ -92,9 +92,8 @@ public class NoticeController {
      * 해당 자유게시판 게시글에서 첨부 파일이 있는지 체크
      */
     @GetMapping("/notice/{boardId}/file-check")
-    public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId){
-        String boardType = "notice";
-        Boolean check = fileService.check(boardId,boardType);
+    public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
+        Boolean check = fileService.check(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
@@ -102,9 +101,8 @@ public class NoticeController {
      * 해당 게시글에 첨부파일이 있음을 check 후, 해당 파일의 이름들 전송
      */
     @GetMapping("/notice/{boardId}/file-list")
-    public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId){
-        String boardType = "notice";
-        List<FileRequestDto> dtos = fileService.list(boardId,boardType);
+    public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId) {
+        List<FileRequestDto> dtos = fileService.list(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 

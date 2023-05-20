@@ -130,8 +130,7 @@ public class QnaBoardApiController {
      */
     @GetMapping("/questions/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
-        String boardType = "questions";
-        Boolean check = fileService.check(boardId, boardType);
+        Boolean check = fileService.check(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
@@ -140,8 +139,7 @@ public class QnaBoardApiController {
      */
     @GetMapping("/questions/{boardId}/file-list")
     public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId) {
-        String boardType = "questions";
-        List<FileRequestDto> dtos = fileService.list(boardId, boardType);
+        List<FileRequestDto> dtos = fileService.list(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 

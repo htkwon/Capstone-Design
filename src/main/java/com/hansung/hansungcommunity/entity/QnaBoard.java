@@ -28,8 +28,7 @@ public class QnaBoard extends Board {
     @Column
     private String language;
 
-    @OneToMany(mappedBy = "qnaBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<FileEntity> fileEntity = new ArrayList<>();
+
 
     // 조회 편의성을 위해 댓글 Entity 와 연관관계 매핑
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)

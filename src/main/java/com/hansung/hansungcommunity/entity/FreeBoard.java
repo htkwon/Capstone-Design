@@ -24,8 +24,7 @@ public class FreeBoard extends Board {
     @NotNull
     @Lob
     private String content; // 내용
-    @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<FileEntity> fileEntity = new ArrayList<>();
+
     @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<FreeBoardBookmark> bookmarks = new HashSet<>();
     @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)

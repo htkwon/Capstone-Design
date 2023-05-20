@@ -3,6 +3,8 @@ package com.hansung.hansungcommunity.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -17,6 +19,9 @@ public abstract class Board extends ModifiedEntity {
     @ManyToOne(fetch = FetchType.LAZY) // JPA 활용 시, XToOne 인 경우 fetch 타입을 LAZY 로 설정 !!!
     @JoinColumn(name = "stu_id")
     private User user;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<FileEntity> fileEntity = new ArrayList<>();
 
     public void increaseViews() {
         this.views++;

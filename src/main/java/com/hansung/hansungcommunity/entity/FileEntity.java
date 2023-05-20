@@ -18,42 +18,21 @@ public class FileEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="qna_board_id")
-    private QnaBoard qnaBoard;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="free_board_id")
-    private FreeBoard freeBoard;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="recruit_board_id")
-    private RecruitBoard recruitBoard;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name ="notice_board_id")
-    private NoticeBoard noticeBoard;
+    @JoinColumn(name = "board")
+    private Board board;
 
     @NotNull private String originalName;
 
-    public FileEntity(QnaBoard qnaBoard, FreeBoard freeBoard, RecruitBoard recruitBoard, NoticeBoard noticeBoard, String originalName) {
-        this.qnaBoard = qnaBoard;
-        this.freeBoard = freeBoard;
-        this.recruitBoard = recruitBoard;
-        this.noticeBoard = noticeBoard;
+    public FileEntity(Board board, String originalName) {
+        this.board = board;
         this.originalName = originalName;
     }
 
-    public static FileEntity of(QnaBoard qnaBoard,FreeBoard freeBoard,RecruitBoard recruitBoard,NoticeBoard noticeBoard, String originalName){
-        return new FileEntity(qnaBoard,freeBoard,recruitBoard,noticeBoard,originalName);
+    public static FileEntity of(Board board, String originalName){
+        return new FileEntity(board,originalName);
     }
 
-    public void setQnaBoard(QnaBoard qnaBoard){
-        this.qnaBoard = qnaBoard;
-    }
-    public void setFreeBoard(FreeBoard freeBoard){this.freeBoard = freeBoard;}
-    public void setRecruitBoard(RecruitBoard recruitBoard){this.recruitBoard = recruitBoard;}
-
-    public void setNoticeBoard(NoticeBoard noticeBoard){this.noticeBoard = noticeBoard;}
-
+    public void setBoard(Board board){this.board = board;}
 }

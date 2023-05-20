@@ -83,8 +83,7 @@ public class RecruitBoardController {
      */
     @GetMapping("/recruit/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
-        String boardType = "recruit";
-        Boolean check = fileService.check(boardId, boardType);
+        Boolean check = fileService.check(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
@@ -93,8 +92,7 @@ public class RecruitBoardController {
      */
     @GetMapping("/recruit/{boardId}/file-list")
     public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId) {
-        String boardType = "recruit";
-        List<FileRequestDto> dtos = fileService.list(boardId, boardType);
+        List<FileRequestDto> dtos = fileService.list(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 

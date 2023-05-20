@@ -6,8 +6,10 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import com.google.firebase.FirebaseException;
+import com.hansung.hansungcommunity.ImageUtils;
 import com.hansung.hansungcommunity.service.FireBaseService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,13 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 @Controller
-public class FirebaseContoller {
+public class FirebaseController {
 
     private final FireBaseService fireBaseService;
     @Value("${app.firebase-bucket}")
     private String bucketName;
 
-    public FirebaseContoller(FireBaseService fireBaseService) {
+    public FirebaseController(FireBaseService fireBaseService) {
         this.fireBaseService = fireBaseService;
     }
 
@@ -51,6 +53,21 @@ public class FirebaseContoller {
     public ResponseEntity<byte[]> getImage(@PathVariable String imageName) throws IOException {
         return get(bucketName, imageName);
     }
+
+    /**
+     * 이미지 resize(압축) 후 보내주기
+     */
+    @GetMapping("/api/files/{imageName}/resize")
+    public ResponseEntity<InputStreamResource> resizeImage(@PathVariable String imageName) throws IOException {
+        String formatName = imageName.substring(imageName.lastIndexOf(".") + 1);
+        byte[] image = get(bucketName,imageName).getBody();
+        byte[] compressImage = ImageUtils.compressAndResizeImage(image,800,600,0.8f,"jpg");
+        InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(compressImage));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG); // 이미지 타입에 맞게 설정
+        return ResponseEntity.ok().headers(headers).body(inputStreamResource);
+    }
+
 
     /**
      * 이미지 다운로드 url 제공

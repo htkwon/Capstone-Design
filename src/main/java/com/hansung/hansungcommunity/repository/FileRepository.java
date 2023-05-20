@@ -13,12 +13,9 @@ public interface FileRepository extends
         JpaRepository<FileEntity, Long>,
         QuerydslPredicateExecutor<FileEntity> {
 
-    List<FileEntity> findAllByFreeBoard(FreeBoard freeBoard);
+    List<FileEntity> findAllByBoard(Board board);
 
-    List<FileEntity> findAllByQnaBoard(QnaBoard qnaBoard);
 
-    List<FileEntity> findAllByRecruitBoard(RecruitBoard recruitBoard);
 
-    List<FileEntity> findAllByNoticeBoard(NoticeBoard noticeBoard);
 
 }
