@@ -22,16 +22,14 @@ public class FreeBoard extends Board {
     @NotNull
     private String title; // 제목
     @NotNull
+    @Lob
     private String content; // 내용
-
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<FileEntity> fileEntity = new ArrayList<>();
-
-    @OneToMany(mappedBy = "freeBoard")
+    @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<FreeBoardBookmark> bookmarks = new HashSet<>();
-    @OneToMany(mappedBy = "freeBoard")
+    @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
     public List<FreeReply> replies = new ArrayList<>();
-
 
     // 생성 메소드
     public static FreeBoard createBoard(User user, FreeBoardRequestDto dto) {

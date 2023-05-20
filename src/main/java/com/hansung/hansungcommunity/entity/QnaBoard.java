@@ -28,15 +28,14 @@ public class QnaBoard extends Board {
     @Column
     private String language;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "qnaBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<FileEntity> fileEntity = new ArrayList<>();
 
-
     // 조회 편의성을 위해 댓글 Entity 와 연관관계 매핑
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<QnaReply> replies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "qnaBoard")
+    @OneToMany(mappedBy = "qnaBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<QnaBoardBookmark> bookmarks = new HashSet<>();
 
     @OneToOne
