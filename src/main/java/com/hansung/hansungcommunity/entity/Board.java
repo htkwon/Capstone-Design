@@ -20,7 +20,7 @@ public abstract class Board extends ModifiedEntity {
     @JoinColumn(name = "stu_id")
     private User user;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "board")
     private List<FileEntity> fileEntity = new ArrayList<>();
 
     public void increaseViews() {

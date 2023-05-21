@@ -27,7 +27,7 @@ public class QnaReplyController {
     @PostMapping("/questions/{boardId}/replies")
     public ResponseEntity<QnaReplyDto> create(
             @PathVariable("boardId") Long boardId,
-            @RequestBody @Valid QnaReplyDto replyDto,
+            @Valid @RequestBody  QnaReplyDto replyDto,
             Authentication authentication
     ) {
 
@@ -53,7 +53,7 @@ public class QnaReplyController {
      * 수정, 삭제
      */
     @PutMapping("/questions/update/replies")
-    public ResponseEntity<QnaReplyDto> update(@RequestBody QnaReplyDto replyDto) {
+    public ResponseEntity<QnaReplyDto> update(@Valid @RequestBody QnaReplyDto replyDto) {
         QnaReplyDto dto = replyService.update(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }

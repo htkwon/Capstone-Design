@@ -20,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,7 +34,6 @@ public class NoticeController {
     private final FileService fileService;
 
     private final FireBaseService fireBaseService;
-    private final FileRepository fileRepository;
 
     /**
      * 전체 글 조회
@@ -58,7 +58,7 @@ public class NoticeController {
      * 글 작성 (업로드 파일 없을 때)
      */
     @PostMapping("/notice/no-file")
-    public ResponseEntity<Long> post(@RequestBody NoticeBoardDto dto, Authentication authentication) {
+    public ResponseEntity<Long> post(@Valid @RequestBody NoticeBoardDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long id = noticeService.post(dto, ca.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(id);
@@ -112,7 +112,7 @@ public class NoticeController {
      */
 
     @PutMapping("/notice/{boardId}/update")
-    public ResponseEntity<NoticeBoardDto> update(@RequestBody NoticeBoardDto dto, @PathVariable("boardId") Long boardId) {
+    public ResponseEntity<NoticeBoardDto> update(@Valid @RequestBody NoticeBoardDto dto, @PathVariable("boardId") Long boardId) {
         NoticeBoardDto noticeBoardDto = noticeService.update(dto, boardId);
         return ResponseEntity.status(HttpStatus.OK).body(noticeBoardDto);
     }

@@ -22,7 +22,7 @@ public class FreeReplyController {
     @PostMapping("/free/{boardId}/replies")
     public ResponseEntity<FreeReplyDto> create(
             @PathVariable("boardId") Long boardId,
-            @RequestBody @Valid FreeReplyDto replyDto,
+            @Valid @RequestBody FreeReplyDto replyDto,
             Authentication authentication
     ) {
 
@@ -41,7 +41,7 @@ public class FreeReplyController {
     }
 
     @PutMapping("/free/update/replies")
-    public ResponseEntity<FreeReplyDto> update(@RequestBody FreeReplyDto replyDto) {
+    public ResponseEntity<FreeReplyDto> update(@Valid @RequestBody FreeReplyDto replyDto) {
         FreeReplyDto dto = freeReplyService.update(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
