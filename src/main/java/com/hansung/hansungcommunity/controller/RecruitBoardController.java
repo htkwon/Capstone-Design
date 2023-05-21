@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class RecruitBoardController {
      * 게시글 생성 (업로드 파일 없을 때)
      */
     @PostMapping("/recruit/no-file")
-    public ResponseEntity<Long> create(@RequestBody RecruitBoardRequestDto dto, Authentication authentication) {
+    public ResponseEntity<Long> create(@RequestBody @Valid RecruitBoardRequestDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long savedId = recruitBoardService.post(ca.getUser().getId(), dto);
 
@@ -74,6 +75,7 @@ public class RecruitBoardController {
             fileService.save(dto);
             fireBaseService.uploadFiles(f, fileName);
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(id);
     }
 
@@ -83,6 +85,7 @@ public class RecruitBoardController {
     @GetMapping("/recruit/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
         Boolean check = fileService.check(boardId);
+
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
@@ -101,7 +104,7 @@ public class RecruitBoardController {
     @PutMapping("/recruit/update/{boardId}")
     public ResponseEntity<Long> update(
             @PathVariable("boardId") Long boardId,
-            @RequestBody RecruitBoardRequestDto dto
+            @RequestBody @Valid RecruitBoardRequestDto dto
     ) {
         Long id = recruitBoardService.update(boardId, dto);
 
