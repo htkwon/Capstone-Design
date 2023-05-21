@@ -38,7 +38,7 @@ public class RecruitReplyController {
     }
 
     @PutMapping("/recruit/update/replies")
-    public ResponseEntity<RecruitReplyDto> update(@RequestBody RecruitReplyDto replyDto) {
+    public ResponseEntity<RecruitReplyDto> update(@RequestBody @Valid RecruitReplyDto replyDto) {
         RecruitReplyDto dto = recruitReplyService.update(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }

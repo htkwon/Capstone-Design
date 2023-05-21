@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,9 +22,10 @@ public class SummaryController {
      * 오늘의 한줄 요약 작성
      */
     @PostMapping("/user/summary/mypage")
-    public ResponseEntity<UserSummaryDto> postSummary(@RequestBody UserSummaryDto dto, Authentication authentication) {
+    public ResponseEntity<UserSummaryDto> postSummary(@RequestBody @Valid UserSummaryDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         UserSummaryDto summaryDto = summaryService.postSummary(ca.getUser().getId(), dto);
+
         return ResponseEntity.status(HttpStatus.OK).body(summaryDto);
     }
 
@@ -61,7 +63,7 @@ public class SummaryController {
      * 오늘의 한줄 요약 수정
      */
     @PutMapping("/user/{summaryId}/summary/mypage")
-    public ResponseEntity<UserSummaryDto> updateSummary(@PathVariable("summaryId") Long summaryId, @RequestBody UserSummaryDto dto) {
+    public ResponseEntity<UserSummaryDto> updateSummary(@PathVariable("summaryId") Long summaryId, @RequestBody @Valid UserSummaryDto dto) {
         UserSummaryDto summaryDto = summaryService.updateSummary(summaryId, dto);
         return ResponseEntity.status(HttpStatus.OK).body(summaryDto);
     }

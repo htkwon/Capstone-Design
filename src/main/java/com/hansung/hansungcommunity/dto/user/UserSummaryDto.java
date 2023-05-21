@@ -5,6 +5,7 @@ import com.hansung.hansungcommunity.entity.Summary;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Data
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 public class UserSummaryDto {
 
     private Long summaryId;
+    @Size(min = 1, max = 100)
     private String content;
     private String language;
     @JsonProperty("isFixed")

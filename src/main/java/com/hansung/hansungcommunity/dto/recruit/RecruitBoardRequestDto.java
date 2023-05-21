@@ -4,20 +4,28 @@ import com.hansung.hansungcommunity.entity.RecruitBoard;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 /**
  * 구인 게시글 생성 요청 DTO
- * 추후 필드 추가 등 작업 요망
  */
-
 @Data
 @NoArgsConstructor
 public class RecruitBoardRequestDto {
 
+    @Size(min = 3, max = 20)
     private String title;
+    @NotEmpty
     private String content;
     private String required;
     private String optional;
+    @Min(2)
+    @Max(10)
     private int party;
+    @Min(1)
     private int gathered;
 
     public RecruitBoardRequestDto(String title, String content) {
