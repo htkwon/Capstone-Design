@@ -5,6 +5,7 @@ import com.hansung.hansungcommunity.entity.QnaReply;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 public class QnaReplyDto {
 
     private Long id;
-    @NotNull
+    @NotEmpty
     private String article;
     private Long parentId;
     private UserReplyDto user;

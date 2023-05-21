@@ -4,12 +4,20 @@ import com.hansung.hansungcommunity.entity.FreeBoard;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.*;
+
 @Data
 @NoArgsConstructor
 public class FreeBoardRequestDto {
 
     private Long id;
+
+    @NotEmpty
+    @Size(min = 3, max = 20)
     private String title;
+
+    @NotEmpty
+    @Min(1)
     private String content;
 
     public FreeBoardRequestDto(FreeBoard board) {

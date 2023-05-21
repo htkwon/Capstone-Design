@@ -17,14 +17,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor // 생성자 주입 (final 키워드)
@@ -88,7 +93,7 @@ public class FreeBoardApiController {
      */
     @PostMapping("/free/no-file")
     public ResponseEntity<Long> create(
-            @RequestBody FreeBoardRequestDto dto,
+            @Valid @RequestBody FreeBoardRequestDto dto,
             Authentication authentication
     ) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
@@ -147,7 +152,7 @@ public class FreeBoardApiController {
     @PutMapping("/free/update/{boardId}")
     public ResponseEntity<Result<FreeBoardRequestDto>> update(
             @PathVariable("boardId") Long boardId,
-            @RequestBody FreeBoardRequestDto dto
+            @Valid @RequestBody FreeBoardRequestDto dto
     ) {
         FreeBoardRequestDto boardDto = freeBoardService.update(boardId, dto);
 
@@ -160,10 +165,10 @@ public class FreeBoardApiController {
      * 게시글 삭제
      */
     @DeleteMapping("/free/delete/{boardId}")
-    public ResponseEntity<Result<FreeBoardRequestDto>> delete(@PathVariable("boardId") Long boardId) {
-        FreeBoardRequestDto boardDto = freeBoardService.delete(boardId);
+    public ResponseEntity<Void> delete(@PathVariable("boardId") Long boardId) {
+        freeBoardService.delete(boardId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /**

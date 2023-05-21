@@ -17,15 +17,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -97,7 +101,7 @@ public class QnaBoardApiController {
      * 게시글 저장 (업로드 파일 없을 때)
      */
     @PostMapping("/questions/no-file")
-    public ResponseEntity<Long> create(@RequestBody QnaBoardRequestDto dto, Authentication authentication) {
+    public ResponseEntity<Long> create(@Valid @RequestBody QnaBoardRequestDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long savedId = qnaBoardService.post(ca.getUser().getId(), dto);
         return ResponseEntity.status(HttpStatus.OK).body(savedId);
@@ -150,7 +154,7 @@ public class QnaBoardApiController {
     @PutMapping("/questions/update/{boardId}")
     public ResponseEntity<Long> update(
             @PathVariable("boardId") Long boardId,
-            @RequestBody QnaBoardRequestDto dto
+            @Valid @RequestBody QnaBoardRequestDto dto
     ) {
         Long id = qnaBoardService.update(boardId, dto);
 

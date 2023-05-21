@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.*;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,7 +14,12 @@ import lombok.NoArgsConstructor;
 public class QnaBoardRequestDto {
 
     private Long id;
+    @NotEmpty
+    @Size(min = 3, max = 20)
     private String title;
+
+    @NotEmpty
+    @Min(1)
     private String content;
     private String tag;
     private String language;
