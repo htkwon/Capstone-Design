@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class UserApiController {
      * 유저 저장
      */
     @PostMapping("/api/join")
-    public ResponseEntity<Long> saveUser(Authentication authentication, @RequestBody UserRequestDto dto) { // api 통신 시, Entity 가 아닌 DTO 로 주고받기 !!!
+    public ResponseEntity<Long> saveUser(Authentication authentication, @RequestBody @Valid UserRequestDto dto) { // api 통신 시, Entity 가 아닌 DTO 로 주고받기 !!!
         if (!dto.getStudentId().equals(authentication.getName())) {
             throw new InvalidAccessException("인가 서버와의 학번이 동일하지 않습니다.");
         }
@@ -88,8 +89,9 @@ public class UserApiController {
      * 유저 닉네임 검사 (추가정보 페이지)
      */
     @PostMapping("/api/user/check-nickname")
-    public ResponseEntity<Boolean> checkNickname(@RequestBody UserCheckNicknameDto dto) {
+    public ResponseEntity<Boolean> checkNickname(@RequestBody @Valid UserCheckNicknameDto dto) {
         Boolean check = userService.checkUserNickname(dto);
+
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
