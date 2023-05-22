@@ -17,7 +17,6 @@ public class FreeBoardRequestDto {
     private String title;
 
     @NotEmpty
-    @Min(1)
     private String content;
 
     public FreeBoardRequestDto(FreeBoard board) {
