@@ -36,11 +36,11 @@ public interface QnaBoardRepository extends
             "WHERE q.title LIKE %:search% OR q.content LIKE %:search% " +
             "GROUP BY q.id " +
             "ORDER BY COUNT(qb) DESC")
-    Page<QnaBoard> findAllSortByBookmarksWithSearchParam(String search, Pageable setPage);
+    Page<QnaBoard> findAllSortByBookmarksWithSearchParam(@Param("search") String search, Pageable setPage);
 
     @Query("SELECT COUNT(q)" +
             "FROM QnaBoard q " +
             "WHERE q.title LIKE %:search% OR q.content LIKE %:search% ")
-    long countWithSearch(String search);
+    long countWithSearch(@Param("search") String search);
 
 }

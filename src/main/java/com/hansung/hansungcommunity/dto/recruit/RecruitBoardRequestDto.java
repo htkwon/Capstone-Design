@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class RecruitBoardRequestDto {
 
-    @Size(min = 3, max = 20)
+    @Size(min = 3, max = 30)
     private String title;
     @NotEmpty
     private String content;

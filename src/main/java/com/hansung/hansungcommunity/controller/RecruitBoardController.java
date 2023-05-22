@@ -7,6 +7,7 @@ import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.dto.recruit.*;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
+import com.hansung.hansungcommunity.exception.RecruitmentCompletedException;
 import com.hansung.hansungcommunity.service.FileService;
 import com.hansung.hansungcommunity.service.FireBaseService;
 import com.hansung.hansungcommunity.service.RecruitBoardService;
@@ -50,6 +51,8 @@ public class RecruitBoardController {
      */
     @PostMapping("/recruit/no-file")
     public ResponseEntity<Long> create(@RequestBody @Valid RecruitBoardRequestDto dto, Authentication authentication) {
+        if (dto.getParty() <= dto.getGathered()) throw new RecruitmentCompletedException("게시글 생성 실패, 현재 모인 인원 수는 총 인원 수보다 작아야 합니다.");
+
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long savedId = recruitBoardService.post(ca.getUser().getId(), dto);
 
