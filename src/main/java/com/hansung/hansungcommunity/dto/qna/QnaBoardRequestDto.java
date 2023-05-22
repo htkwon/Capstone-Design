@@ -19,7 +19,6 @@ public class QnaBoardRequestDto {
     private String title;
 
     @NotEmpty
-    @Min(1)
     private String content;
     private String tag;
     private String language;
