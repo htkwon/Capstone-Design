@@ -35,6 +35,7 @@ public class QnaBoardListDto {
         this.writer = board.getUser().getNickname();
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
+        this.language = board.getLanguage();
         this.profileImg = board.getUser().getProfileImg();
         this.bookmark = board.getBookmarks().size();
         this.reply = board.getReplies().size();
