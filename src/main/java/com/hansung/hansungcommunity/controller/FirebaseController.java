@@ -62,7 +62,7 @@ public class FirebaseController {
         String contentType = getType(bucketName,imageName);
         String extension = contentType.replace("image/", "");
         byte[] image = get(bucketName, imageName).getBody();
-        byte[] compressImage = ImageUtils.compressAndResizeImage(image, 800, 600, 0.8f, extension);
+        byte[] compressImage = ImageUtils.compressAndResizeImage(image, 350, 170, 0.8f, extension);
         InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(compressImage));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(contentType)); // 이미지 타입에 맞게 설정
