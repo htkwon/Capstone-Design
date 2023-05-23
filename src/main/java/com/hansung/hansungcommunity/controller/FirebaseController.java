@@ -124,7 +124,7 @@ public class FirebaseController {
     /**
      * 해당 다운로드 링크 제공
      */
-    public ResponseEntity<byte[]> getFileDownload(String bucketName, String fileName) throws IOException {
+    private ResponseEntity<byte[]> getFileDownload(String bucketName, String fileName) throws IOException {
         String serviceAccountKeyFile = "src/main/resources/serviceAccountKey.json";
 
         InputStream serviceAccount = new FileInputStream(serviceAccountKeyFile);
@@ -133,14 +133,13 @@ public class FirebaseController {
         // Storage 인스턴스를 생성 후 연결
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         Blob blob = storage.get(bucketName, fileName);
-        String downloadUrl = blob.getMediaLink(); // 파일의 다운로드 URL 가져오기
+        byte[] fileContent = blob.getContent(); // 파일의 내용 가져오기
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.add("Content-Disposition", "attachment; filename=" + fileName); // 다운로드될 파일 이름 설정
-        return ResponseEntity.ok().headers(headers).body(downloadUrl.getBytes());
+        return ResponseEntity.ok().headers(headers).body(fileContent);
     }
-
 
     /**
      * 파이어베이스 이미지 삭제
