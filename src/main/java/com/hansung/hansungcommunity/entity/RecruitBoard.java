@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Table(name = "recruit_board")
 @Getter
@@ -19,20 +17,15 @@ public class RecruitBoard extends Board {
 
     @Id
     private Long id;
-    private String title;
-    @Lob
-    private String content;
     private String required;
     private String optional;
     private int party; // 모집할 인원 수
     private int gathered; // 모집된 인원 수
     private boolean isCompleted; // 모집 완료 여부
-
-    @OneToMany(mappedBy = "recruitBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "recruitBoard", cascade = CascadeType.REMOVE)
     private List<Party> parties = new ArrayList<>();
-    @OneToMany(mappedBy = "recruitBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<RecruitBoardBookmark> bookmarks = new HashSet<>();
-    @OneToMany(mappedBy = "recruitBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "recruitBoard", cascade = CascadeType.REMOVE)
     public List<RecruitReply> replies = new ArrayList<>();
 
     private RecruitBoard(String title, String content, String required, String optional, int party, int gathered) {
@@ -62,7 +55,6 @@ public class RecruitBoard extends Board {
     // 연관관계 메소드
     public void setUser(User user) {
         super.setUser(user);
-        user.getPostRecruitBoards().add(this);
     }
 
     // 조회수 증가 메소드

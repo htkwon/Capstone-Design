@@ -27,12 +27,15 @@ public class BoardMainDto {
     }
 
     private static String typeConvert(String type) {
-        if (type.equals("FreeBoard")) {
-            return "free";
-        } else if (type.equals("QnaBoard")) {
-            return "questions";
-        } else {
-            return "recruit";
+        switch (type) {
+            case "FreeBoard":
+                return "free";
+            case "QnaBoard":
+                return "questions";
+            case "RecruitBoard":
+                return "recruit";
+            default:
+                return "notice";
         }
     }
 

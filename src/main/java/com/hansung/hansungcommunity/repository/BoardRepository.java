@@ -15,7 +15,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     @Query("SELECT b FROM Board b WHERE b.createdAt >= :standardTime ORDER BY b.views DESC")
     List<Board> getPopularBoards(@Param("standardTime") LocalDateTime standardTime, Pageable pageable);
 
-    List<Board> findAllByUserId(Long userId);
+    List<Board> findAllByUserIdOrderByCreatedAtDesc(Long userId);
 
     void deleteAllByUser(User user);
 

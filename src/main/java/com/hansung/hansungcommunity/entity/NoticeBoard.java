@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,28 +19,21 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Setter
-
 public class NoticeBoard extends Board {
+
     @Id
     private Long id;
-    @NotNull
-    private String title;
-    @NotNull
-    @Lob
-    private String content;
+    @OneToMany(mappedBy = "noticeBoard", cascade = CascadeType.REMOVE)
+    public List<NoticeReply> replies = new ArrayList<>();
 
-
-
-
-    public NoticeBoard(Long id, String title, String content,User user) {
+    public NoticeBoard(Long id, String title, String content, User user) {
         this.id = id;
         this.title = title;
         this.content = content;
         super.setUser(user);
     }
 
-
-    public static NoticeBoard of(NoticeBoardDto dto,User user){
+    public static NoticeBoard of(NoticeBoardDto dto, User user) {
         return new NoticeBoard(
                 dto.getId(),
                 dto.getTitle(),
@@ -47,17 +42,19 @@ public class NoticeBoard extends Board {
         );
     }
 
-//    public static NoticeBoard createBoard(User user,NoticeBoardDto dto){
-//        NoticeBoard board = new NoticeBoard();
-//        board.setUser(user);
-//        board.setTitle(dto.getTitle());
-//        board.setContent(dto.getContent());
-//        return board;
-//    }
-//
-//    public void setUser(User user) {
-//        super.setUser(user);
-//        user.getPostNoticeBoards().add(this); // 필요한가?
-//    }
+    // 비즈니스 메소드
+    public void patch(NoticeBoardDto dto) {
+        if (dto.getTitle() != null)
+            this.title = dto.getTitle();
+
+        if (dto.getContent() != null)
+            this.content = dto.getContent();
+
+        modified();
+    }
+
+    public void increaseHits() {
+        increaseViews();
+    }
 
 }

@@ -68,8 +68,6 @@ public class UserService {
         User user = userRepository.findById(stuId).orElseThrow(() -> new UserNotFoundException("유저 정보 조회 실패, 해당하는 유저가 없습니다."));
         UserInfoDto userInfoDto = UserInfoDto.from(user);
         userInfoDto.setReply(myPageService.getReplyList(stuId).size());
-        userInfoDto.setBoard(myPageService.getBoardList(stuId).size());
-        userInfoDto.setBookmark(myPageService.getBookmarkList(stuId).size());
 
         return userInfoDto;
     }

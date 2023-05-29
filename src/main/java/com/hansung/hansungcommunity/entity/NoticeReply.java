@@ -1,26 +1,24 @@
 package com.hansung.hansungcommunity.entity;
 
-import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
+import com.hansung.hansungcommunity.dto.notice.NoticeReplyDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "qna_reply")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class QnaReply extends AuditingFields {
+public class NoticeReply extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "qna_reply_id")
+    @Column(name = "notice_reply_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,47 +26,39 @@ public class QnaReply extends AuditingFields {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "qna_board_id")
-    private QnaBoard board;
+    @JoinColumn(name = "notice_board_id")
+    private NoticeBoard noticeBoard;
 
     @Column
-    @Lob
     private String article;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    private QnaReply parent;
+    private NoticeReply parent;
 
     @OneToMany(mappedBy = "parent")
-    private List<QnaReply> children = new ArrayList<>();
+    private List<NoticeReply> children = new ArrayList<>();
 
-    @ColumnDefault(value = "false")
-    private Boolean adopt;
-
-    private QnaReply(User user, QnaBoard board, String article) {
+    private NoticeReply(User user, NoticeBoard noticeBoard, String article) {
         this.user = user;
-        this.board = board;
+        this.noticeBoard = noticeBoard;
         this.article = article;
     }
 
-    public static QnaReply of(User user, QnaBoard board, QnaReplyDto replyDto) {
-        return new QnaReply(
+    public static NoticeReply of(User user, NoticeBoard board, NoticeReplyDto dto) {
+        return new NoticeReply(
                 user,
                 board,
-                replyDto.getArticle()
+                dto.getArticle()
         );
-    }
-
-    public void updateParent(QnaReply parent) {
-        this.parent = parent;
-    }
-
-    public void adopt(Boolean adopt) {
-        this.adopt = adopt;
     }
 
     public void update(String article) {
         this.article = article;
+    }
+
+    public void updateParent(NoticeReply parent) {
+        this.parent = parent;
     }
 
 }

@@ -5,22 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class QnaBoardRequestDto {
 
     private Long id;
     @NotEmpty
     @Size(min = 3, max = 30)
     private String title;
-
     @NotEmpty
     private String content;
-    private String tag;
     private String language;
 
     public QnaBoardRequestDto(Long id, String title, String content) {
@@ -30,8 +28,8 @@ public class QnaBoardRequestDto {
     }
 
     //Testcode 및 생성의 편의를 위한 Factory method
-    public static QnaBoardRequestDto of(Long id, String title, String content, String tag, String language) {
-        return new QnaBoardRequestDto(id, title, content, tag, language);
+    public static QnaBoardRequestDto of(Long id, String title, String content, String language) {
+        return new QnaBoardRequestDto(id, title, content, language);
     }
 
     //QnaBoardBookmarkDto 에서 사용
@@ -48,7 +46,6 @@ public class QnaBoardRequestDto {
                 entity.getId(),
                 entity.getTitle(),
                 entity.getContent(),
-                entity.getTag(),
                 entity.getLanguage()
         );
     }

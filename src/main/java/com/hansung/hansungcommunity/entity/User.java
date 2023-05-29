@@ -24,7 +24,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stu_id")
     private Long id;
-
     private String studentId;
     private String name; // 이름
     private String nickname; // 닉네임
@@ -34,36 +33,23 @@ public class User {
     private String track2;
     private String profileImg; // 프로필 사진, 추후 개발
 
-    // private String todayComment; // 오늘의 한마디 (테이블 분리 ?)
-    // private String skillStack; // 기술 스택, 추후 개발
+    @OneToMany(mappedBy = "user")
+    private List<Board> postBoards = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<FreeBoard> postFreeBoards = new ArrayList<>();
-
-    @OrderBy("createdAt DESC")
-    @OneToMany(mappedBy = "user")
-    private List<QnaBoard> postQnaBoard = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<RecruitBoard> postRecruitBoards = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<NoticeBoard> postNoticeBoards = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Party> parties = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<FreeBoardBookmark> freeBookmarks = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<QnaBoardBookmark> qnaBookmarks = new ArrayList<>();
+    private List<Bookmark> bookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<FreeReply> freeReplies = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<QnaReply> qnaReplies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<RecruitReply> recruitReplies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<NoticeReply> noticeReplies = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Adopt> qnaAdopt = new ArrayList<>();
