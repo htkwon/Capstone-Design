@@ -12,6 +12,7 @@ public class QnaBoardMainDto {
     private String title;
     private String content;
     private String writer;
+    private String stuId;
     private String profileImg;
     private LocalDateTime createdDate;
     private String language;
@@ -23,6 +24,7 @@ public class QnaBoardMainDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
+        this.stuId = board.getUser().getStudentId();
         this.createdDate = board.getCreatedAt();
         this.profileImg = board.getUser().getProfileImg();
         this.language = board.getLanguage();
