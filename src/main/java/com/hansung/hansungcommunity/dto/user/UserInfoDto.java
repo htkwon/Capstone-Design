@@ -52,9 +52,9 @@ public class UserInfoDto {
                 user.getNickname(),
                 user.getTrack1(),
                 user.getTrack2(),
-                user.getPostQnaBoard().size() + user.getPostFreeBoards().size(),
+                user.getPostBoards().size(),
                 user.getFreeReplies().size() + user.getQnaReplies().size(),
-                user.getFreeBookmarks().size() + user.getQnaBookmarks().size(),
+                user.getBookmarks().size(),
                 user.getIntroduce(),
                 user.getProfileImg(),
                 user.getSkills()

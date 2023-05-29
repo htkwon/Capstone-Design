@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.dto.user;
 
+import com.hansung.hansungcommunity.entity.Board;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
@@ -8,7 +9,6 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-
 public class UserActivityDto {
 
     private Long id;
@@ -45,6 +45,20 @@ public class UserActivityDto {
         this.bookmark = bookmark;
         this.reply = reply;
         this.boardType = boardType;
+    }
+
+    public static UserActivityDto of(Board board) {
+        return new UserActivityDto(
+                board.getId(),
+                board.getTitle(),
+                board.getContent(),
+                board.getCreatedAt(),
+                board.getModifiedAt(),
+                board.getUser().getNickname(),
+                board.getBookmarks().size(),
+                board.getReplies().size(),
+                typeConvert(board.getBoardType())
+        );
     }
 
     public static UserActivityDto of(FreeBoard freeBoard) {
@@ -91,12 +105,15 @@ public class UserActivityDto {
     }
 
     private static String typeConvert(String type) {
-        if (type.equals("FreeBoard")) {
-            return "free";
-        } else if (type.equals("QnaBoard")) {
-            return "questions";
-        } else {
-            return "recruit";
+        switch (type) {
+            case "FreeBoard":
+                return "free";
+            case "QnaBoard":
+                return "questions";
+            case "RecruitBoard":
+                return "recruit";
+            default:
+                return "notice";
         }
     }
 

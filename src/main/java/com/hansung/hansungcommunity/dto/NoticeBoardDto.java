@@ -1,12 +1,9 @@
 package com.hansung.hansungcommunity.dto;
 
-import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import com.hansung.hansungcommunity.entity.NoticeBoard;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -18,23 +15,18 @@ public class NoticeBoardDto {
     @NotEmpty
     @Size(min = 3, max = 30)
     private String title;
-
     @NotEmpty
-    @Min(1)
     private String content;
-
     private String writer;
 
-
-    public NoticeBoardDto(Long id, String title, String content,String writer) {
+    public NoticeBoardDto(Long id, String title, String content, String writer) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
     }
 
-
-    public static NoticeBoardDto of(NoticeBoard board){
+    public static NoticeBoardDto of(NoticeBoard board) {
         return new NoticeBoardDto(
                 board.getId(),
                 board.getTitle(),
@@ -42,6 +34,5 @@ public class NoticeBoardDto {
                 board.getUser().getNickname()
         );
     }
-
 
 }

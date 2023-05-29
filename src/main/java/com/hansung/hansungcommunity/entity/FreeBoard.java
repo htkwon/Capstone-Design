@@ -2,42 +2,38 @@ package com.hansung.hansungcommunity.entity;
 
 import com.hansung.hansungcommunity.dto.free.FreeBoardRequestDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Table(name = "free_board")
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 public class FreeBoard extends Board {
 
     @Id
     private Long id;
-    @NotNull
-    private String title; // 제목
-    @NotNull
-    @Lob
-    private String content; // 내용
-
-    @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<FreeBoardBookmark> bookmarks = new HashSet<>();
-    @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.REMOVE)
     public List<FreeReply> replies = new ArrayList<>();
+
+    private FreeBoard(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
     // 생성 메소드
     public static FreeBoard createBoard(User user, FreeBoardRequestDto dto) {
-        FreeBoard board = new FreeBoard();
+        FreeBoard board = new FreeBoard(
+                dto.getTitle(),
+                dto.getContent()
+        );
 
         board.setUser(user); // 연관관계 설정
-
-        board.setTitle(dto.getTitle());
-        board.setContent(dto.getContent());
 
         return board;
     }
@@ -45,7 +41,6 @@ public class FreeBoard extends Board {
     // 연관관계 메소드
     public void setUser(User user) {
         super.setUser(user);
-        user.getPostFreeBoards().add(this); // 필요한가?
     }
 
     // 비즈니스 메소드

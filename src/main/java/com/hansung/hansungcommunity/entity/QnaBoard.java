@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Getter
 @ToString(callSuper = true)
@@ -18,34 +19,20 @@ public class QnaBoard extends Board {
 
     @Id
     private Long id;
-    @NotNull
-    private String title;
-    @NotNull
-    @Lob
-    private String content;  //TODO: length 설정하기
-    @Column
-    private String tag;
-    @Column
     private String language;
 
-
-
     // 조회 편의성을 위해 댓글 Entity 와 연관관계 매핑
-    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<QnaReply> replies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "qnaBoard", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<QnaBoardBookmark> bookmarks = new HashSet<>();
-
-    @OneToOne
+    @OneToOne(mappedBy = "qnaBoard", cascade = CascadeType.REMOVE)
     @JoinColumn(name = "adopt_id")
     private Adopt adopt;
 
-    public QnaBoard(User user, String title, String content, String tag, String language) {
+    public QnaBoard(User user, String title, String content, String language) {
         super.setUser(user);
         this.title = title;
         this.content = content;
-        this.tag = tag;
         this.language = language;
     }
 
@@ -57,7 +44,7 @@ public class QnaBoard extends Board {
 
     //추후 다른 곳에서(EX.. Test)에서 편하게 만들기위해 Factory method 사용
     public static QnaBoard of(User user, String title, String content, String tag, String language) {
-        return new QnaBoard(user, title, content, tag, language);
+        return new QnaBoard(user, title, content, language);
     }
 
     public static QnaBoard of(String title, String content, String language) {
