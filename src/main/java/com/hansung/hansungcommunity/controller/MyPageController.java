@@ -21,18 +21,6 @@ public class MyPageController {
     private final MyPageService myPageService;
 
     /**
-     * 마이페이지 (접속 유저 작성 댓글 조회)
-     */
-    @GetMapping("/user/reply/mypage")
-    public ResponseEntity<List<UserActivityDto>> replyList(Authentication authentication) {
-        CustomAuthentication ca = (CustomAuthentication) authentication;
-
-        List<UserActivityDto> dtos = myPageService.getReplyList(ca.getUser().getId());
-        return ResponseEntity.status(HttpStatus.OK).body(dtos);
-
-    }
-
-    /**
      * 마이페이지 (접속 유저 작성 글 조회)
      */
     @GetMapping("/user/post/mypage")
@@ -50,6 +38,17 @@ public class MyPageController {
     public ResponseEntity<List<UserActivityDto>> bookmarkList(Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         List<UserActivityDto> dtos = myPageService.getBookmarkList(ca.getUser().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+    }
+
+    /**
+     * 마이페이지 (접속 유저가 신청한 구인게시글 조회)
+     */
+    @GetMapping("/user/application/mypage")
+    public ResponseEntity<List<UserActivityDto>> applicationList(Authentication authentication) {
+        CustomAuthentication ca = (CustomAuthentication) authentication;
+        List<UserActivityDto> dtos = myPageService.getApplicationList(ca.getUser().getId());
+
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 

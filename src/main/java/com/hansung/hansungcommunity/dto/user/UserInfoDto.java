@@ -17,7 +17,7 @@ public class UserInfoDto {
     private String track1;
     private String track2;
     private int board;
-    private int reply;
+    private int application;
     private int bookmark;
     private String introduce;
     private String profileImg;
@@ -29,7 +29,7 @@ public class UserInfoDto {
      * 공부 내용 요약 기록
      */
 
-    public UserInfoDto(Long id, String studentId, String name, String nickname, String track1, String track2, int board, int reply, int bookmark, String introduce, String profileImg, Set<Skill> skills) {
+    public UserInfoDto(Long id, String studentId, String name, String nickname, String track1, String track2, int board, int bookmark, String introduce, String profileImg, Set<Skill> skills) {
         this.id = id;
         this.studentId = studentId;
         this.name = name;
@@ -37,7 +37,6 @@ public class UserInfoDto {
         this.track1 = track1;
         this.track2 = track2;
         this.board = board;
-        this.reply = reply;
         this.bookmark = bookmark;
         this.introduce = introduce;
         this.profileImg = profileImg;
@@ -53,7 +52,6 @@ public class UserInfoDto {
                 user.getTrack1(),
                 user.getTrack2(),
                 user.getPostBoards().size(),
-                user.getFreeReplies().size() + user.getQnaReplies().size(),
                 user.getBookmarks().size(),
                 user.getIntroduce(),
                 user.getProfileImg(),

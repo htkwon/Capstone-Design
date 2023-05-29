@@ -26,28 +26,7 @@ public class MyPageService {
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
     private final SkillRepository skillRepository;
-
-    /**
-     * 해당 유저가 댓글 단 게시글을 최신 순으로
-     */
-    public List<UserActivityDto> getReplyList(Long userId) {
-        Set<UserActivityDto> userActivityDtos = new HashSet<>();
-        List<FreeReply> freeReplies = freeReplyRepository.findByUserId(userId);
-        for (FreeReply freeReply : freeReplies) {
-            userActivityDtos.add(UserActivityDto.of(freeReply.getFreeBoard()));
-        }
-        List<QnaReply> qnaReplies = qnaReplyRepository.findByUserId(userId);
-        for (QnaReply qnaReply : qnaReplies) {
-            userActivityDtos.add(UserActivityDto.of(qnaReply.getBoard()));
-        }
-        List<RecruitReply> recruitReplies = recruitReplyRepository.findByUserId(userId);
-        for (RecruitReply recruitReply : recruitReplies) {
-            userActivityDtos.add(UserActivityDto.of(recruitReply.getRecruitBoard()));
-        }
-        List<UserActivityDto> sortedList = new ArrayList<>(userActivityDtos);
-        sortedList.sort(Comparator.comparing(UserActivityDto::getCreatedDate).reversed());
-        return sortedList;
-    }
+    private final PartyRepository partyRepository;
 
     /**
      * 해당 접속 유저가 작성한 게시글 반환 (최신순서)
@@ -67,6 +46,18 @@ public class MyPageService {
 
         return bookmarks.stream()
                 .map(bookmark -> UserActivityDto.of(bookmark.getBoard()))
+                .sorted(Comparator.comparing(UserActivityDto::getCreatedDate).reversed())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 해당 유저가 신청한 구인 게시글 정보
+     */
+    public List<UserActivityDto> getApplicationList(Long userId) {
+        List<Party> parties = partyRepository.findByUserId(userId);
+
+        return parties.stream()
+                .map(party -> UserActivityDto.of(party.getRecruitBoard()))
                 .sorted(Comparator.comparing(UserActivityDto::getCreatedDate).reversed())
                 .collect(Collectors.toList());
     }

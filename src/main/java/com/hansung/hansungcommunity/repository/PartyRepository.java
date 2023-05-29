@@ -12,8 +12,12 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
 
     List<Party> findByRecruitBoardId(Long boardId);
 
+    List<Party> findByUserId(Long userId);
+
     Long countByRecruitBoardId(Long boardId);
 
     Long countByRecruitBoardIdAndIsApprovedTrue(Long boardId);
+
+    long countByUserId(Long userId);
 
 }

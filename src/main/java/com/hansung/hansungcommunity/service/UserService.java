@@ -10,6 +10,7 @@ import com.hansung.hansungcommunity.exception.DuplicateStudentException;
 import com.hansung.hansungcommunity.exception.SkillNotFoundException;
 import com.hansung.hansungcommunity.exception.UserNotFoundException;
 import com.hansung.hansungcommunity.repository.AdoptRepository;
+import com.hansung.hansungcommunity.repository.PartyRepository;
 import com.hansung.hansungcommunity.repository.SkillRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class UserService {
     private final AdoptRepository adoptRepository;
     private final SkillRepository skillRepository;
     private final MyPageService myPageService;
+    private final PartyRepository partyRepository;
 
     /**
      * 회원가입
@@ -67,7 +69,7 @@ public class UserService {
     public UserInfoDto getUserInfo(Long stuId) {
         User user = userRepository.findById(stuId).orElseThrow(() -> new UserNotFoundException("유저 정보 조회 실패, 해당하는 유저가 없습니다."));
         UserInfoDto userInfoDto = UserInfoDto.from(user);
-        userInfoDto.setReply(myPageService.getReplyList(stuId).size());
+        userInfoDto.setApplication((int) partyRepository.countByUserId(stuId));
 
         return userInfoDto;
     }
