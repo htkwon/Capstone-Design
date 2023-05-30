@@ -24,14 +24,14 @@ public class Adopt {
 
     @OneToOne
     @JoinColumn(name = "qna_board_id")
-    private QnaBoard qnaBoard;
+    private Board qnaBoard;
 
-    public Adopt(QnaBoard board, User user) {
+    public Adopt(Board board, User user) {
         this.qnaBoard = board;
         this.user = user;
     }
 
-    public static Adopt of(QnaBoard board, User user) {
+    public static Adopt of(Board board, User user) {
         return new Adopt(
                 board,
                 user

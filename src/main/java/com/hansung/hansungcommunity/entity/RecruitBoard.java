@@ -24,11 +24,9 @@ public class RecruitBoard extends Board {
     private int party; // 모집할 인원 수
     private int gathered; // 모집된 인원 수
     private boolean isCompleted; // 모집 완료 여부
-    @OneToMany(mappedBy = "recruitBoard", cascade = CascadeType.REMOVE)
-    private List<Party> parties = new ArrayList<>();
 
     @OneToMany(mappedBy = "recruitBoard", cascade = CascadeType.REMOVE)
-    public List<RecruitReply> replies = new ArrayList<>();
+    private List<Party> parties = new ArrayList<>();
 
     private RecruitBoard(String title, String content, String required, String optional, int party, int gathered) {
         this.title = title;

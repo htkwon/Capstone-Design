@@ -7,48 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Table(name = "qna_reply")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class QnaReply extends AuditingFields {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "qna_reply_id")
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "qna_board_id")
-    private QnaBoard board;
-
-    @Column
-    @Lob
-    private String article;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private QnaReply parent;
-
-    @OneToMany(mappedBy = "parent")
-    private List<QnaReply> children = new ArrayList<>();
+public class QnaReply extends Reply {
 
     @ColumnDefault(value = "false")
     private Boolean adopt;
 
     private QnaReply(User user, QnaBoard board, String article) {
-        this.user = user;
-        this.board = board;
-        this.article = article;
+        super(user, board, article);
     }
 
     public static QnaReply of(User user, QnaBoard board, QnaReplyDto replyDto) {
@@ -60,7 +33,7 @@ public class QnaReply extends AuditingFields {
     }
 
     public void updateParent(QnaReply parent) {
-        this.parent = parent;
+        super.updateParent(parent);
     }
 
     public void adopt(Boolean adopt) {
@@ -68,7 +41,7 @@ public class QnaReply extends AuditingFields {
     }
 
     public void update(String article) {
-        this.article = article;
+        super.update(article);
     }
 
 }

@@ -2,7 +2,10 @@ package com.hansung.hansungcommunity.service;
 
 import com.hansung.hansungcommunity.dto.user.UserActivityDto;
 import com.hansung.hansungcommunity.dto.user.UserUpdateDto;
-import com.hansung.hansungcommunity.entity.*;
+import com.hansung.hansungcommunity.entity.Bookmark;
+import com.hansung.hansungcommunity.entity.Party;
+import com.hansung.hansungcommunity.entity.Skill;
+import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.exception.DuplicateNicknameException;
 import com.hansung.hansungcommunity.exception.SkillNotFoundException;
 import com.hansung.hansungcommunity.exception.UserNotFoundException;
@@ -11,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,9 +24,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class MyPageService {
 
-    private final FreeReplyRepository freeReplyRepository;
-    private final QnaReplyRepository qnaReplyRepository;
-    private final RecruitReplyRepository recruitReplyRepository;
     private final BoardRepository boardRepository;
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;

@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "free_board")
 @Getter
@@ -18,8 +18,6 @@ public class FreeBoard extends Board {
 
     @Id
     private Long id;
-    @OneToMany(mappedBy = "freeBoard", cascade = CascadeType.REMOVE)
-    public List<FreeReply> replies = new ArrayList<>();
 
     private FreeBoard(String title, String content) {
         this.title = title;

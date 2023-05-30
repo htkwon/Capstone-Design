@@ -1,8 +1,8 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.free.FreeReplyDto;
-import com.hansung.hansungcommunity.service.FreeReplyService;
+import com.hansung.hansungcommunity.dto.ReplyDto;
+import com.hansung.hansungcommunity.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,38 +17,38 @@ import java.util.List;
 @RequestMapping("/api")
 public class FreeReplyController {
 
-    private final FreeReplyService freeReplyService;
+    private final ReplyService replyService;
 
     @PostMapping("/free/{boardId}/replies")
-    public ResponseEntity<FreeReplyDto> create(
+    public ResponseEntity<ReplyDto> create(
             @PathVariable("boardId") Long boardId,
-            @Valid @RequestBody FreeReplyDto replyDto,
+            @Valid @RequestBody ReplyDto replyDto,
             Authentication authentication
     ) {
 
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long userId = ca.getUser().getId();
 
-        FreeReplyDto reply = freeReplyService.create(userId, boardId, replyDto);
+        ReplyDto reply = replyService.create(userId, boardId, replyDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
 
     @GetMapping("/free/{boardId}/replies")
-    public ResponseEntity<List<FreeReplyDto>> list(@PathVariable("boardId") Long boardId) {
-        List<FreeReplyDto> list = freeReplyService.getReplyList(boardId);
+    public ResponseEntity<List<ReplyDto>> list(@PathVariable("boardId") Long boardId) {
+        List<ReplyDto> list = replyService.getReplyList(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @PutMapping("/free/update/replies")
-    public ResponseEntity<FreeReplyDto> update(@Valid @RequestBody FreeReplyDto replyDto) {
-        FreeReplyDto dto = freeReplyService.update(replyDto);
+    public ResponseEntity<ReplyDto> update(@Valid @RequestBody ReplyDto replyDto) {
+        ReplyDto dto = replyService.update(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     @DeleteMapping("/free/delete/{replyId}/replies")
     public ResponseEntity<String> delete(@PathVariable("replyId") Long replyId) {
-        freeReplyService.delete(replyId);
+        replyService.delete(replyId);
         return ResponseEntity.status(HttpStatus.OK).body("삭제 완료");
     }
 

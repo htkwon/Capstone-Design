@@ -1,8 +1,8 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.notice.NoticeReplyDto;
-import com.hansung.hansungcommunity.service.NoticeReplyService;
+import com.hansung.hansungcommunity.dto.ReplyDto;
+import com.hansung.hansungcommunity.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,38 +17,38 @@ import java.util.List;
 @RequestMapping("/api")
 public class NoticeReplyController {
 
-    private final NoticeReplyService noticeReplyService;
+    private final ReplyService replyService;
 
     @PostMapping("/notice/{boardId}/replies")
-    public ResponseEntity<NoticeReplyDto> create(
+    public ResponseEntity<ReplyDto> create(
             @PathVariable("boardId") Long boardId,
-            @Valid @RequestBody NoticeReplyDto replyDto,
+            @Valid @RequestBody ReplyDto replyDto,
             Authentication authentication
     ) {
 
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long userId = ca.getUser().getId();
 
-        NoticeReplyDto reply = noticeReplyService.create(userId, boardId, replyDto);
+        ReplyDto reply = replyService.create(userId, boardId, replyDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
 
     @GetMapping("/notice/{boardId}/replies")
-    public ResponseEntity<List<NoticeReplyDto>> list(@PathVariable("boardId") Long boardId) {
-        List<NoticeReplyDto> list = noticeReplyService.getReplyList(boardId);
+    public ResponseEntity<List<ReplyDto>> list(@PathVariable("boardId") Long boardId) {
+        List<ReplyDto> list = replyService.getReplyList(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @PutMapping("/notice/update/replies")
-    public ResponseEntity<NoticeReplyDto> update(@Valid @RequestBody NoticeReplyDto replyDto) {
-        NoticeReplyDto dto = noticeReplyService.update(replyDto);
+    public ResponseEntity<ReplyDto> update(@Valid @RequestBody ReplyDto replyDto) {
+        ReplyDto dto = replyService.update(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     @DeleteMapping("/notice/delete/{replyId}/replies")
     public ResponseEntity<String> delete(@PathVariable("replyId") Long replyId) {
-        noticeReplyService.delete(replyId);
+        replyService.delete(replyId);
         return ResponseEntity.status(HttpStatus.OK).body("삭제 완료");
     }
 

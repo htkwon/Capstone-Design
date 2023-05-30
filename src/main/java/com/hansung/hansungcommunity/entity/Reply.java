@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.entity;
 
-import com.hansung.hansungcommunity.dto.notice.NoticeReplyDto;
+
+import com.hansung.hansungcommunity.dto.ReplyDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +14,13 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NoticeReply extends AuditingFields {
+public class Reply extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notice_reply_id")
+    @Column(name = "reply_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,27 +28,28 @@ public class NoticeReply extends AuditingFields {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "notice_board_id")
-    private NoticeBoard noticeBoard;
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     @Column
+    @Lob
     private String article;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    private NoticeReply parent;
+    private Reply parent;
 
     @OneToMany(mappedBy = "parent")
-    private List<NoticeReply> children = new ArrayList<>();
+    private List<Reply> children = new ArrayList<>();
 
-    private NoticeReply(User user, NoticeBoard noticeBoard, String article) {
+    Reply(User user, Board board, String article) {
         this.user = user;
-        this.noticeBoard = noticeBoard;
+        this.board = board;
         this.article = article;
     }
 
-    public static NoticeReply of(User user, NoticeBoard board, NoticeReplyDto dto) {
-        return new NoticeReply(
+    public static Reply of(User user, Board board, ReplyDto dto) {
+        return new Reply(
                 user,
                 board,
                 dto.getArticle()
@@ -57,7 +60,7 @@ public class NoticeReply extends AuditingFields {
         this.article = article;
     }
 
-    public void updateParent(NoticeReply parent) {
+    public void updateParent(Reply parent) {
         this.parent = parent;
     }
 
