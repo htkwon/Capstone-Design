@@ -187,4 +187,9 @@ public class NoticeService {
         board.increaseHits();
     }
 
+    public NoticeBoard get(Long boardId) {
+        NoticeBoard board = noticeRepository.findById(boardId)
+                .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
+        return board;
+    }
 }

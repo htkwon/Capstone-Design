@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,7 +52,8 @@ public class RecruitBoardController {
      */
     @PostMapping("/recruit/no-file")
     public ResponseEntity<Long> create(@RequestBody @Valid RecruitBoardRequestDto dto, Authentication authentication) {
-        if (dto.getParty() <= dto.getGathered()) throw new RecruitmentCompletedException("게시글 생성 실패, 현재 모인 인원 수는 총 인원 수보다 작아야 합니다.");
+        if (dto.getParty() <= dto.getGathered())
+            throw new RecruitmentCompletedException("게시글 생성 실패, 현재 모인 인원 수는 총 인원 수보다 작아야 합니다.");
 
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long savedId = recruitBoardService.post(ca.getUser().getId(), dto);
@@ -74,9 +76,12 @@ public class RecruitBoardController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
-            FileDto dto = FileDto.of(recruitBoard, fileName);
+            String extension = f.getContentType().split("/")[1];
+            String createdName = String.valueOf(createFilename());
+            String name = createdName + "." + extension;
+            FileDto dto = FileDto.of(recruitBoard, fileName, name);
             fileService.save(dto);
-            fireBaseService.uploadFiles(f, fileName);
+            fireBaseService.uploadFiles(f, name);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(id);
@@ -113,6 +118,36 @@ public class RecruitBoardController {
 
         return ResponseEntity.ok(id);
     }
+
+    /**
+     * 게시글 수정 (첨부파일 있을 때)
+     */
+    @PutMapping("/recruit/update/{boardId}/file")
+    public ResponseEntity<Long> update(
+            @PathVariable("boardId") Long boardId,
+            @RequestParam("file") MultipartFile[] file,
+            String stringRecruit
+    ) throws IOException, FirebaseAuthException {
+        RecruitBoard board = new ObjectMapper().readValue(stringRecruit, RecruitBoard.class);
+        RecruitBoard real = recruitBoardService.get(boardId);
+        board.setId(real.getId());
+
+        Long id = recruitBoardService.update(boardId, RecruitBoardRequestDto.of(board));
+
+        for (MultipartFile f : file) {
+            String fileName = f.getOriginalFilename();
+            String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+            String createdName = String.valueOf(createFilename());
+            String name = createdName + "." + extension;
+            FileDto dto = FileDto.of(real, fileName, name);
+            fileService.save(dto);
+            fireBaseService.uploadFiles(f, name);
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(id);
+
+    }
+
 
     /**
      * 게시글 삭제
@@ -302,6 +337,14 @@ public class RecruitBoardController {
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
         }
+    }
+
+    /**
+     * 파일 이름 생성
+     */
+    public int createFilename() {
+        Random random = new Random();
+        return random.nextInt(1000);
     }
 
     @Data

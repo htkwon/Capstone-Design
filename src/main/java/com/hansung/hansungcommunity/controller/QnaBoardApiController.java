@@ -17,8 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +27,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -122,9 +120,12 @@ public class QnaBoardApiController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
-            FileDto dto = FileDto.of(board, fileName);
+            String extension = f.getContentType().split("/")[1];
+            String createdName = String.valueOf(createFilename());
+            String name = createdName + "." + extension;
+            FileDto dto = FileDto.of(board, fileName, name);
             fileService.save(dto);
-            fireBaseService.uploadFiles(f, fileName);
+            fireBaseService.uploadFiles(f, name);
         }
         return ResponseEntity.status(HttpStatus.OK).body(id);
 
@@ -160,6 +161,36 @@ public class QnaBoardApiController {
 
         return ResponseEntity.ok(id);
     }
+
+    /**
+     * 게시글 수정 (첨부파일 있을 때)
+     */
+    @PutMapping("/questions/update/{boardId}/file")
+    public ResponseEntity<Long> update(
+            @PathVariable("boardId") Long boardId,
+            @RequestParam("file") MultipartFile[] file,
+            String stringQna
+    ) throws IOException, FirebaseAuthException {
+        QnaBoard board = new ObjectMapper().readValue(stringQna, QnaBoard.class);
+        QnaBoard real = qnaBoardService.get(boardId);
+        board.setId(real.getId());
+
+        Long id = qnaBoardService.update(boardId, QnaBoardRequestDto.of(board));
+
+        for (MultipartFile f : file) {
+            String fileName = f.getOriginalFilename();
+            String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+            String createdName = String.valueOf(createFilename());
+            String name = createdName + "." + extension;
+            FileDto dto = FileDto.of(real, fileName, name);
+            fileService.save(dto);
+            fireBaseService.uploadFiles(f, name);
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(id);
+
+    }
+
 
     /**
      * 게시글 삭제
@@ -221,6 +252,15 @@ public class QnaBoardApiController {
         return extension;
 
     }
+
+    /**
+     * 파일 이름 생성
+     */
+    public int createFilename() {
+        Random random = new Random();
+        return random.nextInt(1000);
+    }
+
 
     @Data
     @AllArgsConstructor

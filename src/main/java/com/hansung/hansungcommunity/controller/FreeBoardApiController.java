@@ -1,12 +1,16 @@
 package com.hansung.hansungcommunity.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.dto.free.*;
+import com.hansung.hansungcommunity.entity.Board;
 import com.hansung.hansungcommunity.entity.FreeBoard;
+import com.hansung.hansungcommunity.repository.FreeBoardRepository;
+import com.hansung.hansungcommunity.service.BoardService;
 import com.hansung.hansungcommunity.service.FileService;
 import com.hansung.hansungcommunity.service.FireBaseService;
 import com.hansung.hansungcommunity.service.FreeBoardService;
@@ -17,8 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,9 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 @RestController
 @RequiredArgsConstructor // 생성자 주입 (final 키워드)
@@ -119,9 +120,12 @@ public class FreeBoardApiController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
-            FileDto dto = FileDto.of(freeBoard, fileName);
+            String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+            String createdName = String.valueOf(createFilename());
+            String name = createdName + "." + extension;
+            FileDto dto = FileDto.of(freeBoard, fileName, name);
             fileService.save(dto);
-            fireBaseService.uploadFiles(f, fileName);
+            fireBaseService.uploadFiles(f, name);
 
         }
 
@@ -160,6 +164,36 @@ public class FreeBoardApiController {
         // ResponseEntity 의 body 에 담아 반환
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
     }
+
+    /**
+     * 게시글 수정 (첨부파일 있을 때)
+     */
+    @PutMapping("/free/update/{boardId}/file")
+    public ResponseEntity<Result<FreeBoardRequestDto>> update(
+            @PathVariable("boardId") Long boardId,
+            @RequestParam("file") MultipartFile[] file,
+            String stringFree
+    ) throws IOException, FirebaseAuthException {
+        FreeBoard board = new ObjectMapper().readValue(stringFree, FreeBoard.class);
+        FreeBoard real = freeBoardService.get(boardId);
+        board.setId(real.getId());
+
+        FreeBoardRequestDto boardDto = freeBoardService.update(boardId, FreeBoardRequestDto.of(board));
+
+        for (MultipartFile f : file) {
+            String fileName = f.getOriginalFilename();
+            String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+            String createdName = String.valueOf(createFilename());
+            String name = createdName + "." + extension;
+            FileDto dto = FileDto.of(real, fileName, name);
+            fileService.save(dto);
+            fireBaseService.uploadFiles(f, name);
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
+
+    }
+
 
     /**
      * 게시글 삭제
@@ -202,6 +236,15 @@ public class FreeBoardApiController {
             response.addCookie(newCookie);
         }
     }
+
+    /**
+     * 파일 이름 생성
+     */
+    public int createFilename() {
+        Random random = new Random();
+        return random.nextInt(1000);
+    }
+
 
     // 확장성을 위한 Wrapper 클래스
     @Data

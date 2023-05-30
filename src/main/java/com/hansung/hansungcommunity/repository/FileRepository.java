@@ -14,8 +14,9 @@ public interface FileRepository extends
         QuerydslPredicateExecutor<FileEntity> {
 
     List<FileEntity> findAllByBoard(Board board);
+    FileEntity findByOriginalName(String name);
 
 
 
-
+    void deleteByCreatedName(String imageName);
 }
