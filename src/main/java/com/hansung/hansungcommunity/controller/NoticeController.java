@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 
 @RestController
@@ -113,9 +114,12 @@ public class NoticeController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
-            FileDto dto = FileDto.of(noticeBoard, fileName);
+            String extension = f.getContentType().split("/")[1];
+            String createdName = String.valueOf(createFilename());
+            String name = createdName + "." + extension;
+            FileDto dto = FileDto.of(noticeBoard, fileName, name);
             fileService.save(dto);
-            fireBaseService.uploadFiles(f, fileName);
+            fireBaseService.uploadFiles(f, name);
 
         }
         return ResponseEntity.status(HttpStatus.OK).body(boardId);
@@ -148,6 +152,35 @@ public class NoticeController {
         NoticeBoardDto noticeBoardDto = noticeService.update(dto, boardId);
         return ResponseEntity.status(HttpStatus.OK).body(noticeBoardDto);
     }
+
+    /**
+     * 게시글 수정 (첨부파일 있을 때)
+     */
+    @PutMapping("/notice/update/{boardId}/file")
+    public ResponseEntity<Result<NoticeBoardDto>> update(
+            @PathVariable("boardId") Long boardId,
+            @RequestParam("file") MultipartFile[] file,
+            String stringNotice
+    ) throws IOException, FirebaseAuthException {
+        NoticeBoard board = new ObjectMapper().readValue(stringNotice, NoticeBoard.class);
+        NoticeBoard real = noticeService.get(boardId);
+        board.setId(real.getId());
+
+        NoticeBoardDto boardDto = noticeService.update(NoticeBoardDto.of(board), boardId);
+
+        for (MultipartFile f : file) {
+            String fileName = f.getOriginalFilename();
+            String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+            String createdName = String.valueOf(createFilename());
+            String name = createdName + "." + extension;
+            FileDto dto = FileDto.of(real, fileName, name);
+            fileService.save(dto);
+            fireBaseService.uploadFiles(f, name);
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
+    }
+
 
     /**
      * 글 삭제
@@ -202,5 +235,11 @@ public class NoticeController {
         private T data;
         private long count;
     }
+
+    public int createFilename() {
+        Random random = new Random();
+        return random.nextInt(1000);
+    }
+
 
 }

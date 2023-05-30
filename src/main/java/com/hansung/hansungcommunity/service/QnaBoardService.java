@@ -228,4 +228,9 @@ public class QnaBoardService {
         return images;
     }
 
+    public QnaBoard get(Long boardId) {
+        QnaBoard qnaBoard = qnaBoardRepository.findById(boardId)
+                .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
+        return qnaBoard;
+    }
 }

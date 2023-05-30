@@ -4,6 +4,7 @@ package com.hansung.hansungcommunity.entity;
 import com.hansung.hansungcommunity.dto.qna.QnaBoardRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Getter
+@Setter
 @ToString(callSuper = true)
 @Entity
 @NoArgsConstructor

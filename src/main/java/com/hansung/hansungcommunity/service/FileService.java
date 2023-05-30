@@ -9,7 +9,9 @@ import com.hansung.hansungcommunity.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +30,7 @@ public class FileService {
 
     @Transactional
     public FileDto save(FileDto dto) {
-        FileEntity fileEntity = FileEntity.of(dto.getBoard(), dto.getOriginalName());
+        FileEntity fileEntity = FileEntity.of(dto.getBoard(), dto.getOriginalName(), dto.getCreatedName());
         FileEntity res = fileRepository.save(fileEntity);
 
         return FileDto.from(res);
@@ -48,5 +50,16 @@ public class FileService {
                 .stream()
                 .map(FileRequestDto::of)
                 .collect(Collectors.toList());
+    }
+
+    public String getCreatedName(String imageName) {
+        FileEntity fileEntity = fileRepository.findByOriginalName(imageName);
+        return fileEntity.getCreatedName();
+    }
+
+
+    @Transactional
+    public void delete(String imageName) {
+        fileRepository.deleteByCreatedName(imageName);
     }
 }

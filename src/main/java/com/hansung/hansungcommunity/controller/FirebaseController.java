@@ -7,6 +7,7 @@ import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import com.google.firebase.FirebaseException;
 import com.hansung.hansungcommunity.ImageUtils;
+import com.hansung.hansungcommunity.service.FileService;
 import com.hansung.hansungcommunity.service.FireBaseService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -24,11 +25,14 @@ import java.io.*;
 public class FirebaseController {
 
     private final FireBaseService fireBaseService;
+    private final FileService fileService;
     @Value("${app.firebase-bucket}")
     private String bucketName;
 
-    public FirebaseController(FireBaseService fireBaseService) {
+
+    public FirebaseController(FireBaseService fireBaseService, FileService fileService) {
         this.fireBaseService = fireBaseService;
+        this.fileService = fileService;
     }
 
     /**
@@ -59,7 +63,7 @@ public class FirebaseController {
      */
     @GetMapping("/api/files/{imageName}/resize")
     public ResponseEntity<InputStreamResource> resizeImage(@PathVariable String imageName) throws IOException {
-        String contentType = getType(bucketName,imageName);
+        String contentType = getType(bucketName, imageName);
         String extension = contentType.replace("image/", "");
         byte[] image = get(bucketName, imageName).getBody();
         byte[] compressImage = ImageUtils.compressAndResizeImage(image, 350, 170, 0.8f, extension);
@@ -75,15 +79,19 @@ public class FirebaseController {
      */
     @GetMapping("/api/files/download/{imageName}")
     public ResponseEntity<byte[]> download(@PathVariable String imageName) throws IOException {
-        return getFileDownload(bucketName, imageName);
+        String createdName = fileService.getCreatedName(imageName);
+        return getFileDownload(bucketName, createdName, imageName);
     }
 
     /**
      * 이미지 삭제
      */
-    @DeleteMapping("api/files/delete/{imageName}")
+    @DeleteMapping("/api/files/delete/{imageName}")
     public ResponseEntity<Void> deleteFile(@PathVariable String imageName) {
-        return delete(bucketName, imageName);
+        String createdName = fileService.getCreatedName(imageName);
+        fileService.delete(createdName);
+        return delete(bucketName, createdName);
+
     }
 
 
@@ -108,7 +116,7 @@ public class FirebaseController {
         return ResponseEntity.ok().headers(headers).body(content);
     }
 
-    public String getType(String bucketName,String imageName) throws IOException {
+    public String getType(String bucketName, String imageName) throws IOException {
         String serviceAccountKeyFile = "src/main/resources/serviceAccountKey.json";
         InputStream serviceAccount = new FileInputStream(serviceAccountKeyFile);
         GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
@@ -124,7 +132,7 @@ public class FirebaseController {
     /**
      * 해당 다운로드 링크 제공
      */
-    private ResponseEntity<byte[]> getFileDownload(String bucketName, String fileName) throws IOException {
+    private ResponseEntity<byte[]> getFileDownload(String bucketName, String fileName, String imageName) throws IOException {
         String serviceAccountKeyFile = "src/main/resources/serviceAccountKey.json";
 
         InputStream serviceAccount = new FileInputStream(serviceAccountKeyFile);
@@ -137,7 +145,7 @@ public class FirebaseController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.add("Content-Disposition", "attachment; filename=" + fileName); // 다운로드될 파일 이름 설정
+        headers.add("Content-Disposition", "attachment; filename=" + imageName); // 다운로드될 파일 이름 설정
         return ResponseEntity.ok().headers(headers).body(fileContent);
     }
 

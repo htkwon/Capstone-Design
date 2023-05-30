@@ -93,6 +93,15 @@ public class FreeBoardService {
     }
 
     /**
+     * 특정 게시글 조회
+     */
+    public FreeBoard get(Long boardId) {
+        FreeBoard board = freeBoardRepository.findById(boardId)
+                .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
+        return board;
+    }
+
+    /**
      * 조회수 증가 로직
      * Auditing 수정 시간 업데이트, 논의 후 해결 요망
      */
