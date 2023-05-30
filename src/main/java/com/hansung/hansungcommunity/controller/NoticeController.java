@@ -5,7 +5,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.FileRequestDto;
-import com.hansung.hansungcommunity.dto.NoticeBoardDto;
+import com.hansung.hansungcommunity.dto.notice.NoticeBoardDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardDetailsDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardListDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardMainDto;

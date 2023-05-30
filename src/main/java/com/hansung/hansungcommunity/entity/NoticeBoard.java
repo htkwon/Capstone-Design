@@ -1,18 +1,14 @@
 package com.hansung.hansungcommunity.entity;
 
 
-import com.hansung.hansungcommunity.dto.NoticeBoardDto;
+import com.hansung.hansungcommunity.dto.notice.NoticeBoardDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @ToString(callSuper = true)
@@ -23,8 +19,6 @@ public class NoticeBoard extends Board {
 
     @Id
     private Long id;
-    @OneToMany(mappedBy = "noticeBoard", cascade = CascadeType.REMOVE)
-    public List<NoticeReply> replies = new ArrayList<>();
 
     public NoticeBoard(Long id, String title, String content, User user) {
         this.id = id;

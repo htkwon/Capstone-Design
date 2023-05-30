@@ -8,8 +8,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -22,10 +20,6 @@ public class QnaBoard extends Board {
     @Id
     private Long id;
     private String language;
-
-    // 조회 편의성을 위해 댓글 Entity 와 연관관계 매핑
-    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-    private List<QnaReply> replies = new ArrayList<>();
 
     @OneToOne(mappedBy = "qnaBoard", cascade = CascadeType.REMOVE)
     @JoinColumn(name = "adopt_id")

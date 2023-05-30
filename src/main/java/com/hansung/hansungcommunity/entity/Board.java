@@ -22,6 +22,9 @@ public abstract class Board extends ModifiedEntity {
     protected String content;
     private int views;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    public List<Reply> replies = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY) // JPA 활용 시, XToOne 인 경우 fetch 타입을 LAZY 로 설정 !!!
     @JoinColumn(name = "stu_id")
     private User user;
@@ -43,7 +46,5 @@ public abstract class Board extends ModifiedEntity {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public abstract <T> List<T> getReplies();
 
 }

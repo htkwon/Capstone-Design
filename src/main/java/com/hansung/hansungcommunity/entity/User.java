@@ -40,16 +40,7 @@ public class User {
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<FreeReply> freeReplies = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<QnaReply> qnaReplies = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<RecruitReply> recruitReplies = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<NoticeReply> noticeReplies = new ArrayList<>();
+    private List<Reply> replies = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Adopt> qnaAdopt = new ArrayList<>();
