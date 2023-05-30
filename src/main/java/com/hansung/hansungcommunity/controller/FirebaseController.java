@@ -144,7 +144,13 @@ public class FirebaseController {
         byte[] fileContent = blob.getContent(); // 파일의 내용 가져오기
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        if(imageName.contains(".hwp")){
+            MediaType mediaType = MediaType.parseMediaType("application/x-hwp");
+            headers.setContentType(mediaType);
+        }else{
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);    
+        }
+
         headers.add("Content-Disposition", "attachment; filename=" + imageName); // 다운로드될 파일 이름 설정
         return ResponseEntity.ok().headers(headers).body(fileContent);
     }
