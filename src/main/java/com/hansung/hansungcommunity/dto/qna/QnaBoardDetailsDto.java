@@ -13,6 +13,7 @@ public class QnaBoardDetailsDto {
     private String content;
     private String writer;
     private Long stuId;
+    private String introduce;
     private String profileImg;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
@@ -27,6 +28,7 @@ public class QnaBoardDetailsDto {
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
         this.stuId = Long.parseLong(board.getUser().getStudentId());
+        this.introduce = board.getUser().getIntroduce();
         this.profileImg = board.getUser().getProfileImg();
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();

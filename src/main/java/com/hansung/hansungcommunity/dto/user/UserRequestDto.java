@@ -16,7 +16,7 @@ public class UserRequestDto {
     private String introduce; // 소개글
     private String track1;
     private String track2;
-    @Size(max = 5)
+    @Size(max = 7)
     private List<String> skills; // 관심 기술
     private String picture;
 

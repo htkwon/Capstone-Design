@@ -12,7 +12,7 @@ public class UserUpdateDto {
     private String nickname;
     @Size(max = 100)
     private String introduce;
-    @Size(max = 5)
+    @Size(max = 7)
     private List<String> skills;
 
 }

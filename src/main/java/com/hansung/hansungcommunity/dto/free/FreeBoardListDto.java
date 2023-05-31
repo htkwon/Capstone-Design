@@ -19,6 +19,7 @@ public class FreeBoardListDto {
     private String title;
     private String content;
     private String writer;
+    private String introduce;
     private String stuId;
     private String profileImg;
     private LocalDateTime createdDate;
@@ -35,6 +36,7 @@ public class FreeBoardListDto {
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
         this.stuId = board.getUser().getStudentId();
+        this.introduce = board.getUser().getIntroduce();
         this.profileImg = board.getUser().getProfileImg();
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();

@@ -17,6 +17,7 @@ public class QnaBoardListDto {
     private String content;
     private String writer;
     //TODO : 파일
+    private String introduce;
     private String profileImg;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
@@ -33,6 +34,7 @@ public class QnaBoardListDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
+        this.introduce = board.getUser().getIntroduce();
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();
         this.language = board.getLanguage();

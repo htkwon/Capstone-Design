@@ -14,6 +14,7 @@ public class NoticeBoardDetailsDto {
     private String title;
     private String content;
     private String writer;
+    private String introduce;
     private String profileImg;
     private Long stuId;
     private LocalDateTime createdDate;
@@ -28,6 +29,7 @@ public class NoticeBoardDetailsDto {
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
         this.stuId = Long.parseLong(board.getUser().getStudentId());
+        this.introduce = board.getUser().getIntroduce();
         this.profileImg = board.getUser().getProfileImg();
         this.createdDate = board.getCreatedAt();
         this.modifiedDate = board.getModifiedAt();

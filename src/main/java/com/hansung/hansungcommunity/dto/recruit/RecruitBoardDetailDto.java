@@ -17,6 +17,7 @@ public class RecruitBoardDetailDto {
     private String title;
     private String content;
     private String writer;
+    private String introduce;
     private String profileImg;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
@@ -32,11 +33,12 @@ public class RecruitBoardDetailDto {
     @JsonProperty("isCompleted")
     private boolean isCompleted;
 
-    private RecruitBoardDetailDto(Long id, String title, String content, String writer, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int reply, int views, Long stuId, String require, String optional, int party, boolean isCompleted) {
+    private RecruitBoardDetailDto(Long id, String title, String content, String writer, String introduce, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int reply, int views, Long stuId, String require, String optional, int party, boolean isCompleted) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.introduce = introduce;
         this.profileImg = profileImg;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
@@ -56,6 +58,7 @@ public class RecruitBoardDetailDto {
                 recruitBoard.getTitle(),
                 recruitBoard.getContent(),
                 recruitBoard.getUser().getNickname(),
+                recruitBoard.getUser().getIntroduce(),
                 recruitBoard.getUser().getProfileImg(),
                 recruitBoard.getCreatedAt(),
                 recruitBoard.getModifiedAt(),

@@ -15,6 +15,7 @@ public class NoticeBoardMainDto {
     private String content;
     private String writer;
     private String stuId;
+    private String introduce;
     private String profileImg;
     private LocalDateTime createdDate;
     private int bookmark;
@@ -26,6 +27,7 @@ public class NoticeBoardMainDto {
         this.content = board.getContent();
         this.writer = board.getUser().getNickname();
         this.stuId = board.getUser().getStudentId();
+        this.introduce = board.getUser().getIntroduce();
         this.profileImg = board.getUser().getProfileImg();
         this.createdDate = board.getCreatedAt();
         this.bookmark = board.getBookmarks().size();

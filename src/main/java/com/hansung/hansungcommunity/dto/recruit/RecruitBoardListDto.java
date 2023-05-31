@@ -18,6 +18,7 @@ public class RecruitBoardListDto {
     private Long id;
     private String title;
     private String writer;
+    private String introduce;
     private String profileImg;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
@@ -35,10 +36,11 @@ public class RecruitBoardListDto {
 
     private List<ImageDto> image;
 
-    private RecruitBoardListDto(Long id, String title, String writer, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int reply, int views, Long stuId, String require, String optional, int party, boolean isCompleted) {
+    private RecruitBoardListDto(Long id, String title, String writer, String introduce, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int reply, int views, Long stuId, String require, String optional, int party, boolean isCompleted) {
         this.id = id;
         this.title = title;
         this.writer = writer;
+        this.introduce = introduce;
         this.profileImg = profileImg;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
@@ -58,6 +60,7 @@ public class RecruitBoardListDto {
                 recruitBoard.getId(),
                 recruitBoard.getTitle(),
                 recruitBoard.getUser().getNickname(),
+                recruitBoard.getUser().getIntroduce(),
                 recruitBoard.getUser().getProfileImg(),
                 recruitBoard.getCreatedAt(),
                 recruitBoard.getModifiedAt(),

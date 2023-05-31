@@ -17,6 +17,7 @@ public class ApplicantDto {
     private Long id;
     private String nickname;
     private String studentId;
+    private String introduce;
     private String profileImg;
     private String track1;
     private Set<String> skills;
@@ -31,6 +32,7 @@ public class ApplicantDto {
         this.id = user.getId();
         this.nickname = user.getNickname();
         this.studentId = user.getStudentId();
+        this.introduce = user.getIntroduce();
         this.profileImg = user.getProfileImg();
         this.track1 = user.getTrack1();
         this.skills = user.getSkills().stream().map(Skill::getName).collect(Collectors.toSet());
