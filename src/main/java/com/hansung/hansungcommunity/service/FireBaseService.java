@@ -19,10 +19,10 @@ public class FireBaseService {
     private String firebaseBucket;
 
     public Blob uploadFiles(MultipartFile file, String nameFile)
-        throws IOException, FirebaseAuthException{
+            throws IOException {
         Bucket bucket = StorageClient.getInstance().bucket(firebaseBucket);
         InputStream content = new ByteArrayInputStream(file.getBytes());
-        Blob blob = bucket.create(nameFile.toString(),content,file.getContentType());
+        Blob blob = bucket.create(nameFile, content, file.getContentType());
         return blob;
     }
 

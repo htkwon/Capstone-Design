@@ -1,11 +1,11 @@
 package com.hansung.hansungcommunity.dto.qna;
 
 import com.hansung.hansungcommunity.entity.QnaBoard;
-import lombok.Getter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 public class QnaBoardMainDto {
 
     private Long id;

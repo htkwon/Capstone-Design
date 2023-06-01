@@ -16,7 +16,6 @@ public class QnaBoardListDto {
     private String title;
     private String content;
     private String writer;
-    //TODO : 파일
     private String introduce;
     private String profileImg;
     private LocalDateTime createdDate;

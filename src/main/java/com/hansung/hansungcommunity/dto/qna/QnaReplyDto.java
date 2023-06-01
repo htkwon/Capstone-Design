@@ -6,15 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
  * Q&A 게시글 댓글 DTO
- * 추후 ResponseDto, RequestDto 분리
- * 추후 userId 등 고려 필요
  */
-
 @Data
 @NoArgsConstructor
 public class QnaReplyDto {

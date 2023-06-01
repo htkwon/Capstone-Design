@@ -23,12 +23,6 @@ public class UserInfoDto {
     private String profileImg;
     private Set<String> skills; // 관심 기술
 
-    /**
-     * TODO
-     * 이미지
-     * 공부 내용 요약 기록
-     */
-
     public UserInfoDto(Long id, String studentId, String name, String nickname, String track1, String track2, int board, int bookmark, String introduce, String profileImg, Set<Skill> skills) {
         this.id = id;
         this.studentId = studentId;

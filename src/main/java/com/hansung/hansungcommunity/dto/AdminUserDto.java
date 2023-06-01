@@ -10,21 +10,19 @@ public class AdminUserDto {
     private String stuId;
     private String nickname;
 
-    public AdminUserDto(Long id,String studentId, String nickname) {
+    public AdminUserDto(Long id, String studentId, String nickname) {
         this.id = id;
         this.stuId = studentId;
         this.nickname = nickname;
     }
 
 
-    public static AdminUserDto of(User user){
+    public static AdminUserDto of(User user) {
         return new AdminUserDto(
                 user.getId(),
                 user.getStudentId(),
                 user.getNickname()
         );
     }
-
-
 
 }

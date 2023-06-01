@@ -17,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -56,19 +55,6 @@ public class QnaBoardService {
     }
 
     /**
-     * 조회수를 기준으로 4개의 게시글 조회
-     */
-    public List<QnaBoardMostViewedDto> findMostViewedBoards() {
-        Pageable pageable = PageRequest.of(0, 4, Sort.Direction.DESC, "views");
-        LocalDateTime standardTime = LocalDateTime.now().minusWeeks(1); // 1주일 기준
-
-        return qnaBoardRepository.findByCreatedAtAfter(standardTime, pageable)
-                .stream()
-                .map(QnaBoardMostViewedDto::of)
-                .collect(Collectors.toList());
-    }
-
-    /**
      * 게시글 저장
      */
     @Transactional
@@ -84,8 +70,6 @@ public class QnaBoardService {
 
     /**
      * user 컬럼만 비어있는 qnaBoard 엔티티에 유저 매핑
-     *
-     * @return
      */
     @Transactional
     public Long mappingUser(Long userId, QnaBoard entity) {
@@ -165,7 +149,6 @@ public class QnaBoardService {
                 .collect(Collectors.toList());
     }
 
-    // TODO 해당 메소드, 해당 메소드를 호출하는 핸들러 메소드의 필요성 논의 필요
     public Long getUserId(Long boardId) {
         QnaBoard qnaBoard = qnaBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("해당하는 게시글이 없습니다."));
@@ -229,8 +212,8 @@ public class QnaBoardService {
     }
 
     public QnaBoard get(Long boardId) {
-        QnaBoard qnaBoard = qnaBoardRepository.findById(boardId)
+        return qnaBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
-        return qnaBoard;
     }
+
 }

@@ -4,15 +4,12 @@ import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Data
 @NoArgsConstructor
-@Setter
 public class FreeBoardListDto {
 
     private Long id;

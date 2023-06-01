@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @RestController
@@ -76,7 +77,7 @@ public class RecruitBoardController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
-            String extension = f.getContentType().split("/")[1];
+            String extension = Objects.requireNonNull(f.getContentType()).split("/")[1];
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(recruitBoard, fileName, name);
@@ -136,6 +137,7 @@ public class RecruitBoardController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
+            assert fileName != null;
             String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;

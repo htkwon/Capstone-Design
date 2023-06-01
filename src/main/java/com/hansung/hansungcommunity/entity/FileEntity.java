@@ -3,7 +3,6 @@ package com.hansung.hansungcommunity.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.aspectj.weaver.ast.Not;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -41,4 +40,5 @@ public class FileEntity {
     public void setBoard(Board board) {
         this.board = board;
     }
+
 }

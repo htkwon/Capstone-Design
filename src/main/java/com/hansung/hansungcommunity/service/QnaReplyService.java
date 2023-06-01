@@ -3,18 +3,19 @@ package com.hansung.hansungcommunity.service;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyAdoptCheckDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
-import com.hansung.hansungcommunity.entity.*;
+import com.hansung.hansungcommunity.entity.Adopt;
+import com.hansung.hansungcommunity.entity.QnaBoard;
+import com.hansung.hansungcommunity.entity.QnaReply;
+import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.exception.*;
 import com.hansung.hansungcommunity.repository.AdoptRepository;
 import com.hansung.hansungcommunity.repository.QnaBoardRepository;
 import com.hansung.hansungcommunity.repository.QnaReplyRepository;
 import com.hansung.hansungcommunity.repository.UserRepository;
-import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +23,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class QnaReplyService {
 
-    private final QnaReplyRepository replyRepository;
+    private final QnaReplyRepository qnaReplyRepository;
     private final QnaBoardRepository boardRepository;
     private final UserRepository userRepository;
     private final AdoptRepository adoptRepository;
@@ -42,7 +43,7 @@ public class QnaReplyService {
         QnaReply parent = null;
 
         if (replyDto.getParentId() != null) { // 자식 댓글인 경우
-            parent = replyRepository.findById(replyDto.getParentId()) // 부모 댓글 지정
+            parent = qnaReplyRepository.findById(replyDto.getParentId()) // 부모 댓글 지정
                     .orElseThrow(() -> new ReplyNotFoundException("대댓글 생성 실패, 부모 댓글이 없습니다."));
 
             if (!parent.getBoard().getId().equals(boardId)) {
@@ -56,7 +57,7 @@ public class QnaReplyService {
             qnaReply.updateParent(parent); // 부모 댓글 지정
         }
 
-        QnaReply savedReply = replyRepository.save(qnaReply);
+        QnaReply savedReply = qnaReplyRepository.save(qnaReply);
 
         if (parent != null) { // 부모 댓글이 있다면
             return QnaReplyDto.createChildren(savedReply); // 자식 댓글
@@ -65,36 +66,9 @@ public class QnaReplyService {
         }
     }
 
-    /**
-     * 전체 댓글 조회
-     * 게시글 id로 댓글 조회
-     * QuerydslPredicateExecutor 활용 시, 한계점 존재
-     * 추후 학습, 논의를 통해 구체화 필요
-     */
-    public List<QnaReplyDto> findAllByBoardId(Long boardId) {
-        QQnaReply qnaReply = QQnaReply.qnaReply;
-        Predicate predicate = qnaReply.board.id.eq(boardId);
-
-        Iterable<QnaReply> replies = replyRepository.findAll(predicate);
-
-        List<QnaReplyDto> result = new ArrayList<>();
-
-        replies.forEach(reply -> { // Iterable to List
-            if (reply.getParent() == null) { // 부모 댓글인 경우
-                QnaReplyDto parent = QnaReplyDto.createParent(reply);
-                result.add(parent);
-            } else { // 자식 댓글인 경우
-                QnaReplyDto children = QnaReplyDto.createChildren(reply);
-                result.add(children);
-            }
-        });
-
-        return result;
-    }
-
     @Transactional(readOnly = true)
     public QnaReplyAdoptCheckDto adoptCheck(Long boardId) {
-        QnaReply reply = replyRepository.findFirstByBoardIdAndAdoptTrue(boardId);
+        QnaReply reply = qnaReplyRepository.findFirstByBoardIdAndAdoptTrue(boardId);
 
         if (reply == null) {
             return new QnaReplyAdoptCheckDto(false, null);
@@ -104,10 +78,10 @@ public class QnaReplyService {
 
     @Transactional
     public QnaReplyDto update(QnaReplyDto replyDto) {
-        QnaReply reply = replyRepository.findById(replyDto.getId())
+        QnaReply reply = qnaReplyRepository.findById(replyDto.getId())
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 수정 실패, 해당하는 댓글이 없습니다."));
         if (replyDto.getParentId() != null) {
-            QnaReply parent = replyRepository.findById(replyDto.getParentId())
+            QnaReply parent = qnaReplyRepository.findById(replyDto.getParentId())
                     .orElseThrow(() -> new ReplyNotFoundException("댓글 수정 실패, 해당하는 부모 댓글이 없습니다."));
             reply.setParent(parent);
         } else {
@@ -117,15 +91,15 @@ public class QnaReplyService {
         UserReplyDto userReplyDto = new UserReplyDto(userRepository.findById(reply.getUser().getId())
                 .orElseThrow(() -> new UserNotFoundException("댓글 수정 실패, 해당하는 유저가 없습니다.")));
 
-        return QnaReplyDto.from(replyRepository.save(reply), userReplyDto);
+        return QnaReplyDto.from(qnaReplyRepository.save(reply), userReplyDto);
     }
 
     @Transactional
     public Boolean adopt(Long replyId) {
-        QnaReply reply = replyRepository.findById(replyId)
+        QnaReply reply = qnaReplyRepository.findById(replyId)
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 채택 실패, 해당하는 댓글이 없습니다."));
         reply.adopt(true);
-        replyRepository.save(reply);
+        qnaReplyRepository.save(reply);
         adoptRepository.save(Adopt.of(reply.getBoard(), reply.getUser()));
 
         return reply.getAdopt();
@@ -133,7 +107,7 @@ public class QnaReplyService {
 
     @Transactional
     public Long cancel(Long replyId) {
-        QnaReply reply = replyRepository.findById(replyId)
+        QnaReply reply = qnaReplyRepository.findById(replyId)
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 채택 취소 실패, 해당하는 댓글이 없습니다."));
         QnaBoard qnaBoard = boardRepository.findById(reply.getBoard().getId())
                 .orElseThrow(() -> new BoardNotFoundException("댓글 채택 취소 실패, 해당하는 게시글이 없습니다."));
@@ -141,7 +115,7 @@ public class QnaReplyService {
                 .orElseThrow(() -> new AdoptNotFoundException("댓글 채택 취소 실패, 해당하는 채택 정보가 없습니다."));
 
         reply.adopt(false);
-        replyRepository.save(reply);
+        qnaReplyRepository.save(reply);
         adoptRepository.delete(adopt);
 
         return reply.getId();
@@ -153,14 +127,14 @@ public class QnaReplyService {
     }
 
     private void deleteReplyMethod(Long replyId) {
-        QnaReply reply = replyRepository.findById(replyId)
+        QnaReply reply = qnaReplyRepository.findById(replyId)
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 삭제 실패, 해당하는 댓글이 없습니다."));
-        List<QnaReply> children = replyRepository.findAllByParentId(reply.getId());
+        List<QnaReply> children = qnaReplyRepository.findAllByParentId(reply.getId());
         for (QnaReply child : children) {
             deleteReplyMethod(child.getId());
         }
 
-        replyRepository.delete(reply);
+        qnaReplyRepository.delete(reply);
     }
 
 }

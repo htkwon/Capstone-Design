@@ -60,13 +60,12 @@ public class FreeBoardService {
      * 자유 게시글 삭제
      */
     @Transactional
-    public FreeBoardRequestDto delete(Long boardId) {
+    public void delete(Long boardId) {
         FreeBoard target = freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 삭제 실패, 해당하는 게시글이 없습니다."));
+
         // 게시글 삭제
         freeBoardRepository.delete(target);
-
-        return new FreeBoardRequestDto(target);
     }
 
     /**
@@ -96,9 +95,8 @@ public class FreeBoardService {
      * 특정 게시글 조회
      */
     public FreeBoard get(Long boardId) {
-        FreeBoard board = freeBoardRepository.findById(boardId)
+        return freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
-        return board;
     }
 
     /**

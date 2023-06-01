@@ -5,8 +5,8 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.FileRequestDto;
-import com.hansung.hansungcommunity.dto.notice.NoticeBoardDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardDetailsDto;
+import com.hansung.hansungcommunity.dto.notice.NoticeBoardDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardListDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardMainDto;
 import com.hansung.hansungcommunity.entity.NoticeBoard;
@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -114,7 +115,7 @@ public class NoticeController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
-            String extension = f.getContentType().split("/")[1];
+            String extension = Objects.requireNonNull(f.getContentType()).split("/")[1];
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(noticeBoard, fileName, name);
@@ -170,6 +171,7 @@ public class NoticeController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
+            assert fileName != null;
             String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
@@ -223,6 +225,11 @@ public class NoticeController {
         }
     }
 
+    public int createFilename() {
+        Random random = new Random();
+        return random.nextInt(1000);
+    }
+
     @Data
     @AllArgsConstructor
     static class Result<T> {
@@ -235,11 +242,5 @@ public class NoticeController {
         private T data;
         private long count;
     }
-
-    public int createFilename() {
-        Random random = new Random();
-        return random.nextInt(1000);
-    }
-
 
 }

@@ -1,8 +1,8 @@
 package com.hansung.hansungcommunity.service;
 
 import com.hansung.hansungcommunity.dto.ImageDto;
-import com.hansung.hansungcommunity.dto.notice.NoticeBoardDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardDetailsDto;
+import com.hansung.hansungcommunity.dto.notice.NoticeBoardDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardListDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardMainDto;
 import com.hansung.hansungcommunity.entity.NoticeBoard;
@@ -188,8 +188,7 @@ public class NoticeService {
     }
 
     public NoticeBoard get(Long boardId) {
-        NoticeBoard board = noticeRepository.findById(boardId)
+        return noticeRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
-        return board;
     }
 }

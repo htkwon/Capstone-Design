@@ -5,14 +5,14 @@ import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.entity.FileEntity;
 import com.hansung.hansungcommunity.exception.BoardNotFoundException;
-import com.hansung.hansungcommunity.repository.*;
+import com.hansung.hansungcommunity.repository.BoardRepository;
+import com.hansung.hansungcommunity.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -21,11 +21,6 @@ import java.util.stream.Collectors;
 public class FileService {
 
     private final FileRepository fileRepository;
-    private final FreeBoardRepository freeBoardRepository;
-    private final QnaBoardRepository qnaBoardRepository;
-    private final RecruitBoardRepository recruitBoardRepository;
-
-    private final NoticeRepository noticeRepository;
     private final BoardRepository boardRepository;
 
     @Transactional
@@ -40,8 +35,7 @@ public class FileService {
         return fileRepository.findAllByBoard(boardRepository.findById(boardId)
                         .orElseThrow(() -> new BoardNotFoundException("해당 게시글이 없습니다.")))
                 .stream()
-                .anyMatch(file -> file != null);
-
+                .anyMatch(Objects::nonNull);
     }
 
     public List<FileRequestDto> list(Long boardId) {
