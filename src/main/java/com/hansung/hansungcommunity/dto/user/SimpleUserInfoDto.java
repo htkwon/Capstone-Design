@@ -14,7 +14,6 @@ public class SimpleUserInfoDto {
     private String name;
     private String nickname;
     private String profileImg;
-    private String career;
     private String introduce;
     private String track1;
     private String track2;
@@ -25,7 +24,6 @@ public class SimpleUserInfoDto {
         this.name = user.getName();
         this.nickname = user.getNickname();
         this.profileImg = user.getProfileImg();
-        this.career = user.getCareer();
         this.introduce = user.getIntroduce();
         this.track1 = user.getTrack1();
         this.track2 = user.getTrack2();

@@ -27,7 +27,6 @@ public class User {
     private String studentId;
     private String name; // 이름
     private String nickname; // 닉네임
-    private String career; // 경력
     private String introduce; // 소개글
     private String track1;
     private String track2;
