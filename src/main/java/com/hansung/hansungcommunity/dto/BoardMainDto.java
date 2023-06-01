@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 /**
  * 메인 페이지 인기 게시글 조회 DTO
  */
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

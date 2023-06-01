@@ -42,7 +42,7 @@ public class SummaryService {
         return summaryRepository.findAllByUser(user)
                 .stream()
                 .map(UserSummaryDto::of)
-                .sorted(Comparator.comparing(UserSummaryDto::getDate).reversed()) // TODO DB 정렬
+                .sorted(Comparator.comparing(UserSummaryDto::getDate).reversed())
                 .collect(Collectors.toList());
     }
 

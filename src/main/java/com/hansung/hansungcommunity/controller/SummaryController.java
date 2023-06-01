@@ -16,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class SummaryController {
+
     private final SummaryService summaryService;
 
     /**

@@ -36,9 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-### Querydsl ###
-/src/main/generated/
-
 ### properties, yml ###
 *.properties
 *.yml

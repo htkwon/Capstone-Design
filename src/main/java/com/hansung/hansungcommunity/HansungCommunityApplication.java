@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @SpringBootApplication
 public class HansungCommunityApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(HansungCommunityApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(HansungCommunityApplication.class, args);
+    }
 
 }

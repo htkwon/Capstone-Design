@@ -45,7 +45,6 @@ public class RecruitBoardService {
     }
 
     public List<RecruitBoardListDto> getList(Pageable pageable, String search) {
-        Sort fallbackSort = Sort.by(Sort.Direction.DESC, "createdAt");
         Page<RecruitBoard> page;
 
         if (pageable.getSort().stream().anyMatch(order -> order.getProperty().equals("bookmarks"))) {
@@ -57,7 +56,7 @@ public class RecruitBoardService {
                 page = recruitBoardRepository.findAllSortByBookmarksWithSearchParam(search, setPage);
             }
         } else {
-            Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(fallbackSort));
+            Pageable setPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "isCompleted").and(pageable.getSort()));
 
             if (search == null) {
                 page = recruitBoardRepository.findAll(setPage);
@@ -363,8 +362,8 @@ public class RecruitBoardService {
     }
 
     public RecruitBoard get(Long boardId) {
-        RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
+        return recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
-        return recruitBoard;
     }
+
 }

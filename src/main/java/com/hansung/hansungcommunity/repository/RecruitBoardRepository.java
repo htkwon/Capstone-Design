@@ -15,14 +15,14 @@ public interface RecruitBoardRepository extends JpaRepository<RecruitBoard, Long
     @Query("SELECT r " +
             "FROM RecruitBoard r LEFT OUTER JOIN r.bookmarks rb " +
             "GROUP BY r.id " +
-            "ORDER BY COUNT(rb) DESC")
+            "ORDER BY r.isCompleted ASC, COUNT(rb) DESC")
     Page<RecruitBoard> findAllSortByBookmarks(Pageable setPage);
 
     @Query("SELECT r " +
             "FROM RecruitBoard r LEFT OUTER JOIN r.bookmarks rb " +
             "WHERE r.title LIKE %:search% OR r.content LIKE %:search% " +
             "GROUP BY r.id " +
-            "ORDER BY COUNT(rb) DESC")
+            "ORDER BY r.isCompleted ASC, COUNT(rb) DESC")
     Page<RecruitBoard> findAllSortByBookmarksWithSearchParam(@Param("search") String search, Pageable setPage);
 
     @Query("SELECT COUNT(r)" +

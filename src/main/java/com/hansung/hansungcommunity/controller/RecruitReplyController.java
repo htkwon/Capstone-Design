@@ -16,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class RecruitReplyController {
+
     private final ReplyService replyService;
 
     @PostMapping("/recruit/{boardId}/replies")

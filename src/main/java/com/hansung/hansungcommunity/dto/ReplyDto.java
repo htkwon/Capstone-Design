@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReplyDto {
+
     private Long id;
     @NotEmpty
     private String article;
@@ -36,9 +37,7 @@ public class ReplyDto {
         this.article = Reply.getArticle();
         this.parentId = (Reply.getParent() != null) ? Reply.getParent().getId() : null;
         this.user = new UserReplyDto(Reply.getUser());
-        this.parentId = parentId;
         this.createdAt = Reply.getCreatedAt();
-
     }
 
     public ReplyDto(Long id, String article, UserReplyDto userReplyDto, LocalDateTime createdAt) {

@@ -124,9 +124,8 @@ public class FirebaseController {
         // Storage 인스턴스를 생성 후 연결
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         Blob blob = storage.get(bucketName, imageName);
-        String contentType = blob.getContentType();
 
-        return contentType;
+        return blob.getContentType();
     }
 
     /**
@@ -144,11 +143,11 @@ public class FirebaseController {
         byte[] fileContent = blob.getContent(); // 파일의 내용 가져오기
 
         HttpHeaders headers = new HttpHeaders();
-        if(imageName.contains(".hwp")){
+        if (imageName.contains(".hwp")) {
             MediaType mediaType = MediaType.parseMediaType("application/x-hwp");
             headers.setContentType(mediaType);
-        }else{
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);    
+        } else {
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         }
 
         headers.add("Content-Disposition", "attachment; filename=" + imageName); // 다운로드될 파일 이름 설정
@@ -192,6 +191,5 @@ public class FirebaseController {
             return ResponseEntity.badRequest().build();
         }
     }
-
 
 }

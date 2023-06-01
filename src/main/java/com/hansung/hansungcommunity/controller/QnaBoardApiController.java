@@ -24,9 +24,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -86,16 +86,6 @@ public class QnaBoardApiController {
     }
 
     /**
-     * 조회수가 높은 4개의 게시글 조회
-     */
-    @GetMapping("/questions/most")
-    public ResponseEntity<List<QnaBoardMostViewedDto>> mostViewed() {
-        List<QnaBoardMostViewedDto> mostViewedBoards = qnaBoardService.findMostViewedBoards();
-
-        return ResponseEntity.status(HttpStatus.OK).body(mostViewedBoards);
-    }
-
-    /**
      * 게시글 저장 (업로드 파일 없을 때)
      */
     @PostMapping("/questions/no-file")
@@ -120,7 +110,7 @@ public class QnaBoardApiController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
-            String extension = f.getContentType().split("/")[1];
+            String extension = Objects.requireNonNull(f.getContentType()).split("/")[1];
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(board, fileName, name);
@@ -179,6 +169,7 @@ public class QnaBoardApiController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
+            assert fileName != null;
             String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
@@ -238,19 +229,6 @@ public class QnaBoardApiController {
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
         }
-    }
-
-    private String getFilename(String originalName, String path) {
-        String extension = originalName.substring(originalName.lastIndexOf(".") + 1);
-        if (!new File(path).exists()) {
-            try {
-                new File(path).mkdir();
-            } catch (Exception e) {
-                e.getStackTrace();
-            }
-        }
-        return extension;
-
     }
 
     /**

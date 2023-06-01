@@ -1,13 +1,12 @@
 package com.hansung.hansungcommunity.dto;
 
 import lombok.Data;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Setter
 @Data
+@NoArgsConstructor
 public class ImageDto {
 
     private String imageUrl;
-
 
 }

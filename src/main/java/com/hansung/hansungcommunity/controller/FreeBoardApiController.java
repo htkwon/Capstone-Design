@@ -1,16 +1,12 @@
 package com.hansung.hansungcommunity.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.dto.free.*;
-import com.hansung.hansungcommunity.entity.Board;
 import com.hansung.hansungcommunity.entity.FreeBoard;
-import com.hansung.hansungcommunity.repository.FreeBoardRepository;
-import com.hansung.hansungcommunity.service.BoardService;
 import com.hansung.hansungcommunity.service.FileService;
 import com.hansung.hansungcommunity.service.FireBaseService;
 import com.hansung.hansungcommunity.service.FreeBoardService;
@@ -120,6 +116,7 @@ public class FreeBoardApiController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
+            assert fileName != null;
             String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
@@ -182,6 +179,7 @@ public class FreeBoardApiController {
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
+            assert fileName != null;
             String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;

@@ -4,7 +4,8 @@ import com.hansung.hansungcommunity.entity.FreeBoard;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
