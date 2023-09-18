@@ -1,14 +1,12 @@
 package com.hansung.hansungcommunity.dto.free;
 
 import com.hansung.hansungcommunity.entity.FreeBoard;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-@Data
-@NoArgsConstructor
+@Getter
 public class FreeBoardRequestDto {
 
     private Long id;
@@ -20,19 +18,13 @@ public class FreeBoardRequestDto {
     @NotEmpty
     private String content;
 
-    public FreeBoardRequestDto(FreeBoard board) {
-        this.id = board.getId();
-        this.title = board.getTitle();
-        this.content = board.getContent();
-    }
-
-    public FreeBoardRequestDto(Long id, String title, String content) {
+    private FreeBoardRequestDto(Long id, String title, String content) {
         this.id = id;
         this.title = title;
         this.content = content;
     }
 
-    public static FreeBoardRequestDto of(FreeBoard freeBoard) {
+    public static FreeBoardRequestDto from(FreeBoard freeBoard) {
         return new FreeBoardRequestDto(
                 freeBoard.getId(),
                 freeBoard.getTitle(),

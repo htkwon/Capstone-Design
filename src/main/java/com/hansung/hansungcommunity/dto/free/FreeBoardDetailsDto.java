@@ -1,11 +1,11 @@
 package com.hansung.hansungcommunity.dto.free;
 
 import com.hansung.hansungcommunity.entity.FreeBoard;
-import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 public class FreeBoardDetailsDto {
 
     private Long id;
@@ -21,7 +21,7 @@ public class FreeBoardDetailsDto {
     private int bookmark;
     private int views;
 
-    public FreeBoardDetailsDto(FreeBoard board) {
+    private FreeBoardDetailsDto(FreeBoard board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
@@ -34,6 +34,10 @@ public class FreeBoardDetailsDto {
         this.bookmark = board.getBookmarks().size();
         this.reply = board.getReplies().size();
         this.views = board.getViews();
+    }
+
+    public static FreeBoardDetailsDto from(FreeBoard board) {
+        return new FreeBoardDetailsDto(board);
     }
 
 }

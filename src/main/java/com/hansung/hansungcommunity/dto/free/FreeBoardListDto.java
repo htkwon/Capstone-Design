@@ -2,14 +2,12 @@ package com.hansung.hansungcommunity.dto.free;
 
 import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
+@Getter
 public class FreeBoardListDto {
 
     private Long id;
@@ -27,7 +25,7 @@ public class FreeBoardListDto {
 
     private List<ImageDto> image;
 
-    public FreeBoardListDto(FreeBoard board) {
+    private FreeBoardListDto(FreeBoard board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
@@ -41,6 +39,14 @@ public class FreeBoardListDto {
         this.reply = board.getReplies().size();
         this.views = board.getViews();
         this.image = null;
+    }
+
+    public static FreeBoardListDto from(FreeBoard board) {
+        return new FreeBoardListDto(board);
+    }
+
+    public void setImage(List<ImageDto> image) {
+        this.image = image;
     }
 
 }

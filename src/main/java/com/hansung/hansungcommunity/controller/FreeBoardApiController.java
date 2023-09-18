@@ -175,7 +175,7 @@ public class FreeBoardApiController {
         FreeBoard real = freeBoardService.get(boardId);
         board.setId(real.getId());
 
-        FreeBoardRequestDto boardDto = freeBoardService.update(boardId, FreeBoardRequestDto.of(board));
+        FreeBoardRequestDto boardDto = freeBoardService.update(boardId, FreeBoardRequestDto.from(board));
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();

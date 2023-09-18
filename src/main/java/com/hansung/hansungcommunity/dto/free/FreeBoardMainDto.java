@@ -1,11 +1,11 @@
 package com.hansung.hansungcommunity.dto.free;
 
 import com.hansung.hansungcommunity.entity.FreeBoard;
-import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 public class FreeBoardMainDto {
 
     private Long id;
@@ -19,7 +19,7 @@ public class FreeBoardMainDto {
     private int bookmark;
     private int reply;
 
-    public FreeBoardMainDto(FreeBoard board) {
+    private FreeBoardMainDto(FreeBoard board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
@@ -30,6 +30,10 @@ public class FreeBoardMainDto {
         this.createdDate = board.getCreatedAt();
         this.bookmark = board.getBookmarks().size();
         this.reply = board.getReplies().size();
+    }
+
+    public static FreeBoardMainDto from(FreeBoard board) {
+        return new FreeBoardMainDto(board);
     }
 
 }
