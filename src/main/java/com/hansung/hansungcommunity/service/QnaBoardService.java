@@ -39,7 +39,7 @@ public class QnaBoardService {
         QnaBoard board = qnaBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
 
-        return new QnaBoardDetailsDto(board);
+        return QnaBoardDetailsDto.from(board);
     }
 
     /**
@@ -50,7 +50,7 @@ public class QnaBoardService {
 
         return qnaBoardRepository.findAll(pageable).getContent()
                 .stream()
-                .map(QnaBoardMainDto::new)
+                .map(QnaBoardMainDto::from)
                 .collect(Collectors.toList());
     }
 
@@ -60,7 +60,7 @@ public class QnaBoardService {
     @Transactional
     public Long post(Long userId, QnaBoardRequestDto dto) {
         User user = userRepository.getReferenceById(userId);
-        QnaBoard board = dto.toEntity();
+        QnaBoard board = QnaBoard.of(dto.getTitle(),dto.getContent(),dto.getLanguage());
         board.setUser(user);
 
         QnaBoard savedBoard = qnaBoardRepository.save(board);
@@ -142,7 +142,7 @@ public class QnaBoardService {
         return page.getContent()
                 .stream()
                 .map(board -> {
-                    QnaBoardListDto dto = new QnaBoardListDto(board);
+                    QnaBoardListDto dto = QnaBoardListDto.from(board);
                     dto.setImage(extractImagesFromContent(board.getContent()));
                     return dto;
                 })
@@ -163,7 +163,7 @@ public class QnaBoardService {
         QnaBoard board = qnaBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없음"));
 
-        return new QnaBoardUpdateDto(board);
+        return QnaBoardUpdateDto.from(board);
     }
 
     /**

@@ -70,7 +70,7 @@ public class QnaBoardApiController {
     public ResponseEntity<QnaBoardUpdateDto> detailForUpdate(@PathVariable("boardId") Long boardId) {
         QnaBoardUpdateDto boardDto = qnaBoardService.findOneForUpdate(boardId);
 
-        return ResponseEntity.ok(boardDto);
+        return ResponseEntity.status(HttpStatus.OK).body(boardDto);
     }
 
     /**
@@ -126,7 +126,7 @@ public class QnaBoardApiController {
      */
     @GetMapping("/questions/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
-        Boolean check = fileService.check(boardId);
+        boolean check = fileService.check(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
@@ -165,7 +165,7 @@ public class QnaBoardApiController {
         QnaBoard real = qnaBoardService.get(boardId);
         board.setId(real.getId());
 
-        Long id = qnaBoardService.update(boardId, QnaBoardRequestDto.of(board));
+        Long id = qnaBoardService.update(boardId, QnaBoardRequestDto.from(board));
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();

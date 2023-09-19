@@ -1,11 +1,11 @@
 package com.hansung.hansungcommunity.dto.qna;
 
 import com.hansung.hansungcommunity.entity.QnaBoard;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 public class QnaBoardDetailsDto {
 
     private Long id;
@@ -22,20 +22,38 @@ public class QnaBoardDetailsDto {
     private int views;
     private int reply;
 
-    public QnaBoardDetailsDto(QnaBoard board) {
-        this.id = board.getId();
-        this.title = board.getTitle();
-        this.content = board.getContent();
-        this.writer = board.getUser().getNickname();
-        this.stuId = Long.parseLong(board.getUser().getStudentId());
-        this.introduce = board.getUser().getIntroduce();
-        this.profileImg = board.getUser().getProfileImg();
-        this.createdDate = board.getCreatedAt();
-        this.modifiedDate = board.getModifiedAt();
-        this.language = board.getLanguage();
-        this.bookmark = board.getBookmarks().size();
-        this.views = board.getViews();
-        this.reply = board.getReplies().size();
+    private QnaBoardDetailsDto(Long id, String title, String content, String writer, long stuId, String introduce, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, String language, int bookmark, int views, int reply) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+        this.stuId = stuId;
+        this.introduce = introduce;
+        this.profileImg = profileImg;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.language = language;
+        this.bookmark = bookmark;
+        this.views = views;
+        this.reply = reply;
     }
+    public static QnaBoardDetailsDto from (QnaBoard board){
+        return new QnaBoardDetailsDto(
+                board.getId(),
+                board.getTitle(),
+                board.getContent(),
+                board.getUser().getNickname(),
+                Long.parseLong(board.getUser().getStudentId()),
+                board.getUser().getIntroduce(),
+                board.getUser().getProfileImg(),
+                board.getCreatedAt(),
+                board.getModifiedAt(),
+                board.getLanguage(),
+                board.getBookmarks().size(),
+                board.getViews(),
+                board.getReplies().size()
+        );
+    }
+
 
 }

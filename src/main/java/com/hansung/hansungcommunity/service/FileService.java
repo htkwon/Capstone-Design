@@ -31,7 +31,7 @@ public class FileService {
         return FileDto.from(res);
     }
 
-    public Boolean check(Long boardId) {
+    public boolean check(Long boardId) {
         return fileRepository.findAllByBoard(boardRepository.findById(boardId)
                         .orElseThrow(() -> new BoardNotFoundException("해당 게시글이 없습니다.")))
                 .stream()

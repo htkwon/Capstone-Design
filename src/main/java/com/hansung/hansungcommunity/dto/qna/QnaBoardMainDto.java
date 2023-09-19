@@ -1,11 +1,11 @@
 package com.hansung.hansungcommunity.dto.qna;
 
 import com.hansung.hansungcommunity.entity.QnaBoard;
-import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 public class QnaBoardMainDto {
 
     private Long id;
@@ -20,18 +20,35 @@ public class QnaBoardMainDto {
     private int bookmark;
     private int reply;
 
-    public QnaBoardMainDto(QnaBoard board) {
-        this.id = board.getId();
-        this.title = board.getTitle();
-        this.content = board.getContent();
-        this.writer = board.getUser().getNickname();
-        this.stuId = board.getUser().getStudentId();
-        this.introduce = board.getUser().getIntroduce();
-        this.createdDate = board.getCreatedAt();
-        this.profileImg = board.getUser().getProfileImg();
-        this.language = board.getLanguage();
-        this.bookmark = board.getBookmarks().size();
-        this.reply = board.getReplies().size();
+    private QnaBoardMainDto(Long id, String title, String content, String writer, String stuId, String introduce, String profileImg, LocalDateTime createdDate, String language, int bookmark, int reply) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+        this.stuId = stuId;
+        this.introduce = introduce;
+        this.profileImg = profileImg;
+        this.createdDate = createdDate;
+        this.language = language;
+        this.bookmark = bookmark;
+        this.reply = reply;
     }
+
+    public static QnaBoardMainDto from(QnaBoard board){
+        return new QnaBoardMainDto(
+                board.getId(),
+                board.getTitle(),
+                board.getContent(),
+                board.getUser().getNickname(),
+                board.getUser().getStudentId(),
+                board.getUser().getIntroduce(),
+                board.getUser().getProfileImg(),
+                board.getCreatedAt(),
+                board.getLanguage(),
+                board.getBookmarks().size(),
+                board.getReplies().size()
+        );
+    }
+
 
 }

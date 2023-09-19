@@ -71,9 +71,9 @@ public class QnaReplyService {
         QnaReply reply = qnaReplyRepository.findFirstByBoardIdAndAdoptTrue(boardId);
 
         if (reply == null) {
-            return new QnaReplyAdoptCheckDto(false, null);
+            return QnaReplyAdoptCheckDto.of(false, null);
         }
-        return new QnaReplyAdoptCheckDto(true, reply.getId());
+        return QnaReplyAdoptCheckDto.of(true, reply.getId());
     }
 
     @Transactional
