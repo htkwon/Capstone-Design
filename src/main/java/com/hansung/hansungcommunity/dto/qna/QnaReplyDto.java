@@ -2,7 +2,9 @@ package com.hansung.hansungcommunity.dto.qna;
 
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.QnaReply;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
@@ -11,8 +13,8 @@ import java.time.LocalDateTime;
 /**
  * Q&A 게시글 댓글 DTO
  */
-@Data
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class QnaReplyDto {
 
     private Long id;
@@ -30,20 +32,20 @@ public class QnaReplyDto {
         this.createdAt = createdAt;
     }
 
-    public QnaReplyDto(Long id, String article, UserReplyDto userReplyDto, LocalDateTime createdAt) {
+    private QnaReplyDto(Long id, String article, UserReplyDto userReplyDto, LocalDateTime createdAt) {
         this.id = id;
         this.article = article;
         this.user = userReplyDto;
         this.createdAt = createdAt;
     }
 
-    public static QnaReplyDto from(QnaReply qnaReply, UserReplyDto dto) {
+    public static QnaReplyDto from(QnaReply qnaReply, UserReplyDto userDto) {
         Long parentId = qnaReply.getParent() != null ? qnaReply.getParent().getId() : null;
         return new QnaReplyDto(
                 qnaReply.getId(),
                 qnaReply.getArticle(),
                 parentId,
-                dto,
+                userDto,
                 qnaReply.getCreatedAt()
         );
     }

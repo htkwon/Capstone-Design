@@ -2,43 +2,38 @@ package com.hansung.hansungcommunity.entity;
 
 
 import com.hansung.hansungcommunity.dto.qna.QnaBoardRequestDto;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.*;
-import java.util.Objects;
 
-@Getter
-@Setter
-@ToString(callSuper = true)
 @Entity
-@NoArgsConstructor
+@Getter
+@ToString(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QnaBoard extends Board {
 
     @Id
     private Long id;
     private String language;
-
     @OneToOne(mappedBy = "qnaBoard", cascade = CascadeType.REMOVE)
     @JoinColumn(name = "adopt_id")
     private Adopt adopt;
 
-    public QnaBoard(User user, String title, String content, String language) {
+    private QnaBoard(User user, String title, String content, String language) {
         super.setUser(user);
         this.title = title;
         this.content = content;
         this.language = language;
     }
 
-    public QnaBoard(String title, String content, String language) {
+    private QnaBoard(String title, String content, String language) {
         this.title = title;
         this.content = content;
         this.language = language;
     }
 
-    //추후 다른 곳에서(EX.. Test)에서 편하게 만들기위해 Factory method 사용
     public static QnaBoard of(User user, String title, String content, String tag, String language) {
         return new QnaBoard(user, title, content, language);
     }
@@ -54,27 +49,13 @@ public class QnaBoard extends Board {
         modified();
     }
 
-    public void setUser(User user) {
-        super.setUser(user);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof QnaBoard)) return false;
-        QnaBoard that = (QnaBoard) o;
-        return id != null && id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-
     // 조회수 증가 메소드
     public void increaseHits() {
         increaseViews();
     }
+    public void setId(Long id){
+        this.id = id;
+    }
+
 
 }
