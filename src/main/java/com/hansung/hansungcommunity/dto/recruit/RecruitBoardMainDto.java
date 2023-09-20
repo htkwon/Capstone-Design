@@ -2,11 +2,11 @@ package com.hansung.hansungcommunity.dto.recruit;
 
 
 import com.hansung.hansungcommunity.entity.RecruitBoard;
-import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 public class RecruitBoardMainDto {
 
     private Long id;
@@ -20,7 +20,7 @@ public class RecruitBoardMainDto {
     private int bookmark;
     private int reply;
 
-    public RecruitBoardMainDto(RecruitBoard board) {
+    private RecruitBoardMainDto(RecruitBoard board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
@@ -31,6 +31,10 @@ public class RecruitBoardMainDto {
         this.createdDate = board.getCreatedAt();
         this.bookmark = board.getBookmarks().size();
         this.reply = board.getReplies().size();
+    }
+
+    public static RecruitBoardMainDto from(RecruitBoard board) {
+        return new RecruitBoardMainDto(board);
     }
 
 }

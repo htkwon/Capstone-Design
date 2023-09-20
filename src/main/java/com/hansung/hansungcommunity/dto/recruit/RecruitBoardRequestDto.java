@@ -1,7 +1,8 @@
 package com.hansung.hansungcommunity.dto.recruit;
 
 import com.hansung.hansungcommunity.entity.RecruitBoard;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Max;
@@ -12,8 +13,8 @@ import javax.validation.constraints.Size;
 /**
  * 구인 게시글 생성 요청 DTO
  */
-@Data
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecruitBoardRequestDto {
 
     @Size(min = 3, max = 30)
@@ -28,7 +29,7 @@ public class RecruitBoardRequestDto {
     @Min(1)
     private int gathered;
 
-    public RecruitBoardRequestDto(String title, String content) {
+    private RecruitBoardRequestDto(String title, String content) {
         this.title = title;
         this.content = content;
     }

@@ -1,12 +1,15 @@
 package com.hansung.hansungcommunity.dto.recruit;
 
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * 소속 신청 정보를 담는 DTO
  */
 
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecruitBoardApplyRequestDto {
 
     private Boolean isMeetRequired; // 필수 조건 충족 여부

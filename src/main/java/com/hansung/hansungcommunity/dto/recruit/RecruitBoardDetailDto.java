@@ -2,15 +2,13 @@ package com.hansung.hansungcommunity.dto.recruit;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
 public class RecruitBoardDetailDto {
 
     private Long id;
@@ -25,7 +23,6 @@ public class RecruitBoardDetailDto {
     private int reply;
     private int views;
     private Long stuId;
-    // private List<String> imgUrl = new ArrayList<>();
     private String require;
     private String optional;
     private int party;
@@ -71,6 +68,10 @@ public class RecruitBoardDetailDto {
                 recruitBoard.getParty(),
                 recruitBoard.isCompleted()
         );
+    }
+
+    public void setGathered(int gathered) {
+        this.gathered = gathered;
     }
 
 }

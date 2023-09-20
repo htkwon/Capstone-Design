@@ -207,7 +207,7 @@ public class RecruitBoardService {
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
         Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId);
 
-        RecruitBoardUpdateDto dto = new RecruitBoardUpdateDto(recruitBoard);
+        RecruitBoardUpdateDto dto = RecruitBoardUpdateDto.from(recruitBoard);
         dto.setGathered((int) (recruitBoard.getGathered() + count));
 
         return dto;
@@ -264,7 +264,7 @@ public class RecruitBoardService {
 
         return recruitBoardRepository.findAll(pageable).getContent()
                 .stream()
-                .map(RecruitBoardMainDto::new)
+                .map(RecruitBoardMainDto::from)
                 .collect(Collectors.toList());
     }
 
@@ -291,7 +291,7 @@ public class RecruitBoardService {
 
         if (recruitBoard.getUser().getId().equals(userId)) {
             return parties.stream().map(party -> {
-                ApplicantDto dto = new ApplicantDto(party.getUser());
+                ApplicantDto dto = ApplicantDto.from(party.getUser());
                 dto.setMeetRequired(party.isMeetRequired());
                 if (party.getIsMeetOptional() == null) {
                     dto.setIsMeetOptional(null);

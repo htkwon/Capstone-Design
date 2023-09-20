@@ -1,12 +1,12 @@
 package com.hansung.hansungcommunity.dto.recruit;
 
 import com.hansung.hansungcommunity.entity.RecruitBoard;
-import lombok.Data;
+import lombok.Getter;
 
 /**
  * 게시글 수정 시, 기존 게시글 정보를 담아주는 DTO
  */
-@Data
+@Getter
 public class RecruitBoardUpdateDto {
 
     private Long id;
@@ -17,13 +17,21 @@ public class RecruitBoardUpdateDto {
     private int party;
     private int gathered;
 
-    public RecruitBoardUpdateDto(RecruitBoard board) {
+    private RecruitBoardUpdateDto(RecruitBoard board) {
         this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.required = board.getRequired();
         this.optional = board.getOptional();
         this.party = board.getParty();
+    }
+
+    public static RecruitBoardUpdateDto from(RecruitBoard board) {
+        return new RecruitBoardUpdateDto(board);
+    }
+
+    public void setGathered(int gathered) {
+        this.gathered = gathered;
     }
 
 }
