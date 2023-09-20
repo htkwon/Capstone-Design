@@ -1,12 +1,12 @@
 package com.hansung.hansungcommunity.dto.user;
 
 import com.hansung.hansungcommunity.entity.User;
-import lombok.Data;
+import lombok.Getter;
 
 /**
  * 단순 유저 정보를 담는 DTO
  */
-@Data
+@Getter
 public class SimpleUserInfoDto {
 
     private Long id;
@@ -18,7 +18,7 @@ public class SimpleUserInfoDto {
     private String track1;
     private String track2;
 
-    public SimpleUserInfoDto(User user) {
+    private SimpleUserInfoDto(User user) {
         this.id = user.getId();
         this.studentId = user.getStudentId();
         this.name = user.getName();
@@ -27,6 +27,10 @@ public class SimpleUserInfoDto {
         this.introduce = user.getIntroduce();
         this.track1 = user.getTrack1();
         this.track2 = user.getTrack2();
+    }
+
+    public static SimpleUserInfoDto from(User user) {
+        return new SimpleUserInfoDto(user);
     }
 
 }

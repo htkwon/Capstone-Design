@@ -2,14 +2,15 @@ package com.hansung.hansungcommunity.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hansung.hansungcommunity.entity.Summary;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserSummaryDto {
 
     private Long summaryId;
@@ -20,7 +21,7 @@ public class UserSummaryDto {
     private boolean isFixed;
     private LocalDateTime date;
 
-    public UserSummaryDto(Long summaryId, String content, LocalDateTime date, boolean isFixed, String language) {
+    private UserSummaryDto(Long summaryId, String content, LocalDateTime date, boolean isFixed, String language) {
         this.summaryId = summaryId;
         this.content = content;
         this.date = date;

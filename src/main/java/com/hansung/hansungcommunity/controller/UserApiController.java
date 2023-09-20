@@ -64,7 +64,7 @@ public class UserApiController {
     public ResponseEntity<SimpleUserInfoDto> simpleUserInfo(Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
 
-        return ResponseEntity.ok(new SimpleUserInfoDto(ca.getUser()));
+        return ResponseEntity.ok(SimpleUserInfoDto.from(ca.getUser()));
     }
 
     /**

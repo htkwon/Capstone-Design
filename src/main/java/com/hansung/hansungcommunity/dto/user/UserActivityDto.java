@@ -1,14 +1,12 @@
 package com.hansung.hansungcommunity.dto.user;
 
 import com.hansung.hansungcommunity.entity.Board;
-import com.hansung.hansungcommunity.entity.FreeBoard;
-import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
-import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 public class UserActivityDto {
 
     private Long id;
@@ -17,31 +15,17 @@ public class UserActivityDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private String writer;
-    private String language;
     private int bookmark;
     private int reply;
     private String boardType;
 
-    public UserActivityDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String writer, int bookmark, int reply, String boardType) {
+    private UserActivityDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String writer, int bookmark, int reply, String boardType) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createdDate = createdAt;
         this.modifiedDate = modifiedAt;
         this.writer = writer;
-        this.bookmark = bookmark;
-        this.reply = reply;
-        this.boardType = boardType;
-    }
-
-    public UserActivityDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String writer, String language, int bookmark, int reply, String boardType) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.createdDate = createdAt;
-        this.modifiedDate = modifiedAt;
-        this.writer = writer;
-        this.language = language;
         this.bookmark = bookmark;
         this.reply = reply;
         this.boardType = boardType;
@@ -58,35 +42,6 @@ public class UserActivityDto {
                 board.getBookmarks().size(),
                 board.getReplies().size(),
                 typeConvert(board.getBoardType())
-        );
-    }
-
-    public static UserActivityDto of(FreeBoard freeBoard) {
-        return new UserActivityDto(
-                freeBoard.getId(),
-                freeBoard.getTitle(),
-                freeBoard.getContent(),
-                freeBoard.getCreatedAt(),
-                freeBoard.getModifiedAt(),
-                freeBoard.getUser().getNickname(),
-                freeBoard.getBookmarks().size(),
-                freeBoard.getReplies().size(),
-                typeConvert(freeBoard.getBoardType())
-        );
-    }
-
-    public static UserActivityDto of(QnaBoard qnaBoard) {
-        return new UserActivityDto(
-                qnaBoard.getId(),
-                qnaBoard.getTitle(),
-                qnaBoard.getContent(),
-                qnaBoard.getCreatedAt(),
-                qnaBoard.getModifiedAt(),
-                qnaBoard.getUser().getNickname(),
-                qnaBoard.getLanguage(),
-                qnaBoard.getBookmarks().size(),
-                qnaBoard.getReplies().size(),
-                typeConvert(qnaBoard.getBoardType())
         );
     }
 

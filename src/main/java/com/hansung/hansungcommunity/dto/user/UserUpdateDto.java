@@ -1,11 +1,14 @@
 package com.hansung.hansungcommunity.dto.user;
 
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Size;
 import java.util.List;
 
-@Data
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserUpdateDto {
 
     @Size(min = 2, max = 8)

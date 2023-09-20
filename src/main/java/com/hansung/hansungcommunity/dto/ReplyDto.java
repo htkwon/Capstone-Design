@@ -36,7 +36,7 @@ public class ReplyDto {
         this.id = Reply.getId();
         this.article = Reply.getArticle();
         this.parentId = (Reply.getParent() != null) ? Reply.getParent().getId() : null;
-        this.user = new UserReplyDto(Reply.getUser());
+        this.user = UserReplyDto.from(Reply.getUser());
         this.createdAt = Reply.getCreatedAt();
     }
 
@@ -63,7 +63,7 @@ public class ReplyDto {
         return new ReplyDto(
                 Reply.getId(),
                 Reply.getArticle(),
-                new UserReplyDto(Reply.getUser()),
+                UserReplyDto.from(Reply.getUser()),
                 Reply.getCreatedAt()
         );
     }
@@ -73,7 +73,7 @@ public class ReplyDto {
                 Reply.getId(),
                 Reply.getArticle(),
                 Reply.getParent().getId(),
-                new UserReplyDto(Reply.getUser()),
+                UserReplyDto.from(Reply.getUser()),
                 Reply.getCreatedAt()
         );
     }

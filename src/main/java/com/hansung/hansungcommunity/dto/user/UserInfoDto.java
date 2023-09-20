@@ -2,12 +2,12 @@ package com.hansung.hansungcommunity.dto.user;
 
 import com.hansung.hansungcommunity.entity.Skill;
 import com.hansung.hansungcommunity.entity.User;
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
 public class UserInfoDto {
 
     private Long id;
@@ -23,7 +23,7 @@ public class UserInfoDto {
     private String profileImg;
     private Set<String> skills; // 관심 기술
 
-    public UserInfoDto(Long id, String studentId, String name, String nickname, String track1, String track2, int board, int bookmark, String introduce, String profileImg, Set<Skill> skills) {
+    private UserInfoDto(Long id, String studentId, String name, String nickname, String track1, String track2, int board, int bookmark, String introduce, String profileImg, Set<Skill> skills) {
         this.id = id;
         this.studentId = studentId;
         this.name = name;
@@ -51,6 +51,10 @@ public class UserInfoDto {
                 user.getProfileImg(),
                 user.getSkills()
         );
+    }
+
+    public void setApplication(int application) {
+        this.application = application;
     }
 
 }

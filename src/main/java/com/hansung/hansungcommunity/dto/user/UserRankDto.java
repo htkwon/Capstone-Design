@@ -1,9 +1,9 @@
 package com.hansung.hansungcommunity.dto.user;
 
 import com.hansung.hansungcommunity.entity.User;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class UserRankDto {
 
     private int adoptSize;
@@ -12,7 +12,7 @@ public class UserRankDto {
     private String introduce;
     private String profileImg;
 
-    public UserRankDto(int adoptSize, String nickname, String studentId, String introduce, String profileImg) {
+    private UserRankDto(int adoptSize, String nickname, String studentId, String introduce, String profileImg) {
         this.adoptSize = adoptSize;
         this.nickname = nickname;
         this.studentId = studentId;

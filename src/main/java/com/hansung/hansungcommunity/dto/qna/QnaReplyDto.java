@@ -55,7 +55,7 @@ public class QnaReplyDto {
         return new QnaReplyDto(
                 qnaReply.getId(),
                 qnaReply.getArticle(),
-                new UserReplyDto(qnaReply.getUser()),
+                UserReplyDto.from(qnaReply.getUser()),
                 qnaReply.getCreatedAt()
         );
     }
@@ -66,7 +66,7 @@ public class QnaReplyDto {
                 qnaReply.getId(),
                 qnaReply.getArticle(),
                 qnaReply.getParent().getId(),
-                new UserReplyDto(qnaReply.getUser()),
+                UserReplyDto.from(qnaReply.getUser()),
                 qnaReply.getCreatedAt()
         );
     }
