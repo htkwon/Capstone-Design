@@ -1,16 +1,15 @@
 package com.hansung.hansungcommunity.dto;
 
 import com.hansung.hansungcommunity.entity.Board;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 /**
  * 메인 페이지 인기 게시글 조회 DTO
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BoardMainDto {
 
     private Long id;
