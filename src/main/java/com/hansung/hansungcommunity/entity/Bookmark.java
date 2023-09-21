@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"board_id", "user_id"})})
 public class Bookmark {
 
@@ -28,7 +29,7 @@ public class Bookmark {
         this.board = board;
     }
 
-    public static Bookmark from(User user, Board board) {
+    public static Bookmark of(User user, Board board) {
         return new Bookmark(
                 user,
                 board

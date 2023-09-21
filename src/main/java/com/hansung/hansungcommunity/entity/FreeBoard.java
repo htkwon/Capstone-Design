@@ -1,9 +1,9 @@
 package com.hansung.hansungcommunity.entity;
 
 import com.hansung.hansungcommunity.dto.free.FreeBoardRequestDto;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,11 +11,9 @@ import javax.persistence.Table;
 
 @Table(name = "free_board")
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class FreeBoard extends Board {
-
     @Id
     private Long id;
 
@@ -34,6 +32,10 @@ public class FreeBoard extends Board {
         board.setUser(user); // 연관관계 설정
 
         return board;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     // 연관관계 메소드

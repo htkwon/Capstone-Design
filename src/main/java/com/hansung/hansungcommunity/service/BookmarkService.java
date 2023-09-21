@@ -27,7 +27,7 @@ public class BookmarkService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BoardNotFoundException("북마크 등록 실패, 해당하는 유저가 없습니다."));
 
-        Bookmark bookmark = Bookmark.from(user, board);
+        Bookmark bookmark = Bookmark.of(user, board);
 
         bookmarkRepository.save(bookmark);
     }

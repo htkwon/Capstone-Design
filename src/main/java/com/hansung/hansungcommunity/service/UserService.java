@@ -43,7 +43,7 @@ public class UserService {
                         .orElseThrow(() -> new SkillNotFoundException("회원가입 실패, 해당하는 기술이 없습니다.")))
                 .collect(Collectors.toSet());
 
-        User user = userRepository.save(User.from(dto, skills));
+        User user = userRepository.save(User.of(dto, skills));
 
         return user.getId();
     }

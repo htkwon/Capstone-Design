@@ -3,21 +3,19 @@ package com.hansung.hansungcommunity.entity;
 
 import com.hansung.hansungcommunity.dto.user.UserRequestDto;
 import com.hansung.hansungcommunity.dto.user.UserUpdateDto;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
 @Getter
-@Setter
 @Entity
 @Table(name = "user")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
@@ -55,7 +53,7 @@ public class User {
     private List<Summary> summaries = new ArrayList<>();
 
 
-    private User(String studentId, String name, String nickname, String introduce, String track1, String track2, String profileImg) {
+    private User(String studentId, String name, String nickname, String introduce, String track1, String track2, String profileImg, Set<Skill> skills) {
         this.studentId = studentId;
         this.name = name;
         this.nickname = nickname;
@@ -63,22 +61,24 @@ public class User {
         this.track1 = track1;
         this.track2 = track2;
         this.profileImg = profileImg;
+        this.skills = skills;
     }
 
-    public static User from(UserRequestDto dto, Set<Skill> skills) {
-        User user = new User(
+    public static User of(UserRequestDto dto, Set<Skill> skills) {
+        return new User(
                 dto.getStudentId(),
                 dto.getName(),
                 dto.getNickname(),
                 dto.getIntroduce(),
                 dto.getTrack1(),
                 dto.getTrack2(),
-                dto.getPicture()
+                dto.getPicture(),
+                skills
         );
+    }
 
-        user.setSkills(skills);
-
-        return user;
+    public void setSkills(Set<Skill> skills) {
+        this.skills = skills;
     }
 
     public void updateUserInfo(UserUpdateDto dto) {

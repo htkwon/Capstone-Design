@@ -1,6 +1,7 @@
 package com.hansung.hansungcommunity.entity;
 
 import com.hansung.hansungcommunity.dto.user.UserSummaryDto;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Summary extends AuditingFields {
 
     @Id
@@ -22,7 +23,7 @@ public class Summary extends AuditingFields {
     @JoinColumn(name = "user")
     private User user;
 
-    public Summary(Long summaryId, String content, boolean isFixed, String language) {
+    private Summary(Long summaryId, String content, boolean isFixed, String language) {
         this.id = summaryId;
         this.content = content;
         this.language = language;
