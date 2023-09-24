@@ -93,7 +93,7 @@ public class RecruitBoardController {
      */
     @GetMapping("/recruit/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
-        Boolean check = fileService.check(boardId);
+        boolean check = fileService.check(boardId);
 
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
@@ -204,7 +204,7 @@ public class RecruitBoardController {
     public ResponseEntity<Long> apply(
             @PathVariable("boardId") Long boardId,
             Authentication authentication,
-            @RequestBody RecruitBoardApplyRequestDto dto
+            @RequestBody @Valid RecruitBoardApplyRequestDto dto
     ) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long partyId = recruitBoardService.apply(boardId, ca.getUser().getId(), dto);

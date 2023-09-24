@@ -90,7 +90,7 @@ public class UserApiController {
      */
     @PostMapping("/api/user/check-nickname")
     public ResponseEntity<Boolean> checkNickname(@RequestBody @Valid UserCheckNicknameDto dto) {
-        Boolean check = userService.checkUserNickname(dto);
+        boolean check = userService.checkUserNickname(dto);
 
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }

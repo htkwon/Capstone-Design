@@ -25,7 +25,6 @@ public class FreeReplyController {
             @Valid @RequestBody ReplyDto replyDto,
             Authentication authentication
     ) {
-
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long userId = ca.getUser().getId();
 

@@ -134,7 +134,7 @@ public class FreeBoardApiController {
      */
     @GetMapping("/free/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
-        Boolean check = fileService.check(boardId);
+        boolean check = fileService.check(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
