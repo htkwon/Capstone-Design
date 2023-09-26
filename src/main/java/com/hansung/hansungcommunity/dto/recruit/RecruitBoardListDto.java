@@ -11,20 +11,20 @@ import java.util.List;
 @Getter
 public class RecruitBoardListDto {
 
-    private Long id;
-    private String title;
-    private String writer;
-    private String introduce;
-    private String profileImg;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-    private int bookmark;
-    private int reply;
-    private int views;
-    private Long stuId;
-    private String require;
-    private String optional;
-    private int party;
+    private final Long id;
+    private final String title;
+    private final String writer;
+    private final String introduce;
+    private final String profileImg;
+    private final LocalDateTime createdDate;
+    private final LocalDateTime modifiedDate;
+    private final int bookmark;
+    private final int reply;
+    private final int views;
+    private final Long stuId;
+    private final String require;
+    private final String optional;
+    private final int party;
     private int gathered;
     @JsonProperty("isCompleted")
     private boolean isCompleted;

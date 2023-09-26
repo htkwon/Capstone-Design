@@ -8,16 +8,16 @@ import java.time.LocalDateTime;
 @Getter
 public class FreeBoardMainDto {
 
-    private Long id;
-    private String title;
-    private String content;
-    private String writer;
-    private String introduce;
-    private String stuId;
-    private String profileImg;
-    private LocalDateTime createdDate;
-    private int bookmark;
-    private int reply;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final String writer;
+    private final String introduce;
+    private final String stuId;
+    private final String profileImg;
+    private final LocalDateTime createdDate;
+    private final int bookmark;
+    private final int reply;
 
     private FreeBoardMainDto(FreeBoard board) {
         this.id = board.getId();

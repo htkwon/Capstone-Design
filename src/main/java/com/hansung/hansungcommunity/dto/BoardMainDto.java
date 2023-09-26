@@ -12,9 +12,9 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BoardMainDto {
 
-    private Long id;
-    private String title;
-    private String boardType;
+    private final Long id;
+    private final String title;
+    private final String boardType;
 
     public static BoardMainDto from(Board board) {
         return new BoardMainDto(

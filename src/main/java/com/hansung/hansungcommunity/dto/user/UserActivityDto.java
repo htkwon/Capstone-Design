@@ -9,15 +9,15 @@ import java.time.LocalDateTime;
 @Getter
 public class UserActivityDto {
 
-    private Long id;
-    private String title;
-    private String content;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-    private String writer;
-    private int bookmark;
-    private int reply;
-    private String boardType;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final LocalDateTime createdDate;
+    private final LocalDateTime modifiedDate;
+    private final String writer;
+    private final int bookmark;
+    private final int reply;
+    private final String boardType;
 
     private UserActivityDto(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String writer, int bookmark, int reply, String boardType) {
         this.id = id;

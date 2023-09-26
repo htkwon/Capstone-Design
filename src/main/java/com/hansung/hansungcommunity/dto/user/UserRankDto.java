@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 public class UserRankDto {
 
-    private int adoptSize;
-    private String nickname;
-    private String studentId;
-    private String introduce;
-    private String profileImg;
+    private final int adoptSize;
+    private final String nickname;
+    private final String studentId;
+    private final String introduce;
+    private final String profileImg;
 
     private UserRankDto(int adoptSize, String nickname, String studentId, String introduce, String profileImg) {
         this.adoptSize = adoptSize;

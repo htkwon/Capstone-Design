@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class UserReplyDto {
 
-    private Long id;
-    private String nickname;
-    private String profileImg;
+    private final Long id;
+    private final String nickname;
+    private final String profileImg;
 
     private UserReplyDto(User user) {
         this.id = user.getId();

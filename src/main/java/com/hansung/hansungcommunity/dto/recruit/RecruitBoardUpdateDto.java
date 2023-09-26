@@ -9,12 +9,12 @@ import lombok.Getter;
 @Getter
 public class RecruitBoardUpdateDto {
 
-    private Long id;
-    private String title;
-    private String content;
-    private String required;
-    private String optional;
-    private int party;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final String required;
+    private final String optional;
+    private final int party;
     private int gathered;
 
     private RecruitBoardUpdateDto(RecruitBoard board) {

@@ -10,18 +10,18 @@ import java.util.stream.Collectors;
 @Getter
 public class UserInfoDto {
 
-    private Long id;
-    private String studentId;
-    private String nickname;
-    private String name;
-    private String track1;
-    private String track2;
-    private int board;
+    private final Long id;
+    private final String studentId;
+    private final String nickname;
+    private final String name;
+    private final String track1;
+    private final String track2;
+    private final int board;
+    private final int bookmark;
+    private final String introduce;
+    private final String profileImg;
+    private final Set<String> skills; // 관심 기술
     private int application;
-    private int bookmark;
-    private String introduce;
-    private String profileImg;
-    private Set<String> skills; // 관심 기술
 
     private UserInfoDto(Long id, String studentId, String name, String nickname, String track1, String track2, int board, int bookmark, String introduce, String profileImg, Set<Skill> skills) {
         this.id = id;

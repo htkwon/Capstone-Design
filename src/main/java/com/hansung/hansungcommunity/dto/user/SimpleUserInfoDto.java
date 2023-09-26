@@ -9,14 +9,14 @@ import lombok.Getter;
 @Getter
 public class SimpleUserInfoDto {
 
-    private Long id;
-    private String studentId;
-    private String name;
-    private String nickname;
-    private String profileImg;
-    private String introduce;
-    private String track1;
-    private String track2;
+    private final Long id;
+    private final String studentId;
+    private final String name;
+    private final String nickname;
+    private final String profileImg;
+    private final String introduce;
+    private final String track1;
+    private final String track2;
 
     private SimpleUserInfoDto(User user) {
         this.id = user.getId();

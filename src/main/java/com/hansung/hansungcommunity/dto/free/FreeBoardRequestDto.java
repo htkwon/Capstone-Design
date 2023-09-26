@@ -1,12 +1,15 @@
 package com.hansung.hansungcommunity.dto.free;
 
 import com.hansung.hansungcommunity.entity.FreeBoard;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FreeBoardRequestDto {
 
     private Long id;

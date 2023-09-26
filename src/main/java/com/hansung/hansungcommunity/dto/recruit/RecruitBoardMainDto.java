@@ -9,16 +9,16 @@ import java.time.LocalDateTime;
 @Getter
 public class RecruitBoardMainDto {
 
-    private Long id;
-    private String title;
-    private String content;
-    private String writer;
-    private String stuId;
-    private String introduce;
-    private String profileImg;
-    private LocalDateTime createdDate;
-    private int bookmark;
-    private int reply;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final String writer;
+    private final String stuId;
+    private final String introduce;
+    private final String profileImg;
+    private final LocalDateTime createdDate;
+    private final int bookmark;
+    private final int reply;
 
     private RecruitBoardMainDto(RecruitBoard board) {
         this.id = board.getId();
