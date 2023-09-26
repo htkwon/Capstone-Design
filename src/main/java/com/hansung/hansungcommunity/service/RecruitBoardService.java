@@ -122,9 +122,9 @@ public class RecruitBoardService {
         if (check.isEmpty()) {
             Party party;
             if (dto.getIsMeetOptional() == null) {
-                party = partyRepository.save(Party.from(user, board, dto.getIsMeetRequired(), null));
+                party = partyRepository.save(Party.from(user, board, dto.isMeetRequired(), null));
             } else {
-                party = partyRepository.save(Party.from(user, board, dto.getIsMeetRequired(), dto.getIsMeetOptional()));
+                party = partyRepository.save(Party.from(user, board, dto.isMeetRequired(), dto.getIsMeetOptional()));
             }
             return party.getId();
         } else {

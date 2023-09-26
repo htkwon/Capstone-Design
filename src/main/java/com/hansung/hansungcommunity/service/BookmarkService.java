@@ -44,7 +44,7 @@ public class BookmarkService {
         return (int) bookmarkRepository.countByBoardId(boardId);
     }
 
-    public Boolean check(Long boardId, Long userId) {
+    public boolean check(Long boardId, Long userId) {
         return bookmarkRepository.existsByBoardIdAndUserId(boardId, userId);
     }
 

@@ -82,7 +82,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public Boolean checkUserNickname(UserCheckNicknameDto dto) {
+    public boolean checkUserNickname(UserCheckNicknameDto dto) {
         User user = userRepository.findByNickname(dto.getNickname());
 
         return user != null;
