@@ -131,7 +131,7 @@ public class NoticeController {
      */
     @GetMapping("/notice/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
-        Boolean check = fileService.check(boardId);
+        boolean check = fileService.check(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
@@ -167,7 +167,7 @@ public class NoticeController {
         NoticeBoard real = noticeService.get(boardId);
         board.setId(real.getId());
 
-        NoticeBoardDto boardDto = noticeService.update(NoticeBoardDto.of(board), boardId);
+        NoticeBoardDto boardDto = noticeService.update(NoticeBoardDto.from(board), boardId);
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();

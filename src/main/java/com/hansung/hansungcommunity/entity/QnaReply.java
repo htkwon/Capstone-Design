@@ -4,21 +4,19 @@ import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Table(name = "qna_reply")
 @Entity
+@Table(name = "qna_reply")
 @Getter
-@Setter
+@ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QnaReply extends Reply {
 
-    @ColumnDefault(value = "false")
-    private Boolean adopt;
+    private boolean adopt;
 
     private QnaReply(User user, QnaBoard board, String article) {
         super(user, board, article);
@@ -36,7 +34,7 @@ public class QnaReply extends Reply {
         super.updateParent(parent);
     }
 
-    public void adopt(Boolean adopt) {
+    public void adopt(boolean adopt) {
         this.adopt = adopt;
     }
 
