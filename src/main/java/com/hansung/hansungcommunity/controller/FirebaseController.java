@@ -9,6 +9,7 @@ import com.google.firebase.FirebaseException;
 import com.hansung.hansungcommunity.ImageUtils;
 import com.hansung.hansungcommunity.service.FileService;
 import com.hansung.hansungcommunity.service.FireBaseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 @Controller
+@RequiredArgsConstructor
 public class FirebaseController {
 
     private final FireBaseService fireBaseService;
@@ -29,11 +31,6 @@ public class FirebaseController {
     @Value("${app.firebase-bucket}")
     private String bucketName;
 
-
-    public FirebaseController(FireBaseService fireBaseService, FileService fileService) {
-        this.fireBaseService = fireBaseService;
-        this.fileService = fileService;
-    }
 
     /**
      * 이미지 저장
@@ -99,9 +96,9 @@ public class FirebaseController {
      * firebase로 부터 이미지 받아오기
      */
     public ResponseEntity<byte[]> get(String bucketName, String imageName) throws IOException {
-        String serviceAccountKeyFile = "src/main/resources/serviceAccountKey.json";
+        InputStream serviceAccount = FirebaseController.class.getClassLoader().getResourceAsStream("serviceAccountKey.json");
+
         // 서비스 계정 키 파일을 이용하여 인증 정보를 생성
-        InputStream serviceAccount = new FileInputStream(serviceAccountKeyFile);
         GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
 
         // Storage 인스턴스를 생성 후 연결
@@ -117,8 +114,7 @@ public class FirebaseController {
     }
 
     public String getType(String bucketName, String imageName) throws IOException {
-        String serviceAccountKeyFile = "src/main/resources/serviceAccountKey.json";
-        InputStream serviceAccount = new FileInputStream(serviceAccountKeyFile);
+        InputStream serviceAccount = FirebaseController.class.getClassLoader().getResourceAsStream("serviceAccountKey.json");
         GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
 
         // Storage 인스턴스를 생성 후 연결
@@ -132,9 +128,8 @@ public class FirebaseController {
      * 해당 다운로드 링크 제공
      */
     private ResponseEntity<byte[]> getFileDownload(String bucketName, String fileName, String imageName) throws IOException {
-        String serviceAccountKeyFile = "src/main/resources/serviceAccountKey.json";
 
-        InputStream serviceAccount = new FileInputStream(serviceAccountKeyFile);
+        InputStream serviceAccount = FirebaseController.class.getClassLoader().getResourceAsStream("serviceAccountKey.json");
         GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
 
         // Storage 인스턴스를 생성 후 연결
@@ -158,16 +153,8 @@ public class FirebaseController {
      * 파이어베이스 이미지 삭제
      */
     public ResponseEntity<Void> delete(String bucketName, String imageName) {
-        String serviceAccountKeyFile = "src/main/resources/serviceAccountKey.json";
 
-        InputStream serviceAccount;
-        try {
-            serviceAccount = new FileInputStream(serviceAccountKeyFile);
-        } catch (FileNotFoundException e) {
-            // 파일 존재 x 예외
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
+        InputStream serviceAccount = FirebaseController.class.getClassLoader().getResourceAsStream("serviceAccountKey.json");
         GoogleCredentials credentials;
         try {
             credentials = GoogleCredentials.fromStream(serviceAccount);
