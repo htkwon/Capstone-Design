@@ -16,7 +16,7 @@ public class NoticeBoard extends Board {
     @Id
     private Long id;
 
-    public NoticeBoard(Long id, String title, String content, User user) {
+    private NoticeBoard(Long id, String title, String content, User user) {
         this.id = id;
         this.title = title;
         this.content = content;

@@ -39,7 +39,7 @@ public class QnaReplyDto {
         this.createdAt = createdAt;
     }
 
-    public static QnaReplyDto from(QnaReply qnaReply, UserReplyDto userDto) {
+    public static QnaReplyDto of(QnaReply qnaReply, UserReplyDto userDto) {
         Long parentId = qnaReply.getParent() != null ? qnaReply.getParent().getId() : null;
         return new QnaReplyDto(
                 qnaReply.getId(),

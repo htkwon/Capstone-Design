@@ -42,7 +42,7 @@ public class FileService {
         return fileRepository.findAllByBoard(boardRepository.findById(boardId)
                         .orElseThrow(() -> new BoardNotFoundException("해당 게시글이 없습니다.")))
                 .stream()
-                .map(FileRequestDto::of)
+                .map(FileRequestDto::from)
                 .collect(Collectors.toList());
     }
 

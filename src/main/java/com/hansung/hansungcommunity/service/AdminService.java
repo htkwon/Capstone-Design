@@ -47,7 +47,7 @@ public class AdminService {
     public List<AdminUserDto> getUserList() {
         return userRepository.findAll()
                 .stream()
-                .map(AdminUserDto::of)
+                .map(AdminUserDto::from)
                 .filter(user -> !user.getStuId().equals("1800000"))
                 .collect(Collectors.toList());
     }
