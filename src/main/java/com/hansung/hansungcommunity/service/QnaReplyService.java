@@ -91,7 +91,7 @@ public class QnaReplyService {
         UserReplyDto userReplyDto = UserReplyDto.from(userRepository.findById(reply.getUser().getId())
                 .orElseThrow(() -> new UserNotFoundException("댓글 수정 실패, 해당하는 유저가 없습니다.")));
 
-        return QnaReplyDto.from(qnaReplyRepository.save(reply), userReplyDto);
+        return QnaReplyDto.of(qnaReplyRepository.save(reply), userReplyDto);
     }
 
     @Transactional
