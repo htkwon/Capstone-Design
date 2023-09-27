@@ -1,14 +1,16 @@
 package com.hansung.hansungcommunity.dto.notice;
 
 import com.hansung.hansungcommunity.entity.NoticeBoard;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-@Data
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class NoticeBoardDto {
 
     private Long id;
@@ -19,14 +21,14 @@ public class NoticeBoardDto {
     private String content;
     private String writer;
 
-    public NoticeBoardDto(Long id, String title, String content, String writer) {
+    private NoticeBoardDto(Long id, String title, String content, String writer) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
     }
 
-    public static NoticeBoardDto of(NoticeBoard board) {
+    public static NoticeBoardDto from(NoticeBoard board) {
         return new NoticeBoardDto(
                 board.getId(),
                 board.getTitle(),

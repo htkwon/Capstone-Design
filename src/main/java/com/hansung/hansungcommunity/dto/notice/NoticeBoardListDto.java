@@ -3,44 +3,64 @@ package com.hansung.hansungcommunity.dto.notice;
 import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.entity.NoticeBoard;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 
-@Data
-@NoArgsConstructor
+@Getter
 public class NoticeBoardListDto {
 
-    private Long id;
-    private String title;
-    private String content;
-    private String writer;
-    private String stuId;
-    private String introduce;
-    private String profileImg;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-    private int bookmark;
-    private int reply;
-    private int views;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final String writer;
+    private final String stuId;
+    private final String introduce;
+    private final String profileImg;
+    private final LocalDateTime createdDate;
+    private final LocalDateTime modifiedDate;
+    private final int bookmark;
+    private final int reply;
+    private final int views;
     private List<ImageDto> image;
 
-    public NoticeBoardListDto(NoticeBoard board) {
-        this.id = board.getId();
-        this.title = board.getTitle();
-        this.content = board.getContent();
-        this.writer = board.getUser().getNickname();
-        this.stuId = board.getUser().getStudentId();
-        this.introduce = board.getUser().getIntroduce();
-        this.profileImg = board.getUser().getProfileImg();
-        this.createdDate = board.getCreatedAt();
-        this.modifiedDate = board.getModifiedAt();
-        this.bookmark = board.getBookmarks().size();
-        this.reply = board.getReplies().size();
-        this.views = board.getViews();
-        this.image = null;
+
+    public NoticeBoardListDto(Long id, String title, String content, String writer, String stuId, String introduce, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, int bookmark, int reply, int views, List<ImageDto> image) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+        this.stuId = stuId;
+        this.introduce = introduce;
+        this.profileImg = profileImg;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.bookmark = bookmark;
+        this.reply = reply;
+        this.views = views;
+        this.image = image;
     }
+
+    public static NoticeBoardListDto from(NoticeBoard board){
+        return new NoticeBoardListDto(
+                board.getId(),
+                board.getTitle(),
+                board.getContent(),
+                board.getUser().getNickname(),
+                board.getUser().getStudentId(),
+                board.getUser().getIntroduce(),
+                board.getUser().getProfileImg(),
+                board.getCreatedAt(),
+                board.getModifiedAt(),
+                board.getBookmarks().size(),
+                board.getReplies().size(),
+                board.getViews(),
+                null
+        );
+    }
+    public void setImage(List<ImageDto> image) {this.image = image;}
 
 }

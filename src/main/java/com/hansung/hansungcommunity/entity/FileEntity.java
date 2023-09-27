@@ -1,16 +1,15 @@
 package com.hansung.hansungcommunity.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
-@Getter
-@ToString(callSuper = true)
 @Entity
-@NoArgsConstructor
+@Getter
+@ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FileEntity {
 
     @Id
@@ -27,7 +26,7 @@ public class FileEntity {
     @NotNull
     private String createdName;
 
-    public FileEntity(Board board, String originalName, String createdName) {
+    private FileEntity(Board board, String originalName, String createdName) {
         this.board = board;
         this.originalName = originalName;
         this.createdName = createdName;

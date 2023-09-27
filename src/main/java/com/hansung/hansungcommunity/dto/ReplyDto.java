@@ -2,18 +2,15 @@ package com.hansung.hansungcommunity.dto;
 
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.Reply;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class ReplyDto {
 
     private Long id;
@@ -32,7 +29,7 @@ public class ReplyDto {
     }
 
 
-    public ReplyDto(Reply Reply) {
+    private ReplyDto(Reply Reply) {
         this.id = Reply.getId();
         this.article = Reply.getArticle();
         this.parentId = (Reply.getParent() != null) ? Reply.getParent().getId() : null;
@@ -40,14 +37,14 @@ public class ReplyDto {
         this.createdAt = Reply.getCreatedAt();
     }
 
-    public ReplyDto(Long id, String article, UserReplyDto userReplyDto, LocalDateTime createdAt) {
+    private ReplyDto(Long id, String article, UserReplyDto userReplyDto, LocalDateTime createdAt) {
         this.id = id;
         this.article = article;
         this.user = userReplyDto;
         this.createdAt = createdAt;
     }
 
-    public static ReplyDto from(Reply Reply, UserReplyDto dto) {
+    public static ReplyDto of(Reply Reply, UserReplyDto dto) {
         Long parentId = Reply.getParent() != null ? Reply.getParent().getId() : null;
         return new ReplyDto(
                 Reply.getId(),
@@ -72,8 +69,8 @@ public class ReplyDto {
         return new ReplyDto(
                 Reply.getId(),
                 Reply.getArticle(),
-                Reply.getParent().getId(),
                 UserReplyDto.from(Reply.getUser()),
+                Reply.getParent().getId(),
                 Reply.getCreatedAt()
         );
     }
@@ -85,4 +82,3 @@ public class ReplyDto {
     }
 
 }
-

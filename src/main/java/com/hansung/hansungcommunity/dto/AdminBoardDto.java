@@ -4,21 +4,22 @@ import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class AdminBoardDto {
     
-    private Long id;
-    private String title;
-    private String boardType;
+    private final Long id;
+    private final String title;
+    private final String boardType;
 
-    public AdminBoardDto(Long id, String title, String boardType) {
+    private AdminBoardDto(Long id, String title, String boardType) {
         this.id = id;
         this.title = title;
         this.boardType = boardType;
     }
 
-    public static AdminBoardDto of(FreeBoard board) {
+    public static AdminBoardDto from(FreeBoard board) {
         return new AdminBoardDto(
                 board.getId(),
                 board.getTitle(),
@@ -26,7 +27,7 @@ public class AdminBoardDto {
         );
     }
 
-    public static AdminBoardDto of(QnaBoard board) {
+    public static AdminBoardDto from(QnaBoard board) {
         return new AdminBoardDto(
                 board.getId(),
                 board.getTitle(),
@@ -34,7 +35,7 @@ public class AdminBoardDto {
         );
     }
 
-    public static AdminBoardDto of(RecruitBoard board) {
+    public static AdminBoardDto from(RecruitBoard board) {
         return new AdminBoardDto(
                 board.getId(),
                 board.getTitle(),

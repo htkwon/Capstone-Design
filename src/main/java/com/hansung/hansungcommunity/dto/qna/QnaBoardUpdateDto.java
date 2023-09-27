@@ -10,10 +10,10 @@ import lombok.Getter;
 @Getter
 public class QnaBoardUpdateDto {
 
-    private Long id;
-    private String title;
-    private String content;
-    private String language;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final String language;
 
     private QnaBoardUpdateDto(Long id, String title, String content, String language) {
         this.id = id;

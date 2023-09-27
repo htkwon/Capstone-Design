@@ -3,16 +3,17 @@ package com.hansung.hansungcommunity.dto;
 import com.hansung.hansungcommunity.entity.FileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
 public class FileRequestDto {
 
-    private String originalName;
+    private final String originalName;
 
-    public static FileRequestDto of(FileEntity entity) {
+    public FileRequestDto(String originalName){this.originalName = originalName;}
+
+    public static FileRequestDto from(FileEntity entity) {
         return new FileRequestDto(
                 entity.getOriginalName()
         );
