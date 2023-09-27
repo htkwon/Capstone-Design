@@ -39,7 +39,7 @@ public class NoticeService {
         return boardRepository.findAllByUserIdOrderByCreatedAtDesc(id)
                 .stream()
                 .flatMap(board -> noticeRepository.findAllById(board.getId()).stream())
-                .map(NoticeBoardDto::of)
+                .map(NoticeBoardDto::from)
                 .collect(Collectors.toList());
     }
 
@@ -52,7 +52,7 @@ public class NoticeService {
 
         return noticeRepository.findAll(pageable).getContent()
                 .stream()
-                .map(NoticeBoardMainDto::new)
+                .map(NoticeBoardMainDto::from)
                 .collect(Collectors.toList());
     }
 
@@ -84,7 +84,7 @@ public class NoticeService {
 
         return page.getContent().stream()
                 .map(board -> {
-                    NoticeBoardListDto dto = new NoticeBoardListDto(board);
+                    NoticeBoardListDto dto = NoticeBoardListDto.from(board);
 
                     dto.setImage(extractImagesFromContent(board.getContent()));
                     return dto;
@@ -93,8 +93,8 @@ public class NoticeService {
     }
 
     public NoticeBoardDetailsDto detail(Long boardId) {
-        return new NoticeBoardDetailsDto(noticeRepository.findById(boardId)
-                .orElseThrow(() -> new BoardNotFoundException("공지사항 조회 실패, 해당하는 공지사항이 없습니다.")));
+        return NoticeBoardDetailsDto.from(noticeRepository.findById(boardId)
+                .orElseThrow(()-> new BoardNotFoundException("공지사항 조회 실패, 해당하는 공지사항이 없습니다.")));
     }
 
 
@@ -119,7 +119,7 @@ public class NoticeService {
 
         noticeBoard.patch(dto);
 
-        return NoticeBoardDto.of(noticeRepository.save(noticeBoard));
+        return NoticeBoardDto.from(noticeRepository.save(noticeBoard));
     }
 
     @Transactional

@@ -1,16 +1,14 @@
 package com.hansung.hansungcommunity.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "adopt")
+@ToString
 public class Adopt {
 
     @Id
@@ -26,7 +24,7 @@ public class Adopt {
     @JoinColumn(name = "qna_board_id")
     private Board qnaBoard;
 
-    public Adopt(Board board, User user) {
+    private Adopt(Board board, User user) {
         this.qnaBoard = board;
         this.user = user;
     }

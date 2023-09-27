@@ -85,7 +85,7 @@ public class ReplyService {
         UserReplyDto userReplyDto = UserReplyDto.from(userRepository.findById(reply.getUser().getId())
                 .orElseThrow(() -> new UserNotFoundException("댓글 수정 실패, 해당하는 유저가 없습니다.")));
 
-        return ReplyDto.from(replyRepository.save(reply), userReplyDto);
+        return ReplyDto.of(replyRepository.save(reply), userReplyDto);
     }
 
     @Transactional

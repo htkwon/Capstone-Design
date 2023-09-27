@@ -2,19 +2,15 @@ package com.hansung.hansungcommunity.entity;
 
 
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardDto;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+@Entity
 @Getter
 @ToString(callSuper = true)
-@Entity
-@NoArgsConstructor
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NoticeBoard extends Board {
 
     @Id
@@ -50,5 +46,6 @@ public class NoticeBoard extends Board {
     public void increaseHits() {
         increaseViews();
     }
+    public void setId(Long id){this.id = id;}
 
 }

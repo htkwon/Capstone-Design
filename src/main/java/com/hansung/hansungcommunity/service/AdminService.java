@@ -29,17 +29,17 @@ public class AdminService {
         if (board.equals("free")) {
             return freeBoardRepository.findAll()
                     .stream()
-                    .map(AdminBoardDto::of)
+                    .map(AdminBoardDto::from)
                     .collect(Collectors.toList());
         } else if (board.equals("qna")) {
             return qnaBoardRepository.findAll()
                     .stream()
-                    .map(AdminBoardDto::of)
+                    .map(AdminBoardDto::from)
                     .collect(Collectors.toList());
         } else {
             return recruitBoardRepository.findAll()
                     .stream()
-                    .map(AdminBoardDto::of)
+                    .map(AdminBoardDto::from)
                     .collect(Collectors.toList());
         }
     }
