@@ -2,36 +2,51 @@ package com.hansung.hansungcommunity.dto.notice;
 
 import com.hansung.hansungcommunity.entity.NoticeBoard;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
+@Getter
 public class NoticeBoardMainDto {
 
-    private Long id;
-    private String title;
-    private String content;
-    private String writer;
-    private String stuId;
-    private String introduce;
-    private String profileImg;
-    private LocalDateTime createdDate;
-    private int bookmark;
-    private int reply;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final String writer;
+    private final String stuId;
+    private final String introduce;
+    private final String profileImg;
+    private final LocalDateTime createdDate;
+    private final int bookmark;
+    private final int reply;
 
-    public NoticeBoardMainDto(NoticeBoard board) {
-        this.id = board.getId();
-        this.title = board.getTitle();
-        this.content = board.getContent();
-        this.writer = board.getUser().getNickname();
-        this.stuId = board.getUser().getStudentId();
-        this.introduce = board.getUser().getIntroduce();
-        this.profileImg = board.getUser().getProfileImg();
-        this.createdDate = board.getCreatedAt();
-        this.bookmark = board.getBookmarks().size();
-        this.reply = board.getReplies().size();
+    private NoticeBoardMainDto(Long id, String title, String content, String writer, String stuId, String introduce, String profileImg, LocalDateTime createdDate, int bookmark, int reply) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+        this.stuId = stuId;
+        this.introduce = introduce;
+        this.profileImg = profileImg;
+        this.createdDate = createdDate;
+        this.bookmark = bookmark;
+        this.reply = reply;
+    }
+
+    public static NoticeBoardMainDto from(NoticeBoard board){
+        return new NoticeBoardMainDto(
+                board.getId(),
+                board.getTitle(),
+                board.getContent(),
+                board.getUser().getNickname(),
+                board.getUser().getStudentId(),
+                board.getUser().getIntroduce(),
+                board.getUser().getProfileImg(),
+                board.getCreatedAt(),
+                board.getBookmarks().size(),
+                board.getReplies().size()
+        );
     }
 
 }

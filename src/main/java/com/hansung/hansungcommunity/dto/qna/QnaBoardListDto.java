@@ -10,19 +10,19 @@ import java.util.List;
 @Getter
 public class QnaBoardListDto {
 
-    private Long id;
-    private String title;
-    private String content;
-    private String writer;
-    private String introduce;
-    private String profileImg;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-    private String language;
-    private int bookmark;
-    private int reply;
-    private int views;
-    private String stuId;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final String writer;
+    private final String introduce;
+    private final String profileImg;
+    private final LocalDateTime createdDate;
+    private final LocalDateTime modifiedDate;
+    private final String language;
+    private final int bookmark;
+    private final int reply;
+    private final int views;
+    private final String stuId;
     private List<ImageDto> image;
 
     private QnaBoardListDto(Long id, String title, String content, String writer, String introduce, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, String language, int bookmark, int reply, int views, String stuId, List<ImageDto> images) {

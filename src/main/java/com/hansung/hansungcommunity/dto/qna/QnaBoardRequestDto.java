@@ -1,11 +1,15 @@
 package com.hansung.hansungcommunity.dto.qna;
 
 import com.hansung.hansungcommunity.entity.QnaBoard;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class QnaBoardRequestDto {
 
     private Long id;

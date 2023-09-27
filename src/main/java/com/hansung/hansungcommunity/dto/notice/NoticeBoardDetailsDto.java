@@ -1,41 +1,58 @@
 package com.hansung.hansungcommunity.dto.notice;
 
 import com.hansung.hansungcommunity.entity.NoticeBoard;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
+@Getter
 public class NoticeBoardDetailsDto {
 
-    private Long id;
-    private String title;
-    private String content;
-    private String writer;
-    private String introduce;
-    private String profileImg;
-    private Long stuId;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-    private int reply;
-    private int bookmark;
-    private int views;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final String writer;
+    private final Long stuId;
+    private final String introduce;
+    private final String profileImg;
+    private final LocalDateTime createdDate;
+    private final LocalDateTime modifiedDate;
+    private final int reply;
+    private final int bookmark;
+    private final int views;
 
-    public NoticeBoardDetailsDto(NoticeBoard board) {
-        this.id = board.getId();
-        this.title = board.getTitle();
-        this.content = board.getContent();
-        this.writer = board.getUser().getNickname();
-        this.stuId = Long.parseLong(board.getUser().getStudentId());
-        this.introduce = board.getUser().getIntroduce();
-        this.profileImg = board.getUser().getProfileImg();
-        this.createdDate = board.getCreatedAt();
-        this.modifiedDate = board.getModifiedAt();
-        this.bookmark = board.getBookmarks().size();
-        this.reply = board.getReplies().size();
-        this.views = board.getViews();
+    private NoticeBoardDetailsDto(Long id, String title, String content, String nickname, Long stuId, String introduce, String profileImg, LocalDateTime createdAt, LocalDateTime modifiedAt, int bookmark, int reply, int views) {
+        this.id = id;
+        this.title= title;
+        this.content = content;
+        this.writer = nickname;
+        this.stuId = stuId;
+        this.introduce = introduce;
+        this.profileImg = profileImg;
+        this.createdDate = createdAt;
+        this.modifiedDate = modifiedAt;
+        this.bookmark = bookmark;
+        this.reply = reply;
+        this.views = views;
     }
+
+    public static NoticeBoardDetailsDto from(NoticeBoard noticeBoard){
+        return new NoticeBoardDetailsDto(
+                noticeBoard.getId(),
+                noticeBoard.getTitle(),
+                noticeBoard.getContent(),
+                noticeBoard.getUser().getNickname(),
+                Long.parseLong(noticeBoard.getUser().getStudentId()),
+                noticeBoard.getUser().getIntroduce(),
+                noticeBoard.getUser().getProfileImg(),
+                noticeBoard.getCreatedAt(),
+                noticeBoard.getModifiedAt(),
+                noticeBoard.getBookmarks().size(),
+                noticeBoard.getReplies().size(),
+                noticeBoard.getViews()
+        );
+    }
+
+
 
 }

@@ -8,19 +8,19 @@ import java.time.LocalDateTime;
 @Getter
 public class QnaBoardDetailsDto {
 
-    private Long id;
-    private String title;
-    private String content;
-    private String writer;
-    private Long stuId;
-    private String introduce;
-    private String profileImg;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-    private String language;
-    private int bookmark;
-    private int views;
-    private int reply;
+    private final Long id;
+    private final String title;
+    private final String content;
+    private final String writer;
+    private final Long stuId;
+    private final String introduce;
+    private final String profileImg;
+    private final LocalDateTime createdDate;
+    private final LocalDateTime modifiedDate;
+    private final String language;
+    private final int bookmark;
+    private final int views;
+    private final int reply;
 
     private QnaBoardDetailsDto(Long id, String title, String content, String writer, long stuId, String introduce, String profileImg, LocalDateTime createdDate, LocalDateTime modifiedDate, String language, int bookmark, int views, int reply) {
         this.id = id;
