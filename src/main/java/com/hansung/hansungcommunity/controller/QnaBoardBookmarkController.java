@@ -44,7 +44,7 @@ public class QnaBoardBookmarkController {
     @GetMapping("/questions/{boardId}/bookmark-check")
     public ResponseEntity<Boolean> check(@PathVariable("boardId") Long boardId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        Boolean check = bookmarkService.check(boardId, ca.getUser().getId());
+        boolean check = bookmarkService.check(boardId, ca.getUser().getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }

@@ -7,8 +7,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 @Entity
-@Getter
 @ToString
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FileEntity {
 
