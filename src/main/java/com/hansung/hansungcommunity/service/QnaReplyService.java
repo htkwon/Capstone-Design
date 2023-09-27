@@ -95,14 +95,14 @@ public class QnaReplyService {
     }
 
     @Transactional
-    public Boolean adopt(Long replyId) {
+    public boolean adopt(Long replyId) {
         QnaReply reply = qnaReplyRepository.findById(replyId)
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 채택 실패, 해당하는 댓글이 없습니다."));
         reply.adopt(true);
         qnaReplyRepository.save(reply);
         adoptRepository.save(Adopt.of(reply.getBoard(), reply.getUser()));
 
-        return reply.getAdopt();
+        return reply.isAdopt();
     }
 
     @Transactional

@@ -72,7 +72,7 @@ public class QnaReplyController {
      */
     @PostMapping("/questions/{replyId}/adopt-replies")
     public ResponseEntity<Boolean> adopt(@PathVariable("replyId") Long replyId, Authentication authentication) {
-        Boolean adopt = qnaReplyService.adopt(replyId);
+        boolean adopt = qnaReplyService.adopt(replyId);
         return ResponseEntity.status(HttpStatus.OK).body(adopt);
     }
 
