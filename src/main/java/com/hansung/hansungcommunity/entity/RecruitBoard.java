@@ -52,16 +52,6 @@ public class RecruitBoard extends Board {
         return board;
     }
 
-    // 연관관계 메소드
-    public void setUser(User user) {
-        super.setUser(user);
-    }
-
-    // 조회수 증가 메소드
-    public void increaseHits() {
-        increaseViews();
-    }
-
     // 자동 모집 완료 처리
     public void updateIsCompleted(Long count) {
         this.isCompleted = this.gathered + count >= this.party;

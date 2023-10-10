@@ -38,11 +38,6 @@ public class FreeBoard extends Board {
         this.id = id;
     }
 
-    // 연관관계 메소드
-    public void setUser(User user) {
-        super.setUser(user);
-    }
-
     // 비즈니스 메소드
     public void patch(FreeBoardRequestDto dto) {
         if (dto.getTitle() != null)
@@ -52,10 +47,6 @@ public class FreeBoard extends Board {
             this.content = dto.getContent();
 
         modified();
-    }
-
-    public void increaseHits() {
-        increaseViews();
     }
 
 }

@@ -2,7 +2,10 @@ package com.hansung.hansungcommunity.entity;
 
 
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardDto;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -43,9 +46,8 @@ public class NoticeBoard extends Board {
         modified();
     }
 
-    public void increaseHits() {
-        increaseViews();
+    public void setId(Long id) {
+        this.id = id;
     }
-    public void setId(Long id){this.id = id;}
 
 }

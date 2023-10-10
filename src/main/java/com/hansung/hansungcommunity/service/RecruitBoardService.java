@@ -97,7 +97,7 @@ public class RecruitBoardService {
         RecruitBoard board = recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("조회수 증가 실패, 해당하는 게시글이 없습니다."));
 
-        board.increaseHits();
+        board.increaseViews();
     }
 
     /**
