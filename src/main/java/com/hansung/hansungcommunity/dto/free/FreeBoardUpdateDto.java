@@ -9,9 +9,9 @@ import lombok.Getter;
 @Getter
 public class FreeBoardUpdateDto {
 
-    private Long id;
-    private String title;
-    private String content;
+    private final Long id;
+    private final String title;
+    private final String content;
 
     private FreeBoardUpdateDto(FreeBoard board) {
         this.id = board.getId();

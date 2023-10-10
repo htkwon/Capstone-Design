@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 @Getter
 public class ApplicantDto {
 
-    private Long id;
-    private String nickname;
-    private String studentId;
-    private String introduce;
-    private String profileImg;
-    private String track1;
-    private Set<String> skills;
+    private final Long id;
+    private final String nickname;
+    private final String studentId;
+    private final String introduce;
+    private final String profileImg;
+    private final String track1;
+    private final Set<String> skills;
     @JsonProperty("isMeetRequired")
     private boolean isMeetRequired;
     @JsonProperty("isMeetOptional")
