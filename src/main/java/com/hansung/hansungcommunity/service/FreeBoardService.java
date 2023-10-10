@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
+import com.hansung.hansungcommunity.ImageUtils;
 import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.dto.free.*;
 import com.hansung.hansungcommunity.entity.FreeBoard;
@@ -183,22 +184,7 @@ public class FreeBoardService {
      * 이미지 추출
      */
     private List<ImageDto> extractImagesFromContent(String content) {
-        List<ImageDto> images = new ArrayList<>();
-
-        // 정규표현식 패턴
-        String patternString = "<img\\s+[^>]*src\\s*=\\s*\"([^\"]*)\"[^>]*>";
-        Pattern pattern = Pattern.compile(patternString);
-        Matcher matcher = pattern.matcher(content);
-
-        // 매칭된 이미지 URL 추출
-        while (matcher.find()) {
-            String imageUrl = matcher.group(1);
-            String resizeUrl = imageUrl + "/resize";
-            ImageDto imageDto = new ImageDto();
-            imageDto.setImageUrl(resizeUrl);
-            images.add(imageDto);
-        }
-
+        List<ImageDto> images = ImageUtils.extractImagesFromContent(content);
         return images;
     }
 

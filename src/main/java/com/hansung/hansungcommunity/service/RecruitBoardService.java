@@ -1,5 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
+import com.hansung.hansungcommunity.ImageUtils;
 import com.hansung.hansungcommunity.dto.ImageDto;
 import com.hansung.hansungcommunity.dto.recruit.*;
 import com.hansung.hansungcommunity.entity.Party;
@@ -71,7 +72,6 @@ public class RecruitBoardService {
                     Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(recruitBoard.getId());
                     RecruitBoardListDto dto = RecruitBoardListDto.from(recruitBoard);
                     dto.setGathered((int) (recruitBoard.getGathered() + count));
-                    dto.setImage(extractImagesFromContent(recruitBoard.getContent()));
 
                     return dto;
                 })
@@ -331,27 +331,7 @@ public class RecruitBoardService {
         else return result.get().isApproved();
     }
 
-    /**
-     * 이미지 추출
-     */
-    private List<ImageDto> extractImagesFromContent(String content) {
-        List<ImageDto> images = new ArrayList<>();
-
-        // 정규표현식 패턴
-        String patternString = "<img\\s+[^>]*src\\s*=\\s*\"([^\"]*)\"[^>]*>";
-        Pattern pattern = Pattern.compile(patternString);
-        Matcher matcher = pattern.matcher(content);
-
-        // 매칭된 이미지 URL 추출
-        while (matcher.find()) {
-            String imageUrl = matcher.group(1);
-            ImageDto imageDto = new ImageDto();
-            imageDto.setImageUrl(imageUrl);
-            images.add(imageDto);
-        }
-
-        return images;
-    }
+    
 
     @Transactional
     public Long mappingUser(Long id, RecruitBoard recruitBoard) {
