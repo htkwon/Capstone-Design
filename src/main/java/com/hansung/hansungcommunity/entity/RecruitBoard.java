@@ -28,9 +28,9 @@ public class RecruitBoard extends Board {
     @OneToMany(mappedBy = "recruitBoard", cascade = CascadeType.REMOVE)
     private List<Party> parties = new ArrayList<>();
 
-    private RecruitBoard(String title, String content, String required, String optional, int party, int gathered) {
-        this.title = title;
-        this.content = content;
+    private RecruitBoard(String title, String content, String required, String optional, int party, int gathered, User user) {
+        super(title, content);
+        super.setUser(user);
         this.required = required;
         this.optional = optional;
         this.party = party;
@@ -39,17 +39,15 @@ public class RecruitBoard extends Board {
     }
 
     public static RecruitBoard createBoard(RecruitBoardRequestDto dto, User user) {
-        RecruitBoard board = new RecruitBoard(
+        return new RecruitBoard(
                 dto.getTitle(),
                 dto.getContent(),
                 dto.getRequired(),
                 dto.getOptional(),
                 dto.getParty(),
-                dto.getGathered()
+                dto.getGathered(),
+                user
         );
-        board.setUser(user);
-
-        return board;
     }
 
     // 자동 모집 완료 처리
@@ -58,18 +56,11 @@ public class RecruitBoard extends Board {
     }
 
     public void patch(RecruitBoardRequestDto dto) {
-        if (dto.getTitle() != null)
-            this.title = dto.getTitle();
-
-        if (dto.getContent() != null)
-            this.content = dto.getContent();
+        updateTitleAndContent(dto.getTitle(), dto.getContent());
 
         if (dto.getOptional() != null)
             this.optional = dto.getOptional();
-
         this.party = dto.getParty();
-
-        modified();
     }
 
     // 작성자에 의한 모집 완료 처리

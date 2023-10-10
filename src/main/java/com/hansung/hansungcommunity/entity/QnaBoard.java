@@ -23,9 +23,8 @@ public class QnaBoard extends Board {
     private Adopt adopt;
 
     private QnaBoard(User user, String title, String content, String language) {
+        super(title, content);
         super.setUser(user);
-        this.title = title;
-        this.content = content;
         this.language = language;
     }
 
@@ -34,10 +33,9 @@ public class QnaBoard extends Board {
     }
 
     public void patch(QnaBoardRequestDto dto) {
-        if (dto.getTitle() != null) this.title = dto.getTitle();
-        if (dto.getContent() != null) this.content = dto.getContent();
+        updateTitleAndContent(dto.getTitle(), dto.getContent());
+
         this.language = dto.getLanguage();
-        modified();
     }
 
     public void setId(Long id) {

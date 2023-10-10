@@ -1,6 +1,8 @@
 package com.hansung.hansungcommunity.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,28 +14,30 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Board extends ModifiedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    protected String title;
+    private String title;
     @Lob
-    protected String content;
+    private String content;
     private int views;
-
-    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-    public List<Reply> replies = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY) // JPA 활용 시, XToOne 인 경우 fetch 타입을 LAZY 로 설정 !!!
     @JoinColumn(name = "stu_id")
     private User user;
-
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<Reply> replies = new ArrayList<>();
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private Set<Bookmark> bookmarks = new HashSet<>();
-
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<FileEntity> fileEntity = new ArrayList<>();
+
+    protected Board(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
     public void increaseViews() {
         this.views++;
@@ -45,6 +49,12 @@ public abstract class Board extends ModifiedEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    protected void updateTitleAndContent(String title, String content) {
+        this.title = title;
+        this.content = content;
+        modified();
     }
 
 }

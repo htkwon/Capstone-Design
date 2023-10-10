@@ -2,7 +2,6 @@ package com.hansung.hansungcommunity.dto.notice;
 
 import com.hansung.hansungcommunity.entity.NoticeBoard;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
