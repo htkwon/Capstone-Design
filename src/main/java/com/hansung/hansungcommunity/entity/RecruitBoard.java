@@ -4,21 +4,20 @@ import com.hansung.hansungcommunity.dto.recruit.RecruitBoardRequestDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "recruit_board")
-@Getter
-@Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Getter
+@ToString(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecruitBoard extends Board {
 
-    @Id
-    private Long id;
     private String required;
     private String optional;
     private int party; // 모집할 인원 수

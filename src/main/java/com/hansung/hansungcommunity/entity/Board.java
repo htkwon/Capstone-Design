@@ -39,6 +39,10 @@ public abstract class Board extends ModifiedEntity {
         this.content = content;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void increaseViews() {
         this.views++;
     }

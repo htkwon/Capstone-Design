@@ -8,16 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
 @Getter
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NoticeBoard extends Board {
-
-    @Id
-    private Long id;
 
     private NoticeBoard(String title, String content, User user) {
         super(title, content);
@@ -35,10 +31,6 @@ public class NoticeBoard extends Board {
     // 비즈니스 메소드
     public void patch(NoticeBoardDto dto) {
         updateTitleAndContent(dto.getTitle(), dto.getContent());
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
 }
