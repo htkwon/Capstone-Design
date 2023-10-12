@@ -30,7 +30,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final AdoptRepository adoptRepository;
     private final SkillRepository skillRepository;
-    private final MyPageService myPageService;
     private final PartyRepository partyRepository;
 
     /**
@@ -55,10 +54,6 @@ public class UserService {
     }
 
     public boolean checkUser(String stuId) {
-        if (stuId.equals("ADMIN")) {
-            return true;
-        }
-
         return userRepository.existsUserByStudentId(stuId);
     }
 
