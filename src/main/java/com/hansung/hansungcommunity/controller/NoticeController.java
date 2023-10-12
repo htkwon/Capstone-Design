@@ -46,7 +46,7 @@ public class NoticeController {
      * 전체 글 조회
      */
     @GetMapping("/notice")
-    public ResponseEntity<List<NoticeBoardDto>> getList(Authentication authentication) {
+    public ResponseEntity<List<NoticeBoardDto>> getAllOfList(Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         List<NoticeBoardDto> dtos = noticeService.getList(ca.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
@@ -56,7 +56,7 @@ public class NoticeController {
      * 메인 페이지 공지사항 조회 (게시글 4개반환)
      */
     @GetMapping("/notice/main")
-    public ResponseEntity<Result<List<NoticeBoardMainDto>>> list() {
+    public ResponseEntity<Result<List<NoticeBoardMainDto>>> getList() {
         List<NoticeBoardMainDto> dtoList = noticeService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
@@ -67,7 +67,7 @@ public class NoticeController {
      * 페이지 정보는 프론트에서 전송
      */
     @GetMapping("/notice/list")
-    public ResponseEntity<ListResult<List<NoticeBoardListDto>>> listOfPage(Pageable pageable, @RequestParam(required = false) String search) {
+    public ResponseEntity<ListResult<List<NoticeBoardListDto>>> getListOfPage(Pageable pageable, @RequestParam(required = false) String search) {
         List<NoticeBoardListDto> dtoList = noticeService.findByPage(pageable, search);
         long count = noticeService.getCount(search);
 
@@ -78,13 +78,13 @@ public class NoticeController {
      * 글 상세보기
      */
     @GetMapping("/notice/detail/{boardId}")
-    public ResponseEntity<NoticeBoardDetailsDto> detail(
+    public ResponseEntity<NoticeBoardDetailsDto> getDetailedPost(
             @PathVariable("boardId") Long boardId,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         increaseHits(boardId, request, response);
-        NoticeBoardDetailsDto dto = noticeService.detail(boardId);
+        NoticeBoardDetailsDto dto = noticeService.getDetailedPost(boardId);
 
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
@@ -93,9 +93,9 @@ public class NoticeController {
      * 글 작성 (업로드 파일 없을 때)
      */
     @PostMapping("/notice/no-file")
-    public ResponseEntity<Long> post(@Valid @RequestBody NoticeBoardDto dto, Authentication authentication) {
+    public ResponseEntity<Long> createNonFilePost(@Valid @RequestBody NoticeBoardDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        Long id = noticeService.post(dto, ca.getUser().getId());
+        Long id = noticeService.createPost(dto, ca.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(id);
 
     }
@@ -104,14 +104,14 @@ public class NoticeController {
      * 글 작성(업로드 파일 있을 때)
      */
     @PostMapping("/notice")
-    public ResponseEntity<Long> create(
+    public ResponseEntity<Long> createPostWithFile(
             @RequestParam("file") MultipartFile[] file,
             String stringNotice,
             Authentication authentication
     ) throws IOException, FirebaseAuthException {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         NoticeBoard noticeBoard = new ObjectMapper().readValue(stringNotice, NoticeBoard.class);
-        Long boardId = noticeService.mappingUser(ca.getUser().getId(), noticeBoard);
+        Long boardId = noticeService.getMappingUser(ca.getUser().getId(), noticeBoard);
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
@@ -119,7 +119,7 @@ public class NoticeController {
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(noticeBoard, fileName, name);
-            fileService.save(dto);
+            fileService.saveFile(dto);
             fireBaseService.uploadFiles(f, name);
 
         }
@@ -131,7 +131,7 @@ public class NoticeController {
      */
     @GetMapping("/notice/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
-        boolean check = fileService.check(boardId);
+        boolean check = fileService.checkFileOfPost(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
@@ -140,7 +140,7 @@ public class NoticeController {
      */
     @GetMapping("/notice/{boardId}/file-list")
     public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId) {
-        List<FileRequestDto> dtos = fileService.list(boardId);
+        List<FileRequestDto> dtos = fileService.getListOfFile(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 
@@ -149,8 +149,8 @@ public class NoticeController {
      */
 
     @PutMapping("/notice/{boardId}/update")
-    public ResponseEntity<NoticeBoardDto> update(@Valid @RequestBody NoticeBoardDto dto, @PathVariable("boardId") Long boardId) {
-        NoticeBoardDto noticeBoardDto = noticeService.update(dto, boardId);
+    public ResponseEntity<NoticeBoardDto> updateNonFilePost(@Valid @RequestBody NoticeBoardDto dto, @PathVariable("boardId") Long boardId) {
+        NoticeBoardDto noticeBoardDto = noticeService.updatePost(dto, boardId);
         return ResponseEntity.status(HttpStatus.OK).body(noticeBoardDto);
     }
 
@@ -158,16 +158,16 @@ public class NoticeController {
      * 게시글 수정 (첨부파일 있을 때)
      */
     @PutMapping("/notice/update/{boardId}/file")
-    public ResponseEntity<Result<NoticeBoardDto>> update(
+    public ResponseEntity<Result<NoticeBoardDto>> updatePostWithFile(
             @PathVariable("boardId") Long boardId,
             @RequestParam("file") MultipartFile[] file,
             String stringNotice
     ) throws IOException, FirebaseAuthException {
         NoticeBoard board = new ObjectMapper().readValue(stringNotice, NoticeBoard.class);
-        NoticeBoard real = noticeService.get(boardId);
+        NoticeBoard real = noticeService.getPost(boardId);
         board.setId(real.getId());
 
-        NoticeBoardDto boardDto = noticeService.update(NoticeBoardDto.from(board), boardId);
+        NoticeBoardDto boardDto = noticeService.updatePost(NoticeBoardDto.from(board), boardId);
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
@@ -176,7 +176,7 @@ public class NoticeController {
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(real, fileName, name);
-            fileService.save(dto);
+            fileService.saveFile(dto);
             fireBaseService.uploadFiles(f, name);
 
         }
@@ -188,8 +188,8 @@ public class NoticeController {
      * 글 삭제
      */
     @DeleteMapping("/notice/{boardId}/delete")
-    public ResponseEntity<Void> delete(@PathVariable("boardId") Long boardId) {
-        noticeService.delete(boardId);
+    public ResponseEntity<Void> deletePost(@PathVariable("boardId") Long boardId) {
+        noticeService.deletePost(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 

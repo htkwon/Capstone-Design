@@ -16,10 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +31,7 @@ public class FreeBoardService {
      * 자유 게시글 게시
      */
     @Transactional // 필요 시 쓰기 전용
-    public Long post(Long userId, FreeBoardRequestDto boardDto) {
+    public Long createPost(Long userId, FreeBoardRequestDto boardDto) {
         User user = userRepository.getReferenceById(userId);
         FreeBoard board = FreeBoard.createBoard(user, boardDto); // 게시글 생성
 
@@ -47,7 +44,7 @@ public class FreeBoardService {
      * 자유 게시글 수정
      */
     @Transactional
-    public FreeBoardRequestDto update(Long boardId, FreeBoardRequestDto dto) {
+    public FreeBoardRequestDto updatePost(Long boardId, FreeBoardRequestDto dto) {
         FreeBoard target = freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 수정 실패, 해당하는 게시글이 없습니다."));
 
@@ -61,7 +58,7 @@ public class FreeBoardService {
      * 자유 게시글 삭제
      */
     @Transactional
-    public void delete(Long boardId) {
+    public void deletePost(Long boardId) {
         FreeBoard target = freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 삭제 실패, 해당하는 게시글이 없습니다."));
 
@@ -95,7 +92,7 @@ public class FreeBoardService {
     /**
      * 특정 게시글 조회
      */
-    public FreeBoard get(Long boardId) {
+    public FreeBoard getDetailedPost(Long boardId) {
         return freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
     }
@@ -151,7 +148,7 @@ public class FreeBoardService {
     /**
      * 게시글 수정 시, 기존 게시글 정보 반환
      */
-    public FreeBoardUpdateDto findOneForUpdate(Long boardId) {
+    public FreeBoardUpdateDto getUpdatingData(Long boardId) {
         FreeBoard board = freeBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
 
@@ -189,7 +186,7 @@ public class FreeBoardService {
     }
 
     @Transactional
-    public Long mappingUser(Long id, FreeBoard freeBoard) {
+    public Long getMappingUser(Long id, FreeBoard freeBoard) {
         User user = userRepository.getReferenceById(id);
         freeBoard.setUser(user);
         freeBoardRepository.save(freeBoard);

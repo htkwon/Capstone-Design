@@ -29,7 +29,7 @@ public class ReplyService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ReplyDto create(Long userId, Long boardId, ReplyDto replyDto) {
+    public ReplyDto createReply(Long userId, Long boardId, ReplyDto replyDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("댓글 생성 실패, 해당하는 유저가 없습니다."));
         Board board = boardRepository.findById(boardId)
@@ -62,7 +62,7 @@ public class ReplyService {
 
 
     @Transactional(readOnly = true)
-    public List<ReplyDto> getReplyList(Long boardId) {
+    public List<ReplyDto> getListOfReply(Long boardId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("댓글 목록 조회 실패, 해당하는 게시글이 없습니다."));
         List<Reply> replies = replyRepository.findAllWithChildrenByArticleId(board.getId());
@@ -71,7 +71,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public ReplyDto update(ReplyDto replyDto) {
+    public ReplyDto updateReply(ReplyDto replyDto) {
         Reply reply = replyRepository.findById(replyDto.getId())
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 수정 실패, 해당하는 댓글이 없습니다."));
         if (replyDto.getParentId() != null) {
@@ -89,7 +89,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public void delete(Long replyId) {
+    public void deleteReply(Long replyId) {
         deleteReplyMethod(replyId);
     }
 

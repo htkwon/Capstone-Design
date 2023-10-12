@@ -50,7 +50,7 @@ public class AdminController {
      */
 
     @DeleteMapping("/{boardType}/{boardId}")
-    public ResponseEntity<Void> delete(@PathVariable("boardType") String boardType, @PathVariable("boardId") Long boardId) {
+    public ResponseEntity<Void> deleteBoard(@PathVariable("boardType") String boardType, @PathVariable("boardId") Long boardId) {
         adminService.deleteBoard(boardType, boardId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -70,7 +70,7 @@ public class AdminController {
      * user 삭제
      */
     @DeleteMapping("/user/{userId}")
-    public ResponseEntity<Void> delete(@PathVariable("userId") Long userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("userId") Long userId) {
         adminService.deleteUser(userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

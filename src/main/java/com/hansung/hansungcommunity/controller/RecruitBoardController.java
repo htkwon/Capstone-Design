@@ -44,7 +44,7 @@ public class RecruitBoardController {
      * 메인페이지 리스트 조회
      */
     @GetMapping("/recruit/main")
-    public ResponseEntity<Result<List<RecruitBoardMainDto>>> list() {
+    public ResponseEntity<Result<List<RecruitBoardMainDto>>> getList() {
         List<RecruitBoardMainDto> dtoList = recruitBoardService.getMainList();
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
     }
@@ -53,12 +53,12 @@ public class RecruitBoardController {
      * 게시글 생성 (업로드 파일 없을 때)
      */
     @PostMapping("/recruit/no-file")
-    public ResponseEntity<Long> create(@RequestBody @Valid RecruitBoardRequestDto dto, Authentication authentication) {
+    public ResponseEntity<Long> createPost(@RequestBody @Valid RecruitBoardRequestDto dto, Authentication authentication) {
         if (dto.getParty() <= dto.getGathered())
             throw new RecruitmentCompletedException("게시글 생성 실패, 현재 모인 인원 수는 총 인원 수보다 작아야 합니다.");
 
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        Long savedId = recruitBoardService.post(ca.getUser().getId(), dto);
+        Long savedId = recruitBoardService.createPost(ca.getUser().getId(), dto);
 
         return ResponseEntity.ok(savedId);
     }
@@ -67,14 +67,14 @@ public class RecruitBoardController {
      * 게시글 생성 (업로드 파일 있을 때)
      */
     @PostMapping("/recruit")
-    public ResponseEntity<Long> create(
+    public ResponseEntity<Long> createPost(
             @RequestParam("file") MultipartFile[] file,
             String stringRecruit,
             Authentication authentication
     ) throws IOException, FirebaseAuthException {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         RecruitBoard recruitBoard = new ObjectMapper().readValue(stringRecruit, RecruitBoard.class);
-        Long id = recruitBoardService.mappingUser(ca.getUser().getId(), recruitBoard);
+        Long id = recruitBoardService.getMappingUser(ca.getUser().getId(), recruitBoard);
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
@@ -82,7 +82,7 @@ public class RecruitBoardController {
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(recruitBoard, fileName, name);
-            fileService.save(dto);
+            fileService.saveFile(dto);
             fireBaseService.uploadFiles(f, name);
         }
 
@@ -94,7 +94,7 @@ public class RecruitBoardController {
      */
     @GetMapping("/recruit/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
-        boolean check = fileService.check(boardId);
+        boolean check = fileService.checkFileOfPost(boardId);
 
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
@@ -104,7 +104,7 @@ public class RecruitBoardController {
      */
     @GetMapping("/recruit/{boardId}/file-list")
     public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId) {
-        List<FileRequestDto> dtos = fileService.list(boardId);
+        List<FileRequestDto> dtos = fileService.getListOfFile(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 
@@ -112,11 +112,11 @@ public class RecruitBoardController {
      * 게시글 수정
      */
     @PutMapping("/recruit/update/{boardId}")
-    public ResponseEntity<Long> update(
+    public ResponseEntity<Long> updateNonFilePost(
             @PathVariable("boardId") Long boardId,
             @RequestBody @Valid RecruitBoardRequestDto dto
     ) {
-        Long id = recruitBoardService.update(boardId, dto);
+        Long id = recruitBoardService.updatePost(boardId, dto);
 
         return ResponseEntity.ok(id);
     }
@@ -125,16 +125,16 @@ public class RecruitBoardController {
      * 게시글 수정 (첨부파일 있을 때)
      */
     @PutMapping("/recruit/update/{boardId}/file")
-    public ResponseEntity<Long> update(
+    public ResponseEntity<Long> updatePostWithFile(
             @PathVariable("boardId") Long boardId,
             @RequestParam("file") MultipartFile[] file,
             String stringRecruit
     ) throws IOException, FirebaseAuthException {
         RecruitBoard board = new ObjectMapper().readValue(stringRecruit, RecruitBoard.class);
-        RecruitBoard real = recruitBoardService.get(boardId);
+        RecruitBoard real = recruitBoardService.getPost(boardId);
         board.setId(real.getId());
 
-        Long id = recruitBoardService.update(boardId, RecruitBoardRequestDto.of(board));
+        Long id = recruitBoardService.updatePost(boardId, RecruitBoardRequestDto.of(board));
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
@@ -143,7 +143,7 @@ public class RecruitBoardController {
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(real, fileName, name);
-            fileService.save(dto);
+            fileService.saveFile(dto);
             fireBaseService.uploadFiles(f, name);
 
         }
@@ -156,8 +156,8 @@ public class RecruitBoardController {
      * 게시글 삭제
      */
     @DeleteMapping("/recruit/delete/{boardId}")
-    public ResponseEntity<Long> delete(@PathVariable("boardId") Long boardId) {
-        recruitBoardService.delete(boardId);
+    public ResponseEntity<Long> deletePost(@PathVariable("boardId") Long boardId) {
+        recruitBoardService.deletePost(boardId);
 
         return ResponseEntity.ok(boardId);
     }
@@ -166,7 +166,7 @@ public class RecruitBoardController {
      * 게시글 목록 조회
      */
     @GetMapping("/recruit/list")
-    public ResponseEntity<ListResult<List<RecruitBoardListDto>>> list(Pageable pageable, @RequestParam(required = false) String search) {
+    public ResponseEntity<ListResult<List<RecruitBoardListDto>>> getList(Pageable pageable, @RequestParam(required = false) String search) {
         List<RecruitBoardListDto> recruitList = recruitBoardService.getList(pageable, search);
         long count = recruitBoardService.getCount(search);
 
@@ -177,13 +177,13 @@ public class RecruitBoardController {
      * 게시글 상세 조회
      */
     @GetMapping("/recruit/detail/{boardId}")
-    public ResponseEntity<RecruitBoardDetailDto> detail(
+    public ResponseEntity<RecruitBoardDetailDto> getDetailedPost(
             @PathVariable("boardId") Long boardId,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
         increaseHits(boardId, request, response);
-        RecruitBoardDetailDto detailDto = recruitBoardService.getDetail(boardId);
+        RecruitBoardDetailDto detailDto = recruitBoardService.getDetailedPost(boardId);
 
         return ResponseEntity.ok(detailDto);
     }
@@ -192,7 +192,7 @@ public class RecruitBoardController {
      * 게시글 수정 시, 게시글 상세 정보 조회
      */
     @GetMapping("/recruit/update/{boardId}")
-    public ResponseEntity<RecruitBoardUpdateDto> detailForUpdate(@PathVariable("boardId") Long boardId) {
+    public ResponseEntity<RecruitBoardUpdateDto> getUpdatingData(@PathVariable("boardId") Long boardId) {
         RecruitBoardUpdateDto detailDto = recruitBoardService.getDetailForUpdate(boardId);
 
         return ResponseEntity.ok(detailDto);
@@ -202,13 +202,13 @@ public class RecruitBoardController {
      * 팀 소속 신청
      */
     @PostMapping("/recruit/{boardId}/application")
-    public ResponseEntity<Long> apply(
+    public ResponseEntity<Long> applyTeam(
             @PathVariable("boardId") Long boardId,
             Authentication authentication,
             @RequestBody @Valid RecruitBoardApplyRequestDto dto
     ) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        Long partyId = recruitBoardService.apply(boardId, ca.getUser().getId(), dto);
+        Long partyId = recruitBoardService.applyTeam(boardId, ca.getUser().getId(), dto);
 
         return ResponseEntity.ok(partyId);
     }
@@ -229,13 +229,13 @@ public class RecruitBoardController {
      * 팀 소속 신청 승인
      */
     @PutMapping("/recruit/{boardId}/approval/{targetUserId}")
-    public ResponseEntity<Boolean> approve(
+    public ResponseEntity<Boolean> approveApplication(
             @PathVariable("boardId") Long boardId,
             @PathVariable("targetUserId") Long targetUserId,
             Authentication authentication
     ) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        boolean status = recruitBoardService.approve(boardId, ca.getUser().getId(), targetUserId);
+        boolean status = recruitBoardService.approveApplication(boardId, ca.getUser().getId(), targetUserId);
 
         return ResponseEntity.ok(status);
     }
@@ -244,13 +244,13 @@ public class RecruitBoardController {
      * 팀 소속 신청 승인 취소
      */
     @PutMapping("/recruit/{boardId}/disapproval/{targetUserId}")
-    public ResponseEntity<Boolean> disapprove(
+    public ResponseEntity<Boolean> disapproveApplication(
             @PathVariable("boardId") Long boardId,
             @PathVariable("targetUserId") Long targetUserId,
             Authentication authentication
     ) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        boolean status = recruitBoardService.disapprove(boardId, ca.getUser().getId(), targetUserId);
+        boolean status = recruitBoardService.disapproveApplication(boardId, ca.getUser().getId(), targetUserId);
 
         return ResponseEntity.ok(status);
     }
@@ -259,9 +259,9 @@ public class RecruitBoardController {
      * 모집 완료
      */
     @PutMapping("/recruit/{boardId}/complete")
-    public ResponseEntity<Void> complete(@PathVariable("boardId") Long boardId, Authentication authentication) {
+    public ResponseEntity<Void> completeRecruit(@PathVariable("boardId") Long boardId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        recruitBoardService.complete(boardId, ca.getUser().getId());
+        recruitBoardService.completeRecruit(boardId, ca.getUser().getId());
 
         return ResponseEntity.ok().build();
     }
@@ -293,8 +293,8 @@ public class RecruitBoardController {
      * 승인된 인원
      */
     @GetMapping("/recruit/{boardId}/approvers-number")
-    public ResponseEntity<Long> getApproversNumber(@PathVariable("boardId") Long boardId) {
-        Long number = recruitBoardService.getApproversNumber(boardId);
+    public ResponseEntity<Long> getNumberOfApprove(@PathVariable("boardId") Long boardId) {
+        Long number = recruitBoardService.getNumberOfApprove(boardId);
 
         return ResponseEntity.ok(number);
     }
@@ -303,9 +303,9 @@ public class RecruitBoardController {
      * 신청 여부 확인
      */
     @GetMapping("/recruit/{boardId}/application-check")
-    public ResponseEntity<ApplicationStatus> applicationCheck(@PathVariable("boardId") Long boardId, Authentication authentication) {
+    public ResponseEntity<ApplicationStatus> checkApplication(@PathVariable("boardId") Long boardId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        ApplicationStatus status = recruitBoardService.applicationCheck(boardId, ca.getUser().getId());
+        ApplicationStatus status = recruitBoardService.checkApplication(boardId, ca.getUser().getId());
 
         return ResponseEntity.ok(status);
     }

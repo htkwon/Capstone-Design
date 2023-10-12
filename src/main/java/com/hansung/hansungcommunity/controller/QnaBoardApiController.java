@@ -42,7 +42,7 @@ public class QnaBoardApiController {
      * 게시글 리스트 조회 - 홈 View 전용 (게시글 4개 반환)
      */
     @GetMapping("/questions/main")
-    public ResponseEntity<Result<List<QnaBoardMainDto>>> QnaList() {
+    public ResponseEntity<Result<List<QnaBoardMainDto>>> getList() {
         List<QnaBoardMainDto> dtoList = qnaBoardService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
     }
@@ -52,7 +52,7 @@ public class QnaBoardApiController {
      * 조회수 증가 로직 구현을 위해 임의로 구현, 추후 수정
      */
     @GetMapping("/questions/detail/{boardId}")
-    public ResponseEntity<QnaBoardDetailsDto> detail(
+    public ResponseEntity<QnaBoardDetailsDto> getDetailedPost(
             @PathVariable("boardId") Long boardId,
             HttpServletRequest request,
             HttpServletResponse response
@@ -67,7 +67,7 @@ public class QnaBoardApiController {
      * 게시글 수정 시, 게시글 상세 정보 조회
      */
     @GetMapping("/questions/update/{boardId}")
-    public ResponseEntity<QnaBoardUpdateDto> detailForUpdate(@PathVariable("boardId") Long boardId) {
+    public ResponseEntity<QnaBoardUpdateDto> getUpdatingData(@PathVariable("boardId") Long boardId) {
         QnaBoardUpdateDto boardDto = qnaBoardService.findOneForUpdate(boardId);
 
         return ResponseEntity.status(HttpStatus.OK).body(boardDto);
@@ -78,7 +78,7 @@ public class QnaBoardApiController {
      * 페이지 정보는 프론트에서 전송
      */
     @GetMapping("/questions/list")
-    public ResponseEntity<ListResult<List<QnaBoardListDto>>> listOfPage(Pageable pageable, @RequestParam(required = false) String search) {
+    public ResponseEntity<ListResult<List<QnaBoardListDto>>> getListOfPage(Pageable pageable, @RequestParam(required = false) String search) {
         List<QnaBoardListDto> dtoList = qnaBoardService.findByPage(pageable, search);
         long count = qnaBoardService.getCount(search);
 
@@ -89,7 +89,7 @@ public class QnaBoardApiController {
      * 게시글 저장 (업로드 파일 없을 때)
      */
     @PostMapping("/questions/no-file")
-    public ResponseEntity<Long> create(@Valid @RequestBody QnaBoardRequestDto dto, Authentication authentication) {
+    public ResponseEntity<Long> createNonFilePost(@Valid @RequestBody QnaBoardRequestDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long savedId = qnaBoardService.post(ca.getUser().getId(), dto);
         return ResponseEntity.status(HttpStatus.OK).body(savedId);
@@ -99,7 +99,7 @@ public class QnaBoardApiController {
      * 게시글 저장 (업로드 파일 있을 때)
      */
     @PostMapping("/questions")
-    public ResponseEntity<Long> create(
+    public ResponseEntity<Long> createPostWithFile(
             @RequestParam("file") MultipartFile[] file,
             String stringQna,
             Authentication authentication
@@ -114,7 +114,7 @@ public class QnaBoardApiController {
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(board, fileName, name);
-            fileService.save(dto);
+            fileService.saveFile(dto);
             fireBaseService.uploadFiles(f, name);
         }
         return ResponseEntity.status(HttpStatus.OK).body(id);
@@ -126,7 +126,7 @@ public class QnaBoardApiController {
      */
     @GetMapping("/questions/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
-        boolean check = fileService.check(boardId);
+        boolean check = fileService.checkFileOfPost(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
@@ -135,7 +135,7 @@ public class QnaBoardApiController {
      */
     @GetMapping("/questions/{boardId}/file-list")
     public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId) {
-        List<FileRequestDto> dtos = fileService.list(boardId);
+        List<FileRequestDto> dtos = fileService.getListOfFile(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 
@@ -143,7 +143,7 @@ public class QnaBoardApiController {
      * 게시글 수정
      */
     @PutMapping("/questions/update/{boardId}")
-    public ResponseEntity<Long> update(
+    public ResponseEntity<Long> updateNonFilePost(
             @PathVariable("boardId") Long boardId,
             @Valid @RequestBody QnaBoardRequestDto dto
     ) {
@@ -156,7 +156,7 @@ public class QnaBoardApiController {
      * 게시글 수정 (첨부파일 있을 때)
      */
     @PutMapping("/questions/update/{boardId}/file")
-    public ResponseEntity<Long> update(
+    public ResponseEntity<Long> updatePostWithFile(
             @PathVariable("boardId") Long boardId,
             @RequestParam("file") MultipartFile[] file,
             String stringQna
@@ -174,7 +174,7 @@ public class QnaBoardApiController {
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(real, fileName, name);
-            fileService.save(dto);
+            fileService.saveFile(dto);
             fireBaseService.uploadFiles(f, name);
 
         }
@@ -187,7 +187,7 @@ public class QnaBoardApiController {
      * 게시글 삭제
      */
     @DeleteMapping("/questions/delete/{boardId}")
-    public ResponseEntity<Long> delete(@PathVariable("boardId") Long boardId) {
+    public ResponseEntity<Long> deletePost(@PathVariable("boardId") Long boardId) {
         qnaBoardService.delete(boardId);
 
         return ResponseEntity.ok(boardId);

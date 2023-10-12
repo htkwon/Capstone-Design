@@ -41,7 +41,7 @@ public class FreeBoardApiController {
      * 모든 게시글 조회 (게시글 4개반환)
      */
     @GetMapping("/free/main")
-    public ResponseEntity<Result<List<FreeBoardMainDto>>> list() {
+    public ResponseEntity<Result<List<FreeBoardMainDto>>> getList() {
         List<FreeBoardMainDto> dtoList = freeBoardService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(dtoList));
@@ -52,7 +52,7 @@ public class FreeBoardApiController {
      * 조회수 증가 로직 구현을 위해 임의로 구현, 추후 수정
      */
     @GetMapping("/free/detail/{boardId}")
-    public ResponseEntity<Result<FreeBoardDetailsDto>> detail(
+    public ResponseEntity<Result<FreeBoardDetailsDto>> getDetailedPost(
             @PathVariable("boardId") Long boardId,
             HttpServletRequest request,
             HttpServletResponse response
@@ -67,8 +67,8 @@ public class FreeBoardApiController {
      * 게시글 수정 시, 게시글 상세 정보 조회
      */
     @GetMapping("/free/update/{boardId}")
-    public ResponseEntity<FreeBoardUpdateDto> detailForUpdate(@PathVariable("boardId") Long boardId) {
-        FreeBoardUpdateDto boardDto = freeBoardService.findOneForUpdate(boardId);
+    public ResponseEntity<FreeBoardUpdateDto> getUpdatingData(@PathVariable("boardId") Long boardId) {
+        FreeBoardUpdateDto boardDto = freeBoardService.getUpdatingData(boardId);
 
         return ResponseEntity.status(HttpStatus.OK).body(boardDto);
     }
@@ -78,7 +78,7 @@ public class FreeBoardApiController {
      * 페이지 정보는 프론트에서 전송
      */
     @GetMapping("/free/list")
-    public ResponseEntity<ListResult<List<FreeBoardListDto>>> listOfPage(Pageable pageable, @RequestParam(required = false) String search) {
+    public ResponseEntity<ListResult<List<FreeBoardListDto>>> getListOfPage(Pageable pageable, @RequestParam(required = false) String search) {
         List<FreeBoardListDto> dtoList = freeBoardService.findByPage(pageable, search);
         long count = freeBoardService.getCount(search);
 
@@ -89,12 +89,12 @@ public class FreeBoardApiController {
      * 게시글 저장
      */
     @PostMapping("/free/no-file")
-    public ResponseEntity<Long> create(
+    public ResponseEntity<Long> createNonFilePost(
             @Valid @RequestBody FreeBoardRequestDto dto,
             Authentication authentication
     ) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        Long savedId = freeBoardService.post(ca.getUser().getId(), dto);
+        Long savedId = freeBoardService.createPost(ca.getUser().getId(), dto);
 
         // Wrapper 클래스로 감싼 후,
         // ResponseEntity 의 body 에 담아 반환
@@ -105,14 +105,14 @@ public class FreeBoardApiController {
      * 게시글 저장 (업로드 파일 있을 때)
      */
     @PostMapping("/free")
-    public ResponseEntity<Long> create(
+    public ResponseEntity<Long> createPostWithFile(
             @RequestParam("file") MultipartFile[] file,
             String stringFree,
             Authentication authentication
     ) throws IOException, FirebaseAuthException {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         FreeBoard freeBoard = new ObjectMapper().readValue(stringFree, FreeBoard.class);
-        Long boardId = freeBoardService.mappingUser(ca.getUser().getId(), freeBoard);
+        Long boardId = freeBoardService.getMappingUser(ca.getUser().getId(), freeBoard);
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
@@ -121,7 +121,7 @@ public class FreeBoardApiController {
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(freeBoard, fileName, name);
-            fileService.save(dto);
+            fileService.saveFile(dto);
             fireBaseService.uploadFiles(f, name);
 
         }
@@ -134,7 +134,7 @@ public class FreeBoardApiController {
      */
     @GetMapping("/free/{boardId}/file-check")
     public ResponseEntity<Boolean> checkFile(@PathVariable("boardId") Long boardId) {
-        boolean check = fileService.check(boardId);
+        boolean check = fileService.checkFileOfPost(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
@@ -143,7 +143,7 @@ public class FreeBoardApiController {
      */
     @GetMapping("/free/{boardId}/file-list")
     public ResponseEntity<List<FileRequestDto>> getFileList(@PathVariable("boardId") Long boardId) {
-        List<FileRequestDto> dtos = fileService.list(boardId);
+        List<FileRequestDto> dtos = fileService.getListOfFile(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 
@@ -151,14 +151,12 @@ public class FreeBoardApiController {
      * 게시글 수정
      */
     @PutMapping("/free/update/{boardId}")
-    public ResponseEntity<Result<FreeBoardRequestDto>> update(
+    public ResponseEntity<Result<FreeBoardRequestDto>> updateNonFilePost(
             @PathVariable("boardId") Long boardId,
             @Valid @RequestBody FreeBoardRequestDto dto
     ) {
-        FreeBoardRequestDto boardDto = freeBoardService.update(boardId, dto);
+        FreeBoardRequestDto boardDto = freeBoardService.updatePost(boardId, dto);
 
-        // Wrapper 클래스로 감싼 후,
-        // ResponseEntity 의 body 에 담아 반환
         return ResponseEntity.status(HttpStatus.OK).body(new Result<>(boardDto));
     }
 
@@ -166,16 +164,16 @@ public class FreeBoardApiController {
      * 게시글 수정 (첨부파일 있을 때)
      */
     @PutMapping("/free/update/{boardId}/file")
-    public ResponseEntity<Result<FreeBoardRequestDto>> update(
+    public ResponseEntity<Result<FreeBoardRequestDto>> updatePostWithFile(
             @PathVariable("boardId") Long boardId,
             @RequestParam("file") MultipartFile[] file,
             String stringFree
     ) throws IOException, FirebaseAuthException {
         FreeBoard board = new ObjectMapper().readValue(stringFree, FreeBoard.class);
-        FreeBoard real = freeBoardService.get(boardId);
+        FreeBoard real = freeBoardService.getDetailedPost(boardId);
         board.setId(real.getId());
 
-        FreeBoardRequestDto boardDto = freeBoardService.update(boardId, FreeBoardRequestDto.from(board));
+        FreeBoardRequestDto boardDto = freeBoardService.updatePost(boardId, FreeBoardRequestDto.from(board));
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
@@ -184,7 +182,7 @@ public class FreeBoardApiController {
             String createdName = String.valueOf(createFilename());
             String name = createdName + "." + extension;
             FileDto dto = FileDto.of(real, fileName, name);
-            fileService.save(dto);
+            fileService.saveFile(dto);
             fireBaseService.uploadFiles(f, name);
 
         }
@@ -197,8 +195,8 @@ public class FreeBoardApiController {
      * 게시글 삭제
      */
     @DeleteMapping("/free/delete/{boardId}")
-    public ResponseEntity<Void> delete(@PathVariable("boardId") Long boardId) {
-        freeBoardService.delete(boardId);
+    public ResponseEntity<Void> deletePost(@PathVariable("boardId") Long boardId) {
+        freeBoardService.deletePost(boardId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

@@ -20,7 +20,7 @@ public class FreeReplyController {
     private final ReplyService replyService;
 
     @PostMapping("/free/{boardId}/replies")
-    public ResponseEntity<ReplyDto> create(
+    public ResponseEntity<ReplyDto> createReply(
             @PathVariable("boardId") Long boardId,
             @Valid @RequestBody ReplyDto replyDto,
             Authentication authentication
@@ -28,26 +28,26 @@ public class FreeReplyController {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         Long userId = ca.getUser().getId();
 
-        ReplyDto reply = replyService.create(userId, boardId, replyDto);
+        ReplyDto reply = replyService.createReply(userId, boardId, replyDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
 
     @GetMapping("/free/{boardId}/replies")
-    public ResponseEntity<List<ReplyDto>> list(@PathVariable("boardId") Long boardId) {
-        List<ReplyDto> list = replyService.getReplyList(boardId);
+    public ResponseEntity<List<ReplyDto>> getListOfReply(@PathVariable("boardId") Long boardId) {
+        List<ReplyDto> list = replyService.getListOfReply(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
     @PutMapping("/free/update/replies")
-    public ResponseEntity<ReplyDto> update(@Valid @RequestBody ReplyDto replyDto) {
-        ReplyDto dto = replyService.update(replyDto);
+    public ResponseEntity<ReplyDto> updateReply(@Valid @RequestBody ReplyDto replyDto) {
+        ReplyDto dto = replyService.updateReply(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     @DeleteMapping("/free/delete/{replyId}/replies")
-    public ResponseEntity<String> delete(@PathVariable("replyId") Long replyId) {
-        replyService.delete(replyId);
+    public ResponseEntity<String> deleteReply(@PathVariable("replyId") Long replyId) {
+        replyService.deleteReply(replyId);
         return ResponseEntity.status(HttpStatus.OK).body("삭제 완료");
     }
 

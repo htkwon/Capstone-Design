@@ -21,7 +21,7 @@ public class BookmarkService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public void create(Long boardId, Long userId) {
+    public void createBookmark(Long boardId, Long userId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("북마크 등록 실패, 해당하는 게시글이 없습니다."));
         User user = userRepository.findById(userId)
@@ -33,18 +33,18 @@ public class BookmarkService {
     }
 
     @Transactional
-    public void cancel(Long boardId, Long userId) {
+    public void cancelBookmark(Long boardId, Long userId) {
         Bookmark bookmark = bookmarkRepository.findByBoardIdAndUserId(boardId, userId)
                 .orElseThrow(() -> new BoardNotFoundException("북마크 등록 취소 실패, 해당하는 게시글이 없습니다."));
 
         bookmarkRepository.delete(bookmark);
     }
 
-    public int count(Long boardId) {
+    public int countBookmarkOfPost(Long boardId) {
         return (int) bookmarkRepository.countByBoardId(boardId);
     }
 
-    public boolean check(Long boardId, Long userId) {
+    public boolean checkBookmarkOfPost(Long boardId, Long userId) {
         return bookmarkRepository.existsByBoardIdAndUserId(boardId, userId);
     }
 
