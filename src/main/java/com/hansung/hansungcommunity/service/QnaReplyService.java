@@ -29,7 +29,7 @@ public class QnaReplyService {
      * DTO parentId 필드 null 여부로 부모, 자식 결정
      */
     @Transactional
-    public QnaReplyDto create(Long userId, Long boardId, QnaReplyDto replyDto) {
+    public QnaReplyDto createReply(Long userId, Long boardId, QnaReplyDto replyDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("댓글 생성 실패, 해당하는 유저가 없습니다."));
 
@@ -63,7 +63,7 @@ public class QnaReplyService {
     }
 
     @Transactional(readOnly = true)
-    public QnaReplyAdoptCheckDto adoptCheck(Long boardId) {
+    public QnaReplyAdoptCheckDto checkAdoptOfPost(Long boardId) {
         Optional<Adopt> adopt = adoptRepository.findByQnaBoardId(boardId);
         if (adopt.isEmpty()) {
             return QnaReplyAdoptCheckDto.of(false, null);
@@ -73,7 +73,7 @@ public class QnaReplyService {
     }
 
     @Transactional
-    public QnaReplyDto update(QnaReplyDto replyDto) {
+    public QnaReplyDto updateReply(QnaReplyDto replyDto) {
         QnaReply reply = qnaReplyRepository.findById(replyDto.getId())
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 수정 실패, 해당하는 댓글이 없습니다."));
         if (replyDto.getParentId() != null) {
@@ -91,7 +91,7 @@ public class QnaReplyService {
     }
 
     @Transactional
-    public boolean adopt(Long replyId, Long userId) {
+    public boolean adoptReply(Long replyId, Long userId) {
         QnaReply reply = qnaReplyRepository.findById(replyId)
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 채택 실패, 해당하는 댓글이 없습니다."));
 
@@ -103,7 +103,7 @@ public class QnaReplyService {
     }
 
     @Transactional
-    public Long cancel(Long replyId) {
+    public Long cancelAdopt(Long replyId) {
         QnaReply reply = qnaReplyRepository.findById(replyId)
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 채택 취소 실패, 해당하는 댓글이 없습니다."));
         QnaBoard qnaBoard = boardRepository.findById(reply.getBoard().getId())
@@ -118,7 +118,7 @@ public class QnaReplyService {
     }
 
     @Transactional
-    public void delete(Long replyId) {
+    public void deleteReply(Long replyId) {
         deleteReplyMethod(replyId);
     }
 

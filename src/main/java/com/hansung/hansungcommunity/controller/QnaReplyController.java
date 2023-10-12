@@ -35,7 +35,7 @@ public class QnaReplyController {
     ) {
 
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        QnaReplyDto reply = qnaReplyService.create(ca.getUser().getId(), boardId, replyDto);
+        QnaReplyDto reply = qnaReplyService.createReply(ca.getUser().getId(), boardId, replyDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(reply);
     }
@@ -57,13 +57,13 @@ public class QnaReplyController {
      */
     @PutMapping("/questions/update/replies")
     public ResponseEntity<QnaReplyDto> updateReply(@Valid @RequestBody QnaReplyDto replyDto) {
-        QnaReplyDto dto = qnaReplyService.update(replyDto);
+        QnaReplyDto dto = qnaReplyService.updateReply(replyDto);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
     @DeleteMapping("/questions/delete/{replyId}/replies")
     public ResponseEntity<Void> deleteReply(@PathVariable("replyId") Long replyId) {
-        qnaReplyService.delete(replyId);
+        qnaReplyService.deleteReply(replyId);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
@@ -73,7 +73,7 @@ public class QnaReplyController {
     @PostMapping("/questions/{replyId}/adopt-replies")
     public ResponseEntity<Boolean> adoptReply(@PathVariable("replyId") Long replyId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        boolean adopt = qnaReplyService.adopt(replyId, ca.getUser().getId());
+        boolean adopt = qnaReplyService.adoptReply(replyId, ca.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(adopt);
     }
 
@@ -82,7 +82,7 @@ public class QnaReplyController {
      */
     @PutMapping("/questions/{replyId}/adopt-cancel")
     public ResponseEntity<Long> cancelReply(@PathVariable("replyId") Long replyId) {
-        Long id = qnaReplyService.cancel(replyId);
+        Long id = qnaReplyService.cancelAdopt(replyId);
         return ResponseEntity.status(HttpStatus.OK).body(id);
     }
 
@@ -94,7 +94,7 @@ public class QnaReplyController {
      */
     @GetMapping("/questions/{boardId}/adopt-check")
     public ResponseEntity<QnaReplyAdoptCheckDto> checkAdoptOfPost(@PathVariable("boardId") Long boardId) {
-        QnaReplyAdoptCheckDto dto = qnaReplyService.adoptCheck(boardId);
+        QnaReplyAdoptCheckDto dto = qnaReplyService.checkAdoptOfPost(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 

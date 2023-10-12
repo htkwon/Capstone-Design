@@ -56,7 +56,7 @@ public class QnaBoardService {
      * 게시글 저장
      */
     @Transactional
-    public Long post(Long userId, QnaBoardRequestDto dto) {
+    public Long createPost(Long userId, QnaBoardRequestDto dto) {
         User user = userRepository.getReferenceById(userId);
         QnaBoard board = QnaBoard.of(user, dto.getTitle(), dto.getContent(), dto.getLanguage());
 
@@ -69,7 +69,7 @@ public class QnaBoardService {
      * user 컬럼만 비어있는 qnaBoard 엔티티에 유저 매핑
      */
     @Transactional
-    public Long mappingUser(Long userId, QnaBoard entity) {
+    public Long getMappingUser(Long userId, QnaBoard entity) {
         User user = userRepository.getReferenceById(userId);
 
         entity.setUser(user);

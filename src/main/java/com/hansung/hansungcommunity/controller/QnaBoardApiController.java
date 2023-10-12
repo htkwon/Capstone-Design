@@ -91,7 +91,7 @@ public class QnaBoardApiController {
     @PostMapping("/questions/no-file")
     public ResponseEntity<Long> createNonFilePost(@Valid @RequestBody QnaBoardRequestDto dto, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        Long savedId = qnaBoardService.post(ca.getUser().getId(), dto);
+        Long savedId = qnaBoardService.createPost(ca.getUser().getId(), dto);
         return ResponseEntity.status(HttpStatus.OK).body(savedId);
     }
 
@@ -106,7 +106,7 @@ public class QnaBoardApiController {
     ) throws IOException, FirebaseAuthException {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         QnaBoard board = new ObjectMapper().readValue(stringQna, QnaBoard.class);
-        Long id = qnaBoardService.mappingUser(ca.getUser().getId(), board);
+        Long id = qnaBoardService.getMappingUser(ca.getUser().getId(), board);
 
         for (MultipartFile f : file) {
             String fileName = f.getOriginalFilename();
