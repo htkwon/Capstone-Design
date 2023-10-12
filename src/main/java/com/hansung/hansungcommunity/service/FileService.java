@@ -24,21 +24,21 @@ public class FileService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public FileDto save(FileDto dto) {
+    public FileDto saveFile(FileDto dto) {
         FileEntity fileEntity = FileEntity.of(dto.getBoard(), dto.getOriginalName(), dto.getCreatedName());
         FileEntity res = fileRepository.save(fileEntity);
 
         return FileDto.from(res);
     }
 
-    public boolean check(Long boardId) {
+    public boolean checkFileOfPost(Long boardId) {
         return fileRepository.findAllByBoard(boardRepository.findById(boardId)
                         .orElseThrow(() -> new BoardNotFoundException("해당 게시글이 없습니다.")))
                 .stream()
                 .anyMatch(Objects::nonNull);
     }
 
-    public List<FileRequestDto> list(Long boardId) {
+    public List<FileRequestDto> getListOfFile(Long boardId) {
         return fileRepository.findAllByBoard(boardRepository.findById(boardId)
                         .orElseThrow(() -> new BoardNotFoundException("해당 게시글이 없습니다.")))
                 .stream()
@@ -53,7 +53,7 @@ public class FileService {
 
 
     @Transactional
-    public void delete(String imageName) {
+    public void deleteFile(String imageName) {
         fileRepository.deleteByCreatedName(imageName);
     }
 }

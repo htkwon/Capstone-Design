@@ -55,11 +55,11 @@ public class AdminService {
     @Transactional
     public void deleteBoard(String boardType, Long boardId) {
         if (boardType.equals("FreeBoard")) {
-            freeBoardService.delete(boardId);
+            freeBoardService.deletePost(boardId);
         } else if (boardType.equals("QnaBoard")) {
             qnaBoardService.delete(boardId);
         } else {
-            recruitBoardService.delete(boardId);
+            recruitBoardService.deletePost(boardId);
         }
     }
 

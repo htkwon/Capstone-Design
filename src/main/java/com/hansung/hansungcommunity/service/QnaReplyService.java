@@ -70,8 +70,8 @@ public class QnaReplyService {
         if (adopt.isEmpty()) {
             return QnaReplyAdoptCheckDto.of(false, null);
         }
-        Reply reply = replyRepository.findByBoardIdAndUserId(boardId, adopt.get().getUser().getId());
-        return QnaReplyAdoptCheckDto.of(true, reply.getId());
+        Optional<Reply> reply = replyRepository.findByBoardIdAndUserId(boardId, adopt.get().getUser().getId());
+        return QnaReplyAdoptCheckDto.of(true, reply.get().getId());
     }
 
     @Transactional

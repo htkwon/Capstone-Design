@@ -34,7 +34,7 @@ public class RecruitBoardService {
      * 게시글 저장
      */
     @Transactional
-    public Long post(Long userId, RecruitBoardRequestDto dto) {
+    public Long createPost(Long userId, RecruitBoardRequestDto dto) {
         User user = userRepository.getReferenceById(userId);
         RecruitBoard saved = recruitBoardRepository.save(RecruitBoard.createBoard(dto, user));
 
@@ -74,7 +74,7 @@ public class RecruitBoardService {
                 .collect(Collectors.toList());
     }
 
-    public RecruitBoardDetailDto getDetail(Long boardId) {
+    public RecruitBoardDetailDto getDetailedPost(Long boardId) {
         RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
         Long count = partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId);
@@ -100,7 +100,7 @@ public class RecruitBoardService {
      * 팀 소속 신청
      */
     @Transactional
-    public Long apply(Long boardId, Long userId, RecruitBoardApplyRequestDto dto) {
+    public Long applyTeam(Long boardId, Long userId, RecruitBoardApplyRequestDto dto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("신청 실패, 해당하는 유저가 없습니다."));
         RecruitBoard board = recruitBoardRepository.findById(boardId)
@@ -149,7 +149,7 @@ public class RecruitBoardService {
      * 특정 사용자에 대한 신청 승인
      */
     @Transactional
-    public boolean approve(Long boardId, Long userId, Long targetUserId) {
+    public boolean approveApplication(Long boardId, Long userId, Long targetUserId) {
         RecruitBoard board = recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("신청 승인 실패, 해당하는 게시글이 없습니다."));
 
@@ -174,7 +174,7 @@ public class RecruitBoardService {
      * 특정 사용자에 대한 신청 승인 취소
      */
     @Transactional
-    public boolean disapprove(Long boardId, Long userId, Long targetUserId) {
+    public boolean disapproveApplication(Long boardId, Long userId, Long targetUserId) {
         RecruitBoard board = recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("신청 승인 취소 실패, 해당하는 게시글이 없음"));
 
@@ -213,7 +213,7 @@ public class RecruitBoardService {
      * 게시글 수정
      */
     @Transactional
-    public Long update(Long boardId, RecruitBoardRequestDto dto) {
+    public Long updatePost(Long boardId, RecruitBoardRequestDto dto) {
         RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 수정 실패, 해당하는 게시글이 없습니다."));
 
@@ -226,7 +226,7 @@ public class RecruitBoardService {
      * 게시글 삭제
      */
     @Transactional
-    public void delete(Long boardId) {
+    public void deletePost(Long boardId) {
         recruitBoardRepository.deleteById(boardId);
     }
 
@@ -268,7 +268,7 @@ public class RecruitBoardService {
      * 모집 완료
      */
     @Transactional
-    public void complete(Long boardId, Long userId) {
+    public void completeRecruit(Long boardId, Long userId) {
         RecruitBoard recruitBoard = recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("모집 완료 처리 실패, 해당하는 게시글이 없습니다."));
 
@@ -313,14 +313,14 @@ public class RecruitBoardService {
     /**
      * 승인된 인원 수
      */
-    public Long getApproversNumber(Long boardId) {
+    public Long getNumberOfApprove(Long boardId) {
         return partyRepository.countByRecruitBoardIdAndIsApprovedTrue(boardId);
     }
 
     /**
      * 신청 여부 확인
      */
-    public ApplicationStatus applicationCheck(Long boardId, Long userId) {
+    public ApplicationStatus checkApplication(Long boardId, Long userId) {
         Optional<Party> result = partyRepository.findByUserIdAndRecruitBoardId(userId, boardId);
 
         if (result.isEmpty()) return ApplicationStatus.NOT_APPLIED;
@@ -329,14 +329,14 @@ public class RecruitBoardService {
     }
 
     @Transactional
-    public Long mappingUser(Long id, RecruitBoard recruitBoard) {
+    public Long getMappingUser(Long id, RecruitBoard recruitBoard) {
         User user = userRepository.getReferenceById(id);
         recruitBoard.setUser(user);
         recruitBoardRepository.save(recruitBoard);
         return recruitBoard.getId();
     }
 
-    public RecruitBoard get(Long boardId) {
+    public RecruitBoard getPost(Long boardId) {
         return recruitBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
     }

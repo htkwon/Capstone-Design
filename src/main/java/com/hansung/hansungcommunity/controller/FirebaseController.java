@@ -75,7 +75,7 @@ public class FirebaseController {
      * 이미지 다운로드 url 제공
      */
     @GetMapping("/api/files/download/{imageName}")
-    public ResponseEntity<byte[]> download(@PathVariable String imageName) throws IOException {
+    public ResponseEntity<byte[]> downloadFile(@PathVariable String imageName) throws IOException {
         String createdName = fileService.getCreatedName(imageName);
         return getFileDownload(bucketName, createdName, imageName);
     }
@@ -86,7 +86,7 @@ public class FirebaseController {
     @DeleteMapping("/api/files/delete/{imageName}")
     public ResponseEntity<Void> deleteFile(@PathVariable String imageName) {
         String createdName = fileService.getCreatedName(imageName);
-        fileService.delete(createdName);
+        fileService.deleteFile(createdName);
         return delete(bucketName, createdName);
 
     }

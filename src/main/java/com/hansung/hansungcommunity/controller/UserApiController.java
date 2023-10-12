@@ -51,7 +51,7 @@ public class UserApiController {
      * 유저 정보 반환
      */
     @GetMapping("/api/user-info")
-    public ResponseEntity<UserInfoDto> userInfo(Authentication authentication) {
+    public ResponseEntity<UserInfoDto> getUserInfo(Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         UserInfoDto userInfoDto = userService.getUserInfo(ca.getUser().getId());
         return ResponseEntity.status(HttpStatus.OK).body(userInfoDto);
@@ -61,7 +61,7 @@ public class UserApiController {
      * 단순 유저 정보
      */
     @GetMapping("/api/user-info/simple")
-    public ResponseEntity<SimpleUserInfoDto> simpleUserInfo(Authentication authentication) {
+    public ResponseEntity<SimpleUserInfoDto> getSimpleUserInfo(Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
 
         return ResponseEntity.ok(SimpleUserInfoDto.from(ca.getUser()));
@@ -71,7 +71,7 @@ public class UserApiController {
      * 현재 접속 유저의 id만 반환 (프론트 댓글, 대댓글에서 사용)
      */
     @GetMapping("/api/user-id")
-    public ResponseEntity<Long> userId(Authentication authentication) {
+    public ResponseEntity<Long> getUserId(Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
         return ResponseEntity.status(HttpStatus.OK).body(ca.getUser().getId());
     }
@@ -80,7 +80,7 @@ public class UserApiController {
      * 메인페이지( 유저 채택 순위 TOP5 )
      */
     @GetMapping("/api/user-rank")
-    public ResponseEntity<List<UserRankDto>> userRank() {
+    public ResponseEntity<List<UserRankDto>> getUserRank() {
         List<UserRankDto> dto = userService.getUserRank();
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }

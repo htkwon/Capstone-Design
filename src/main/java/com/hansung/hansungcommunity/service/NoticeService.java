@@ -92,14 +92,14 @@ public class NoticeService {
                 .collect(Collectors.toList());
     }
 
-    public NoticeBoardDetailsDto detail(Long boardId) {
+    public NoticeBoardDetailsDto getDetailedPost(Long boardId) {
         return NoticeBoardDetailsDto.from(noticeRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("공지사항 조회 실패, 해당하는 공지사항이 없습니다.")));
     }
 
 
     @Transactional
-    public Long post(NoticeBoardDto dto, Long id) {
+    public Long createPost(NoticeBoardDto dto, Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("공지사항 작성 실패, 해당하는 관리자가 없습니다."));
 
@@ -107,13 +107,13 @@ public class NoticeService {
     }
 
     @Transactional
-    public void delete(Long boardId) {
+    public void deletePost(Long boardId) {
         noticeRepository.delete(noticeRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("공지사항 삭제 실패, 해당하는 공지사항이 없습니다.")));
     }
 
     @Transactional
-    public NoticeBoardDto update(NoticeBoardDto dto, Long boardId) {
+    public NoticeBoardDto updatePost(NoticeBoardDto dto, Long boardId) {
         NoticeBoard noticeBoard = noticeRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("공지사항 수정 실패, 해당하는 게시글이 없습니다."));
 
@@ -123,7 +123,7 @@ public class NoticeService {
     }
 
     @Transactional
-    public Long mappingUser(Long id, NoticeBoard noticeBoard) {
+    public Long getMappingUser(Long id, NoticeBoard noticeBoard) {
         User user = userRepository.getReferenceById(id);
         noticeBoard.setUser(user);
         noticeRepository.save(noticeBoard);
@@ -187,7 +187,7 @@ public class NoticeService {
         board.increaseViews();
     }
 
-    public NoticeBoard get(Long boardId) {
+    public NoticeBoard getPost(Long boardId) {
         return noticeRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 조회 실패, 해당하는 게시글이 없습니다."));
     }
