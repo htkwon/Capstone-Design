@@ -15,4 +15,5 @@ public interface AdoptRepository extends JpaRepository<Adopt, Long> {
 
     Optional<Adopt> findByQnaBoardId(Long id);
 
+    Optional<Adopt> findByQnaBoardIdAndUserId(Long boardId, Long id1);
 }

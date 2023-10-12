@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface QnaReplyRepository extends JpaRepository<QnaReply, Long> {
 
-    QnaReply findFirstByBoardIdAndAdoptTrue(Long boardId);
 
     List<QnaReply> findAllByParentId(Long id);
 

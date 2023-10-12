@@ -1,22 +1,19 @@
 package com.hansung.hansungcommunity.service;
 
+import com.hansung.hansungcommunity.auth.CustomAuthentication;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyAdoptCheckDto;
 import com.hansung.hansungcommunity.dto.qna.QnaReplyDto;
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
-import com.hansung.hansungcommunity.entity.Adopt;
-import com.hansung.hansungcommunity.entity.QnaBoard;
-import com.hansung.hansungcommunity.entity.QnaReply;
-import com.hansung.hansungcommunity.entity.User;
+import com.hansung.hansungcommunity.entity.*;
 import com.hansung.hansungcommunity.exception.*;
-import com.hansung.hansungcommunity.repository.AdoptRepository;
-import com.hansung.hansungcommunity.repository.QnaBoardRepository;
-import com.hansung.hansungcommunity.repository.QnaReplyRepository;
-import com.hansung.hansungcommunity.repository.UserRepository;
+import com.hansung.hansungcommunity.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +24,7 @@ public class QnaReplyService {
     private final QnaBoardRepository boardRepository;
     private final UserRepository userRepository;
     private final AdoptRepository adoptRepository;
+    private final ReplyRepository replyRepository;
 
     /**
      * 댓글 생성
@@ -68,11 +66,11 @@ public class QnaReplyService {
 
     @Transactional(readOnly = true)
     public QnaReplyAdoptCheckDto adoptCheck(Long boardId) {
-        QnaReply reply = qnaReplyRepository.findFirstByBoardIdAndAdoptTrue(boardId);
-
-        if (reply == null) {
+        Optional<Adopt> adopt = adoptRepository.findByQnaBoardId(boardId);
+        if (adopt.isEmpty()) {
             return QnaReplyAdoptCheckDto.of(false, null);
         }
+        Reply reply = replyRepository.findByBoardIdAndUserId(boardId, adopt.get().getUser().getId());
         return QnaReplyAdoptCheckDto.of(true, reply.getId());
     }
 
@@ -95,14 +93,15 @@ public class QnaReplyService {
     }
 
     @Transactional
-    public boolean adopt(Long replyId) {
+    public boolean adopt(Long replyId, Long userId) {
         QnaReply reply = qnaReplyRepository.findById(replyId)
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 채택 실패, 해당하는 댓글이 없습니다."));
-        reply.adopt(true);
-        qnaReplyRepository.save(reply);
-        adoptRepository.save(Adopt.of(reply.getBoard(), reply.getUser()));
 
-        return reply.isAdopt();
+        if (userId.equals(reply.getBoard().getUser().getId())) {
+            adoptRepository.save(Adopt.of(reply.getBoard(), reply.getUser()));
+            return true;
+        }
+        return false;
     }
 
     @Transactional
@@ -114,7 +113,6 @@ public class QnaReplyService {
         Adopt adopt = adoptRepository.findByQnaBoardId(qnaBoard.getId())
                 .orElseThrow(() -> new AdoptNotFoundException("댓글 채택 취소 실패, 해당하는 채택 정보가 없습니다."));
 
-        reply.adopt(false);
         qnaReplyRepository.save(reply);
         adoptRepository.delete(adopt);
 
@@ -127,14 +125,19 @@ public class QnaReplyService {
     }
 
     private void deleteReplyMethod(Long replyId) {
-        QnaReply reply = qnaReplyRepository.findById(replyId)
+        QnaReply qnaReply = qnaReplyRepository.findById(replyId)
                 .orElseThrow(() -> new ReplyNotFoundException("댓글 삭제 실패, 해당하는 댓글이 없습니다."));
-        List<QnaReply> children = qnaReplyRepository.findAllByParentId(reply.getId());
+        Reply reply = replyRepository.findById(replyId)
+                .orElseThrow(() -> new ReplyNotFoundException("댓글 삭제 실패, 해당하는 댓글이 없습니다."));
+
+        Optional<Adopt> adopt = adoptRepository.findByQnaBoardIdAndUserId(reply.getBoard().getId(), reply.getUser().getId());
+        if (!adopt.isEmpty()) adoptRepository.delete(adopt.get());
+
+        List<QnaReply> children = qnaReplyRepository.findAllByParentId(qnaReply.getId());
         for (QnaReply child : children) {
             deleteReplyMethod(child.getId());
         }
-
-        qnaReplyRepository.delete(reply);
+        qnaReplyRepository.delete(qnaReply);
     }
 
 }
