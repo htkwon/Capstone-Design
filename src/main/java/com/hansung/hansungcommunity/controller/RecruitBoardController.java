@@ -3,6 +3,7 @@ package com.hansung.hansungcommunity.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
+import com.hansung.hansungcommunity.dto.ApplicationStatus;
 import com.hansung.hansungcommunity.dto.FileDto;
 import com.hansung.hansungcommunity.dto.FileRequestDto;
 import com.hansung.hansungcommunity.dto.recruit.*;
@@ -302,11 +303,11 @@ public class RecruitBoardController {
      * 신청 여부 확인
      */
     @GetMapping("/recruit/{boardId}/application-check")
-    public ResponseEntity<Boolean> applicationCheck(@PathVariable("boardId") Long boardId, Authentication authentication) {
+    public ResponseEntity<ApplicationStatus> applicationCheck(@PathVariable("boardId") Long boardId, Authentication authentication) {
         CustomAuthentication ca = (CustomAuthentication) authentication;
-        Boolean result = recruitBoardService.applicationCheck(boardId, ca.getUser().getId());
+        ApplicationStatus status = recruitBoardService.applicationCheck(boardId, ca.getUser().getId());
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(status);
     }
 
     /**

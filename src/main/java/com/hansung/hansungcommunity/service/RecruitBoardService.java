@@ -1,7 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.ImageUtils;
-import com.hansung.hansungcommunity.dto.ImageDto;
+import com.hansung.hansungcommunity.dto.ApplicationStatus;
 import com.hansung.hansungcommunity.dto.recruit.*;
 import com.hansung.hansungcommunity.entity.Party;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
@@ -18,11 +17,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -122,9 +118,9 @@ public class RecruitBoardService {
         if (check.isEmpty()) {
             Party party;
             if (dto.getIsMeetOptional() == null) {
-                party = partyRepository.save(Party.from(user, board, dto.isMeetRequired(), null));
+                party = partyRepository.save(Party.from(user, board, dto.getIsMeetRequired(), null));
             } else {
-                party = partyRepository.save(Party.from(user, board, dto.isMeetRequired(), dto.getIsMeetOptional()));
+                party = partyRepository.save(Party.from(user, board, dto.getIsMeetRequired(), dto.getIsMeetOptional()));
             }
             return party.getId();
         } else {
@@ -324,14 +320,13 @@ public class RecruitBoardService {
     /**
      * 신청 여부 확인
      */
-    public Boolean applicationCheck(Long boardId, Long userId) {
+    public ApplicationStatus applicationCheck(Long boardId, Long userId) {
         Optional<Party> result = partyRepository.findByUserIdAndRecruitBoardId(userId, boardId);
 
-        if (result.isEmpty()) return null;
-        else return result.get().isApproved();
+        if (result.isEmpty()) return ApplicationStatus.NOT_APPLIED;
+        else if (result.get().isApproved()) return ApplicationStatus.APPLIED_AND_APPROVED;
+        else return ApplicationStatus.APPLIED_NOT_APPROVED;
     }
-
-    
 
     @Transactional
     public Long mappingUser(Long id, RecruitBoard recruitBoard) {
