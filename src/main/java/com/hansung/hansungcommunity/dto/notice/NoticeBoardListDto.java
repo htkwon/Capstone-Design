@@ -1,10 +1,8 @@
 package com.hansung.hansungcommunity.dto.notice;
 
-import com.hansung.hansungcommunity.dto.ImageDto;
+import com.hansung.hansungcommunity.dto.media.ImageDto;
 import com.hansung.hansungcommunity.entity.NoticeBoard;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;

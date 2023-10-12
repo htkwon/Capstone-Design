@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.ImageDto;
+import com.hansung.hansungcommunity.dto.media.ImageDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardDetailsDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardDto;
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardListDto;

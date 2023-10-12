@@ -1,6 +1,5 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.ApplicationStatus;
 import com.hansung.hansungcommunity.dto.recruit.*;
 import com.hansung.hansungcommunity.entity.Party;
 import com.hansung.hansungcommunity.entity.RecruitBoard;

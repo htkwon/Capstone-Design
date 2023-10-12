@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.dto.free;
 
-import com.hansung.hansungcommunity.dto.ImageDto;
+import com.hansung.hansungcommunity.dto.media.ImageDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import lombok.Getter;
 

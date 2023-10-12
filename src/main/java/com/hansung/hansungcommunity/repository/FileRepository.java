@@ -13,6 +13,6 @@ public interface FileRepository extends JpaRepository<FileEntity, Long> {
 
     FileEntity findByOriginalName(String name);
 
-
     void deleteByCreatedName(String imageName);
+    
 }

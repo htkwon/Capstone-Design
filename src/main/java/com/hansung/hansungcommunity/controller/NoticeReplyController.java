@@ -1,7 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
 import com.hansung.hansungcommunity.auth.CustomAuthentication;
-import com.hansung.hansungcommunity.dto.ReplyDto;
+import com.hansung.hansungcommunity.dto.common.ReplyDto;
 import com.hansung.hansungcommunity.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

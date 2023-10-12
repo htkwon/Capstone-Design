@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.ReplyDto;
+import com.hansung.hansungcommunity.dto.common.ReplyDto;
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.Board;
 import com.hansung.hansungcommunity.entity.Reply;

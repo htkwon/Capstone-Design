@@ -1,7 +1,7 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.AdminBoardDto;
-import com.hansung.hansungcommunity.dto.AdminUserDto;
+import com.hansung.hansungcommunity.dto.admin.AdminBoardDto;
+import com.hansung.hansungcommunity.dto.admin.AdminUserDto;
 import com.hansung.hansungcommunity.exception.UserNotFoundException;
 import com.hansung.hansungcommunity.repository.*;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.hansung.hansungcommunity.dto;
+package com.hansung.hansungcommunity.dto.common;
 
 import com.hansung.hansungcommunity.entity.Board;
 import lombok.AccessLevel;

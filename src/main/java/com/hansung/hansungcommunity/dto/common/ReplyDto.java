@@ -1,8 +1,10 @@
-package com.hansung.hansungcommunity.dto;
+package com.hansung.hansungcommunity.dto.common;
 
 import com.hansung.hansungcommunity.dto.user.UserReplyDto;
 import com.hansung.hansungcommunity.entity.Reply;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;

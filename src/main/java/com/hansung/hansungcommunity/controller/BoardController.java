@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.controller;
 
-import com.hansung.hansungcommunity.dto.BoardMainDto;
+import com.hansung.hansungcommunity.dto.common.BoardMainDto;
 import com.hansung.hansungcommunity.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

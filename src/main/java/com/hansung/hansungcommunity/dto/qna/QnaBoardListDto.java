@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.dto.qna;
 
-import com.hansung.hansungcommunity.dto.ImageDto;
+import com.hansung.hansungcommunity.dto.media.ImageDto;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import lombok.Getter;
 import java.time.LocalDateTime;

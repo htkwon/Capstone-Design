@@ -1,7 +1,7 @@
 package com.hansung.hansungcommunity.controller;
 
-import com.hansung.hansungcommunity.dto.AdminBoardDto;
-import com.hansung.hansungcommunity.dto.AdminUserDto;
+import com.hansung.hansungcommunity.dto.admin.AdminBoardDto;
+import com.hansung.hansungcommunity.dto.admin.AdminUserDto;
 import com.hansung.hansungcommunity.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface QnaReplyRepository extends JpaRepository<QnaReply, Long> {
 
-
     List<QnaReply> findAllByParentId(Long id);
 
 }

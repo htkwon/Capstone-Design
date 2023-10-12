@@ -1,7 +1,7 @@
 package com.hansung.hansungcommunity.entity;
 
 
-import com.hansung.hansungcommunity.dto.ReplyDto;
+import com.hansung.hansungcommunity.dto.common.ReplyDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

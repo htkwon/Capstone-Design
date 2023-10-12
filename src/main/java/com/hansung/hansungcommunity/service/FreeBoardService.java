@@ -1,8 +1,8 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.ImageUtils;
-import com.hansung.hansungcommunity.dto.ImageDto;
+import com.hansung.hansungcommunity.util.ImageUtils;
 import com.hansung.hansungcommunity.dto.free.*;
+import com.hansung.hansungcommunity.dto.media.ImageDto;
 import com.hansung.hansungcommunity.entity.FreeBoard;
 import com.hansung.hansungcommunity.entity.User;
 import com.hansung.hansungcommunity.exception.BoardNotFoundException;

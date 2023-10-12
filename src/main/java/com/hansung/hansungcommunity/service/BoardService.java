@@ -1,6 +1,6 @@
 package com.hansung.hansungcommunity.service;
 
-import com.hansung.hansungcommunity.dto.BoardMainDto;
+import com.hansung.hansungcommunity.dto.common.BoardMainDto;
 import com.hansung.hansungcommunity.entity.Board;
 import com.hansung.hansungcommunity.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;

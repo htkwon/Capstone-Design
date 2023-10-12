@@ -6,7 +6,7 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import com.google.firebase.FirebaseException;
-import com.hansung.hansungcommunity.ImageUtils;
+import com.hansung.hansungcommunity.util.ImageUtils;
 import com.hansung.hansungcommunity.service.FileService;
 import com.hansung.hansungcommunity.service.FireBaseService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Controller
 @RequiredArgsConstructor

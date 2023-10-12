@@ -1,8 +1,8 @@
 package com.hansung.hansungcommunity.service;
 
 
-import com.hansung.hansungcommunity.ImageUtils;
-import com.hansung.hansungcommunity.dto.ImageDto;
+import com.hansung.hansungcommunity.util.ImageUtils;
+import com.hansung.hansungcommunity.dto.media.ImageDto;
 import com.hansung.hansungcommunity.dto.qna.*;
 import com.hansung.hansungcommunity.entity.QnaBoard;
 import com.hansung.hansungcommunity.entity.User;
@@ -18,10 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -61,7 +58,7 @@ public class QnaBoardService {
     @Transactional
     public Long post(Long userId, QnaBoardRequestDto dto) {
         User user = userRepository.getReferenceById(userId);
-        QnaBoard board = QnaBoard.of(user, dto.getTitle(),dto.getContent(),dto.getLanguage());
+        QnaBoard board = QnaBoard.of(user, dto.getTitle(), dto.getContent(), dto.getLanguage());
 
         QnaBoard savedBoard = qnaBoardRepository.save(board);
 

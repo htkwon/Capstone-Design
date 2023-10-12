@@ -1,7 +1,7 @@
 package com.hansung.hansungcommunity.dto.recruit;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hansung.hansungcommunity.dto.ImageDto;
+import com.hansung.hansungcommunity.dto.media.ImageDto;
 import com.hansung.hansungcommunity.entity.RecruitBoard;
 import lombok.Getter;
 

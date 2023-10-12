@@ -1,4 +1,4 @@
-package com.hansung.hansungcommunity.dto;
+package com.hansung.hansungcommunity.dto.recruit;
 
 public enum ApplicationStatus {
 

@@ -1,8 +1,8 @@
 package com.hansung.hansungcommunity.service;
 
 
-import com.hansung.hansungcommunity.dto.FileDto;
-import com.hansung.hansungcommunity.dto.FileRequestDto;
+import com.hansung.hansungcommunity.dto.media.FileDto;
+import com.hansung.hansungcommunity.dto.media.FileRequestDto;
 import com.hansung.hansungcommunity.entity.FileEntity;
 import com.hansung.hansungcommunity.exception.BoardNotFoundException;
 import com.hansung.hansungcommunity.repository.BoardRepository;
