@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 @Entity
 @Getter
@@ -19,9 +16,6 @@ import javax.persistence.OneToOne;
 public class QnaBoard extends Board {
 
     private String language;
-    @OneToOne(mappedBy = "qnaBoard", cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "adopt_id")
-    private Adopt adopt;
 
     private QnaBoard(User user, String title, String content, String language) {
         super(title, content);

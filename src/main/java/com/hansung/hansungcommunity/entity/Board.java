@@ -28,11 +28,11 @@ public abstract class Board extends ModifiedEntity {
     @JoinColumn(name = "stu_id")
     private User user;
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-    private List<Reply> replies = new ArrayList<>();
+    private final List<Reply> replies = new ArrayList<>();
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-    private Set<Bookmark> bookmarks = new HashSet<>();
+    private final Set<Bookmark> bookmarks = new HashSet<>();
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-    private List<FileEntity> fileEntity = new ArrayList<>();
+    private final List<FileEntity> fileEntity = new ArrayList<>();
 
     protected Board(String title, String content) {
         this.title = title;
