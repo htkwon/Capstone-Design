@@ -61,8 +61,7 @@ public class QnaBoardService {
     @Transactional
     public Long post(Long userId, QnaBoardRequestDto dto) {
         User user = userRepository.getReferenceById(userId);
-        QnaBoard board = QnaBoard.of(dto.getTitle(),dto.getContent(),dto.getLanguage());
-        board.setUser(user);
+        QnaBoard board = QnaBoard.of(user, dto.getTitle(),dto.getContent(),dto.getLanguage());
 
         QnaBoard savedBoard = qnaBoardRepository.save(board);
 
@@ -89,7 +88,7 @@ public class QnaBoardService {
         QnaBoard target = qnaBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글 수정 실패, 해당하는 게시글이 없습니다."));
 
-        target.updateBoard(dto);
+        target.patch(dto);
 
         return boardId;
     }
@@ -111,7 +110,7 @@ public class QnaBoardService {
         QnaBoard board = qnaBoardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("조회수 증가 실패, 해당하는 게시글이 없습니다."));
 
-        board.increaseHits();
+        board.increaseViews();
     }
 
     /**

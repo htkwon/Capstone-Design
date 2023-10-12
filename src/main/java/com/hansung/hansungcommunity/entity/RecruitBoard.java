@@ -4,33 +4,25 @@ import com.hansung.hansungcommunity.dto.recruit.RecruitBoardRequestDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
 
-@Table(name = "recruit_board")
-@Getter
-@Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Getter
+@ToString(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecruitBoard extends Board {
 
-    @Id
-    private Long id;
     private String required;
     private String optional;
     private int party; // 모집할 인원 수
     private int gathered; // 모집된 인원 수
     private boolean isCompleted; // 모집 완료 여부
 
-    @OneToMany(mappedBy = "recruitBoard", cascade = CascadeType.REMOVE)
-    private List<Party> parties = new ArrayList<>();
-
-    private RecruitBoard(String title, String content, String required, String optional, int party, int gathered) {
-        this.title = title;
-        this.content = content;
+    private RecruitBoard(String title, String content, String required, String optional, int party, int gathered, User user) {
+        super(title, content);
+        super.setUser(user);
         this.required = required;
         this.optional = optional;
         this.party = party;
@@ -39,27 +31,15 @@ public class RecruitBoard extends Board {
     }
 
     public static RecruitBoard createBoard(RecruitBoardRequestDto dto, User user) {
-        RecruitBoard board = new RecruitBoard(
+        return new RecruitBoard(
                 dto.getTitle(),
                 dto.getContent(),
                 dto.getRequired(),
                 dto.getOptional(),
                 dto.getParty(),
-                dto.getGathered()
+                dto.getGathered(),
+                user
         );
-        board.setUser(user);
-
-        return board;
-    }
-
-    // 연관관계 메소드
-    public void setUser(User user) {
-        super.setUser(user);
-    }
-
-    // 조회수 증가 메소드
-    public void increaseHits() {
-        increaseViews();
     }
 
     // 자동 모집 완료 처리
@@ -68,18 +48,11 @@ public class RecruitBoard extends Board {
     }
 
     public void patch(RecruitBoardRequestDto dto) {
-        if (dto.getTitle() != null)
-            this.title = dto.getTitle();
-
-        if (dto.getContent() != null)
-            this.content = dto.getContent();
+        updateTitleAndContent(dto.getTitle(), dto.getContent());
 
         if (dto.getOptional() != null)
             this.optional = dto.getOptional();
-
         this.party = dto.getParty();
-
-        modified();
     }
 
     // 작성자에 의한 모집 완료 처리

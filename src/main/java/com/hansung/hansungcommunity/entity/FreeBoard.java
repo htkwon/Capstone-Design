@@ -4,58 +4,33 @@ import com.hansung.hansungcommunity.dto.free.FreeBoardRequestDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Table(name = "free_board")
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Getter
+@ToString(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FreeBoard extends Board {
-    @Id
-    private Long id;
 
-    private FreeBoard(String title, String content) {
-        this.title = title;
-        this.content = content;
+    private FreeBoard(String title, String content, User user) {
+        super(title, content);
+        super.setUser(user);
     }
 
     // 생성 메소드
     public static FreeBoard createBoard(User user, FreeBoardRequestDto dto) {
-        FreeBoard board = new FreeBoard(
+        return new FreeBoard(
                 dto.getTitle(),
-                dto.getContent()
+                dto.getContent(),
+                user
         );
-
-        board.setUser(user); // 연관관계 설정
-
-        return board;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    // 연관관계 메소드
-    public void setUser(User user) {
-        super.setUser(user);
     }
 
     // 비즈니스 메소드
     public void patch(FreeBoardRequestDto dto) {
-        if (dto.getTitle() != null)
-            this.title = dto.getTitle();
-
-        if (dto.getContent() != null)
-            this.content = dto.getContent();
-
-        modified();
-    }
-
-    public void increaseHits() {
-        increaseViews();
+        updateTitleAndContent(dto.getTitle(), dto.getContent());
     }
 
 }

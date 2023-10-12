@@ -94,7 +94,7 @@ public class NoticeService {
 
     public NoticeBoardDetailsDto detail(Long boardId) {
         return NoticeBoardDetailsDto.from(noticeRepository.findById(boardId)
-                .orElseThrow(()-> new BoardNotFoundException("공지사항 조회 실패, 해당하는 공지사항이 없습니다.")));
+                .orElseThrow(() -> new BoardNotFoundException("공지사항 조회 실패, 해당하는 공지사항이 없습니다.")));
     }
 
 
@@ -184,7 +184,7 @@ public class NoticeService {
         NoticeBoard board = noticeRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("조회수 증가 실패, 해당하는 게시글이 없습니다."));
 
-        board.increaseHits();
+        board.increaseViews();
     }
 
     public NoticeBoard get(Long boardId) {

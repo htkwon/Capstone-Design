@@ -2,10 +2,12 @@ package com.hansung.hansungcommunity.entity;
 
 
 import com.hansung.hansungcommunity.dto.notice.NoticeBoardDto;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Entity
 @Getter
@@ -13,19 +15,13 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NoticeBoard extends Board {
 
-    @Id
-    private Long id;
-
-    private NoticeBoard(Long id, String title, String content, User user) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
+    private NoticeBoard(String title, String content, User user) {
+        super(title, content);
         super.setUser(user);
     }
 
     public static NoticeBoard of(NoticeBoardDto dto, User user) {
         return new NoticeBoard(
-                dto.getId(),
                 dto.getTitle(),
                 dto.getContent(),
                 user
@@ -34,18 +30,7 @@ public class NoticeBoard extends Board {
 
     // 비즈니스 메소드
     public void patch(NoticeBoardDto dto) {
-        if (dto.getTitle() != null)
-            this.title = dto.getTitle();
-
-        if (dto.getContent() != null)
-            this.content = dto.getContent();
-
-        modified();
+        updateTitleAndContent(dto.getTitle(), dto.getContent());
     }
-
-    public void increaseHits() {
-        increaseViews();
-    }
-    public void setId(Long id){this.id = id;}
 
 }
