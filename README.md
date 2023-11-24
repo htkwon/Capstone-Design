@@ -1,4 +1,3 @@
-# Ping Pong Resource Server
 ## 프로젝트명
 
 Ping Pong Resource Server
@@ -18,7 +17,7 @@ Ping Pong Resource Server
 - 주요 프레임워크 & 라이브러리 : `Spring Boot` `OAuth 2.0 Resource Server`
 - 데이터베이스 : `MySQL`
 
-## 프로젝트 설명
+## 프로젝트 소개
 
 이 프로젝트를 이해하려면, OIDC와 OAuth2 프로토콜에 대한 기본적인 지식이 필요합니다. OIDC에 대한 간단한 설명은 이 프로젝트의 인가 서버의 README.md 파일에 작성되어 있습니다.
 
@@ -44,3 +43,29 @@ Resource Server는 클라이언트 애플리케이션이 요청한 API 리소스
 - 부가 정보 입력 여부 판단을 위한 `jwtAuthenticationConverter` 커스텀
 
 간단히 정리하면, 인가 서버로부터 받아온 공개 키를 사용해 요청의 접근 권한을 검증하여 리소스를 제공하도록 설정하였습니다. 또한 토큰 기반 인증 방식을 적용하였으며 부가 정보(닉네임, 자기 소개 등)의 입력 여부 판단을 위해 `jwtAuthenticationConverter`를 커스터마이징 하여 부가 정보 입력을 한 경우 권한을 부여하도록 하였습니다.
+
+---
+## FLOW
+<img width="517" alt="Real Flow" src="https://github.com/htkwon/Capstone-Design/assets/117131575/dc841c14-003b-4c34-bb21-9d53f7a36c2b">
+
+---
+## RESULT
+<img width="926" alt="메인페이지" src="https://github.com/htkwon/Capstone-Design/assets/117131575/036d060b-fd4f-4839-ae10-0c67742569be">
+
+<img width="1274" alt="한성대 통합로그인" src="https://github.com/htkwon/Capstone-Design/assets/117131575/db832107-6974-41ec-b5f0-6a4b967b9736">
+
+<img width="1261" alt="부가정보 페이지" src="https://github.com/htkwon/Capstone-Design/assets/117131575/0ac760cd-bf33-4631-b251-47f1050c411b">
+
+<img width="626" alt="qna 게시글 모음 real" src="https://github.com/htkwon/Capstone-Design/assets/117131575/add082e3-fe4a-4a9c-8157-5b3dff777cde">
+
+<img width="866" alt="모음집 real" src="https://github.com/htkwon/Capstone-Design/assets/117131575/51795399-5639-4433-97a6-44f54482fa22">
+
+
+
+
+
+
+
+
+
+
