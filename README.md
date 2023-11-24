@@ -46,19 +46,28 @@ Resource Server는 클라이언트 애플리케이션이 요청한 API 리소스
 
 ---
 ## FLOW
+<프로젝트>
+
+
 <img width="517" alt="Real Flow" src="https://github.com/htkwon/Capstone-Design/assets/117131575/dc841c14-003b-4c34-bb21-9d53f7a36c2b">
+
+<OIDC 프로토콜>
+
+
+<img width="587" alt="OIDC 플로우" src="https://github.com/htkwon/Capstone-Design/assets/117131575/0f1e68bc-6d68-46bc-bdfd-98fdad8f5aa4">
+
 
 ---
 ## RESULT
 <img width="926" alt="메인페이지" src="https://github.com/htkwon/Capstone-Design/assets/117131575/036d060b-fd4f-4839-ae10-0c67742569be">
 
-<img width="1274" alt="한성대 통합로그인" src="https://github.com/htkwon/Capstone-Design/assets/117131575/db832107-6974-41ec-b5f0-6a4b967b9736">
+<img width="926" alt="한성대 통합로그인" src="https://github.com/htkwon/Capstone-Design/assets/117131575/db832107-6974-41ec-b5f0-6a4b967b9736">
 
-<img width="1261" alt="부가정보 페이지" src="https://github.com/htkwon/Capstone-Design/assets/117131575/0ac760cd-bf33-4631-b251-47f1050c411b">
+<img width="926" alt="부가정보 페이지" src="https://github.com/htkwon/Capstone-Design/assets/117131575/0ac760cd-bf33-4631-b251-47f1050c411b">
 
-<img width="626" alt="qna 게시글 모음 real" src="https://github.com/htkwon/Capstone-Design/assets/117131575/add082e3-fe4a-4a9c-8157-5b3dff777cde">
+<img width="926" alt="qna 게시글 모음 real" src="https://github.com/htkwon/Capstone-Design/assets/117131575/add082e3-fe4a-4a9c-8157-5b3dff777cde">
 
-<img width="866" alt="모음집 real" src="https://github.com/htkwon/Capstone-Design/assets/117131575/51795399-5639-4433-97a6-44f54482fa22">
+<img width="926" alt="모음집 real" src="https://github.com/htkwon/Capstone-Design/assets/117131575/51795399-5639-4433-97a6-44f54482fa22">
 
 
 
